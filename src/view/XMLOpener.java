@@ -7,52 +7,40 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class XMLOpener {
 
-    private String pathname;
+    private static XMLOpener instance = null;
 
-    public XMLOpener(String path) {
-        this.pathname = path;
+    private XMLOpener(){}
+
+    protected static XMLOpener getInstance(){
+        if(instance == null) instance = new XMLOpener();
+        return instance;
     }
 
-    public void ReadFile() throws Exception {
+    public void ReadFile(String path) throws Exception {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            DefaultHandler handler = new MyHandler();
-            saxParser.parse(new File(pathname), handler);
+            DefaultHandler handler = new HandlerPlan();
+            saxParser.parse(new File(path), handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static class MyHandler extends DefaultHandler {
-
-        private boolean inIntersection = false;
-        private boolean inSegment = false;
-
+    private static class HandlerPlan extends DefaultHandler {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if ("intersection".equals(qName)) {
-                inIntersection = true;
                 String id = attributes.getValue("id");
                 String latitude = attributes.getValue("latitude");
                 String longitude = attributes.getValue("longitude");
                 System.out.println("Intersection - ID: " + id + ", Latitude: " + latitude + ", Longitude: " + longitude);
             } else if ("segment".equals(qName)) {
-                inSegment = true;
                 String destination = attributes.getValue("destination");
                 String length = attributes.getValue("length");
                 String name = attributes.getValue("name");
                 String origin = attributes.getValue("origin");
                 System.out.println("Segment - Destination: " + destination + ", Length: " + length + ", Name: " + name + ", Origin: " + origin);
-            }
-        }
-
-        @Override
-        public void endElement(String uri, String localName, String qName) throws SAXException {
-            if ("intersection".equals(qName)) {
-                inIntersection = false;
-            } else if ("segment".equals(qName)) {
-                inSegment = false;
             }
         }
     }

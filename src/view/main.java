@@ -7,9 +7,9 @@ import javax.xml.parsers.SAXParserFactory;
 public class main {
 
     public static void main(String[] args) {
-        XMLOpener opener = new XMLOpener("./smallMap.xml");
+        XMLOpener opener = XMLOpener.getInstance();
         try {
-            opener.ReadFile();
+            opener.ReadFile("smallMap.xml");
         } catch (Exception e) {
             e.printStackTrace();
         }
