@@ -1,3 +1,5 @@
+package view;
+
 import java.io.File;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
