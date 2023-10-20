@@ -1,16 +1,16 @@
-package view;
+package model;
 
 import java.util.*;
 
 /**
  * 
  */
-public class Carte {
+public class Chemin {
 
     /**
      * Default constructor
      */
-    public Carte() {
+    public Chemin() {
     }
 
 }

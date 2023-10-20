@@ -5,12 +5,12 @@ import java.util.*;
 /**
  * 
  */
-public class Carte {
+public class Window {
 
     /**
      * Default constructor
      */
-    public Carte() {
+    public Window() {
     }
 
 }

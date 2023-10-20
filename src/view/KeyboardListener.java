@@ -5,12 +5,12 @@ import java.util.*;
 /**
  * 
  */
-public class Carte {
+public class KeyboardListener {
 
     /**
      * Default constructor
      */
-    public Carte() {
+    public KeyboardListener() {
     }
 
 }

@@ -1,16 +1,16 @@
-package view;
+package Controller;
 
 import java.util.*;
 
 /**
  * 
  */
-public class Carte {
+public class CommandeInverse {
 
     /**
      * Default constructor
      */
-    public Carte() {
+    public CommandeInverse() {
     }
 
 }
