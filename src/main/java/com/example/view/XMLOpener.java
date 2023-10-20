@@ -1,4 +1,4 @@
-package view;
+package com.example.view;
 
 import java.io.File;
 import org.xml.sax.Attributes;

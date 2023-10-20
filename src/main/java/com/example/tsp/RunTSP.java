@@ -1,4 +1,4 @@
-package tsp;
+package com.example.tsp;
 
 public class RunTSP {
 	public static void main(String[] args) {

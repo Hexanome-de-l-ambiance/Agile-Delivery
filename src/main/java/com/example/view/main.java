@@ -1,4 +1,4 @@
-package view;
+package com.example.view;
 
 public class main {
 
