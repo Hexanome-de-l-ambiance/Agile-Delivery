@@ -1,4 +1,4 @@
-package tsp;
+package com.example.tsp;
 
 public interface TSP {
 	/**

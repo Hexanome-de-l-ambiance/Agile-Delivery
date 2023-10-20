@@ -1,4 +1,4 @@
-package tsp;
+package com.example.tsp;
 
 public class CompleteGraph implements Graph {
 	private static final int MAX_COST = 40;
