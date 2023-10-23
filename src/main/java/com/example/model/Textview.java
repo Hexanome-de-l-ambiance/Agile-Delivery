@@ -1,0 +1,13 @@
+package com.example.model;
+
+public class Textview {
+
+    public static void main(String[] args) {
+        XMLOpener opener = XMLOpener.getInstance();
+        try {
+            opener.ReadFile("data/xml/smallMap.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
