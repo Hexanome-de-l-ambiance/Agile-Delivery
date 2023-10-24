@@ -11,36 +11,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-public class HelloApplication extends Application {
-//    @Override
-//    public void start(Stage stage) throws IOException {
-//        StackPane root = new StackPane();
-//        Scene scene = new Scene(root, 640, 480);
-//
-//        // draw segment example on canvas
-//        Canvas canvas = new Canvas(640, 480);
-//        drawSegmentExample(canvas);
-//        root.getChildren().add(canvas);
-//
-//
-//        stage.setTitle("Hello world");
-//        stage.setScene(scene);
-//        stage.show();
-//    }
+public class Window extends Application {
 
-//    public static void drawSegmentExample(Canvas canvas)
-//    {
-//        GraphicsContext gc = canvas.getGraphicsContext2D();
-//
-//        gc.setStroke(javafx.scene.paint.Color.RED);
-//        gc.setLineWidth(2);
-//
-//        Intersection i1 = new Intersection(1L, 0, 0);
-//        Intersection i2 = new Intersection(2L, 100, 100);
-//        Segment segment = new Segment(i1, i2, 100, "rue de la paix");
-//
-//        gc.strokeLine(segment.getOrigin().getLatitude(), segment.getOrigin().getLongitude(), segment.getDestination().getLatitude(), segment.getDestination().getLongitude());
-//    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -84,7 +56,7 @@ public class HelloApplication extends Application {
         // 3. Afficher les intersections
         for (Intersection intersection : carte.getListeIntersections().values()) {
             double adjustedX = (intersection.getLongitude() - midLon) * scale + paneWidth / 2;
-            double adjustedY = -(intersection.getLatitude() - midLat) * scale + paneHeight / 2;  // negate Y to adjust for screen coordinates
+            double adjustedY = -(intersection.getLatitude() - midLat) * scale + paneHeight / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
             pane.getChildren().add(circle);
@@ -94,9 +66,9 @@ public class HelloApplication extends Application {
 
         for (Segment segment : carte.getListeSegments().values()) {
             double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + paneWidth / 2;
-            double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + paneHeight / 2;  // negate Y to adjust for screen coordinates
+            double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + paneHeight / 2;
             double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + paneWidth / 2;
-            double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + paneHeight / 2;  // negate Y to adjust for screen coordinates
+            double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + paneHeight / 2;
 
             Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
             pane.getChildren().add(line);
