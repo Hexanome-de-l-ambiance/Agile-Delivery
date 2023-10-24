@@ -3,6 +3,7 @@ package com.example.xml;
 import java.io.File;
 
 import com.example.model.Carte;
+import com.example.model.Intersection;
 import javafx.stage.Stage;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -24,11 +25,7 @@ public class XMLOpener{
 
     public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
-
-        if (file.length() == 0) {
-            throw new CustomXMLParsingException("Fichier vide");
-        }
-
+        carte.reset();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
@@ -37,6 +34,7 @@ public class XMLOpener{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        carte.readEnd();
     }
 
     private static class HandlerPlan extends DefaultHandler {
@@ -52,6 +50,7 @@ public class XMLOpener{
                 double latitude = Double.parseDouble(attributes.getValue("latitude"));
                 double longitude = Double.parseDouble(attributes.getValue("longitude"));
                 carte.addIntersection(id, latitude, longitude);
+                System.out.println();
             } else if ("segment".equals(qName)) {
                 Long destination = Long.valueOf(attributes.getValue("destination"));
                 double length = Double.parseDouble(attributes.getValue("length"));

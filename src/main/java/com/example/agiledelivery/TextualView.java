@@ -1,5 +1,8 @@
-package com.example.view;
+package com.example.agiledelivery;
 
+import com.example.model.Carte;
+import com.example.model.Intersection;
+import com.example.model.Segment;
 import com.example.model.Visitor;
 
 import java.beans.PropertyChangeListener;
@@ -25,5 +28,11 @@ public class TextualView implements Visitor {
 
     public void updateView(Object newValue) {
         support.firePropertyChange("update", null, newValue);
+    }
+
+
+    @Override
+    public void display(Carte carte) {
+
     }
 }

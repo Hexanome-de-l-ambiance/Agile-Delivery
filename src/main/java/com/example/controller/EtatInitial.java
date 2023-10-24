@@ -16,6 +16,7 @@ public class EtatInitial implements Etat {
             XMLOpener.getInstance().readFile(stage, carte);
             c.setEtatCourant(c.etatCarteChargee);
         } catch (CustomXMLParsingException e) {
+            carte.reset();
             throw new RuntimeException(e);
         }
     }
