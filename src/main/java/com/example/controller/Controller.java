@@ -26,6 +26,9 @@ public class Controller {
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
     }
+    public Carte getCarte(){
+        return carte;
+    }
     public Controller(Stage stage) {
         listeDeCommandes = new ListeDeCommandes();
         etatCourant = etatInitial;
