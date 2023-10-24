@@ -1,5 +1,6 @@
 package com.example.agiledelivery;
 
+import com.example.controller.Controller;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Segment;
@@ -16,15 +17,20 @@ public class Window extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Controller controller = new Controller(primaryStage);
+
         Pane pane = new Pane();
 
-        Carte carte = new Carte();  // Assuming you have a Carte class that can store intersections and segments.
+        // Carte carte = new Carte();  // Assuming you have a Carte class that can store intersections and segments.
 
         try{
-            XMLOpener.getInstance().readFile(primaryStage, carte);
+            // XMLOpener.getInstance().readFile(primaryStage, carte);
+            controller.load();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Carte carte = controller.getCarte();
 
         double minLat = Double.MAX_VALUE;
         double maxLat = Double.MIN_VALUE;
