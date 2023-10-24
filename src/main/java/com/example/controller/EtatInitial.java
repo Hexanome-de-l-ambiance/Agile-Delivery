@@ -14,7 +14,7 @@ public class EtatInitial implements Etat {
     public void loadMap(Controller c, Carte carte, ListeDeCommandes l, Stage stage){
         try{
             XMLOpener.getInstance().readFile(stage, carte);
-            // c.setEtatCourant(c.etatCarteChargee);
+            c.setEtatCourant(c.etatCarteChargee);
         } catch (CustomXMLParsingException e) {
             throw new RuntimeException(e);
         }
