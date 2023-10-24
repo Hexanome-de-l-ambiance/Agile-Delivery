@@ -3,17 +3,13 @@ package com.example.agiledelivery;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Segment;
-import com.example.model.XMLOpener;
+import com.example.xml.XMLOpener;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-
-import java.util.Map;
 
 public class HelloApplication extends Application {
 //    @Override
@@ -49,13 +45,14 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane pane = new Pane();
-        // pane.setPrefSize(1000, 5000);  // Width of 1000 and Height of 5000
-
 
         Carte carte = new Carte();  // Assuming you have a Carte class that can store intersections and segments.
-        XMLOpener xmlOpener = XMLOpener.getInstance();
-        xmlOpener.ReadFile(carte, "data/xml/largeMap.xml");
-        System.out.println("Number of Intersections: " + carte.getListeIntersections().size());
+
+        try{
+            XMLOpener.getInstance().readFile(primaryStage, carte);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         double minLat = Double.MAX_VALUE;
         double maxLat = Double.MIN_VALUE;
