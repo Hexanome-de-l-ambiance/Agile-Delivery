@@ -3,6 +3,7 @@ package com.example.xml;
 import java.io.File;
 
 import com.example.model.Carte;
+import javafx.stage.Stage;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -21,8 +22,8 @@ public class XMLOpener{
         return SingletonHelper.INSTANCE;
     }
 
-    public void ReadFile(Carte carte, String path) throws CustomXMLParsingException{
-        File file = new File(path);
+    public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
+        File file = XMLFilter.getInstance().open(stage, true);
 
         if (file.length() == 0) {
             throw new CustomXMLParsingException("Fichier vide");
@@ -32,7 +33,7 @@ public class XMLOpener{
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new HandlerPlan(carte);
-            saxParser.parse(new File(path), handler);
+            saxParser.parse(file, handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
