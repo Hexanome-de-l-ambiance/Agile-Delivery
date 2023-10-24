@@ -38,6 +38,18 @@ public class Carte extends PropertyChangeSupport {
         firePropertyChange("segmentAdded", null, newSegment);
     }
 
+    public HashMap<Long, Intersection> getListeIntersections() {
+        return listeIntersection;
+    }
+
+    public HashMap<Integer, Segment> getListeSegments() {
+        return listeSegments;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public void Info() {
         for (Map.Entry<Long, Intersection> entry : listeIntersection.entrySet()) {
             Long key = entry.getKey();
