@@ -3,7 +3,7 @@ package com.example.controller;
 /**
  * 
  */
-public class EtatCarteChargee {
+public class EtatCarteChargee implements Etat {
 
     /**
      * Default constructor

@@ -1,4 +1,10 @@
 package com.example.controller;
 
-public class EtatDemandeAjoutee {
+public class EtatDemandeAjoutee implements Etat {
+
+    /**
+    * Default constructor
+    */
+    public EtatDemandeAjoutee() {
+    }
 }
