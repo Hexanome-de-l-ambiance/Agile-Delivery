@@ -21,10 +21,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("reset".equals(evt.getPropertyName())) {
-            getChildren().clear();
-        } else if ("read".equals(evt.getPropertyName())){
-            display(carte);
+        String event = evt.getPropertyName();
+        switch (event) {
+            case Carte.RESET: getChildren().clear(); break;
+            case Carte.READ: display(carte); break;
         }
     }
 
