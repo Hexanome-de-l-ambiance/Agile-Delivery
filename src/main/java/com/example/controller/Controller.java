@@ -29,11 +29,11 @@ public class Controller {
     public Carte getCarte(){
         return carte;
     }
-    public Controller(Stage stage) {
+    public Controller(Carte carte, Stage stage) {
         listeDeCommandes = new ListeDeCommandes();
         etatCourant = etatInitial;
         this.stage = stage;
-        carte = new Carte();
+        this.carte = carte;
     }
 
     public void addDelivery() {
