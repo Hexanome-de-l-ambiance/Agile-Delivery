@@ -17,6 +17,7 @@ public class Intersection {
     public Intersection() {
     }
 
+
     public Intersection(Long id, double latitude, double longitude) {
         this.id = id;
         this.latitude = latitude;
@@ -46,4 +47,5 @@ public class Intersection {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
 }
