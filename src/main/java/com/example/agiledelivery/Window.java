@@ -11,26 +11,54 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+
 
 public class Window extends Application {
-
+    private Pane pane;
+    private Controller controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Controller controller = new Controller(primaryStage);
+        controller = new Controller(primaryStage);
+        pane = new Pane();
 
-        Pane pane = new Pane();
+        Button loadMapButton = new Button("Charger une carte");
+        pane.getChildren().add(loadMapButton);
+        loadMapButton.setOnAction(event -> {
+            try {
+               controller.load();
+               displayMap();
+               // pane.getChildren().remove(loadMapButton);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        // Carte carte = new Carte();  // Assuming you have a Carte class that can store intersections and segments.
+        });
 
-        try{
-            // XMLOpener.getInstance().readFile(primaryStage, carte);
-            controller.load();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
+
+        Pane root = new Pane();
+        root.getChildren().add(pane);
+        pane.layoutXProperty().bind(root.widthProperty().subtract(1200).divide(2));
+        pane.layoutYProperty().bind(root.heightProperty().subtract(900).divide(2));
+
+        Scene scene = new Scene(root, 1920, 1080);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public void displayMap() {
+        // pane.getChildren().clear();
 
         Carte carte = controller.getCarte();
+        if (carte == null) {
+            System.out.println("Carte null");
+            return;
+        }
+
+        carte = controller.getCarte();
 
         double minLat = Double.MAX_VALUE;
         double maxLat = Double.MIN_VALUE;
@@ -82,20 +110,9 @@ public class Window extends Application {
 
         pane.setPrefSize(paneWidth, paneHeight);
 
-        // Centrer le pane
-        Pane root = new Pane();
-        root.getChildren().add(pane);
-
-        pane.layoutXProperty().bind(root.widthProperty().subtract(paneWidth).divide(2));
-        pane.layoutYProperty().bind(root.heightProperty().subtract(paneHeight).divide(2));
-
-        Scene scene = new Scene(root, 1920, 1080);
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
-
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         launch(args);
 
     }
