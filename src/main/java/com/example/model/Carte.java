@@ -18,6 +18,8 @@ public class Carte {
     private ObservableMap<Long, Intersection> listeIntersection = FXCollections.observableHashMap();
     private ObservableMap<Integer, Segment> listeSegments = FXCollections.observableHashMap();
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
+    public static final String RESET = "reset";
+    public static final String READ = "read";
 
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
@@ -68,7 +70,7 @@ public class Carte {
         listeIntersection.clear();
         listeSegments.clear();
         idProperty.set(1);
-        firePropertyChange("reset", null, null);
+        firePropertyChange(RESET, null, null);
     }
 
     public void readEnd(){
@@ -84,7 +86,7 @@ public class Carte {
             maxLon = Math.max(maxLon, intersection.getLongitude());
         }
 
-        firePropertyChange("read", null, null);
+        firePropertyChange(READ, null, null);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
