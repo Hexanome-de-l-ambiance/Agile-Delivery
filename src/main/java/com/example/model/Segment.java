@@ -1,4 +1,4 @@
-package com.example.model;
+package model;
 
 import java.util.*;
 
@@ -10,28 +10,50 @@ public class Segment {
     /**
      * Default constructor
      */
+    private Intersection origin;
+    private Intersection destination;
+    private double length;
+    private String name;
     public Segment() {
     }
 
-    public Segment(double x1, double y1, double x2, double y2) {
-        this.start = new Intersection(x1, y1);
-        this.end = new Intersection(x2, y2);
+    public Segment(Intersection origin, Intersection destination, double length, String name) {
+        this.origin = origin;
+        this.destination = destination;
+        this.length = length;
+        this.name = name;
     }
 
-    public Segment(Intersection start, Intersection end) {
-        this.start = start;
-        this.end = end;
+    public Intersection getOrigin() {
+        return origin;
     }
 
-    private Intersection start;
-    private Intersection end;
-
-    public Intersection getStart() {
-        return start;
+    public void setOrigin(Intersection origin) {
+        this.origin = origin;
     }
 
-    public Intersection getEnd() {
-        return end;
+    public Intersection getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Intersection destination) {
+        this.destination = destination;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
