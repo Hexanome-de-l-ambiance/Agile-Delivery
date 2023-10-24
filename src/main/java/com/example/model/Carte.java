@@ -1,4 +1,4 @@
-package model;
+package com.example.model;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;
@@ -36,6 +36,18 @@ public class Carte extends PropertyChangeSupport {
         this.id++;
 
         firePropertyChange("segmentAdded", null, newSegment);
+    }
+
+    public HashMap<Long, Intersection> getListeIntersections() {
+        return listeIntersection;
+    }
+
+    public HashMap<Integer, Segment> getListeSegments() {
+        return listeSegments;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void Info() {

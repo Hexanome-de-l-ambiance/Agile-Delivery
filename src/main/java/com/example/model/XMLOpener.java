@@ -1,4 +1,4 @@
-package model;
+package com.example.model;
 
 import java.io.File;
 import org.xml.sax.Attributes;
