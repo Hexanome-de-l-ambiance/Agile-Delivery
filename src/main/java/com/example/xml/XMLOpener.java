@@ -50,7 +50,6 @@ public class XMLOpener{
                 double latitude = Double.parseDouble(attributes.getValue("latitude"));
                 double longitude = Double.parseDouble(attributes.getValue("longitude"));
                 carte.addIntersection(id, latitude, longitude);
-                System.out.println();
             } else if ("segment".equals(qName)) {
                 Long destination = Long.valueOf(attributes.getValue("destination"));
                 double length = Double.parseDouble(attributes.getValue("length"));
