@@ -1,5 +1,6 @@
 package com.example.xml;
 
+import com.example.model.Carte;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -15,6 +16,7 @@ public class XMLOpenerTest {
     File tempDirectory;
 
     private XMLOpener xmlOpener;
+    private Carte carte;
 
     @BeforeEach
     public void setUp() {
@@ -38,7 +40,7 @@ public class XMLOpenerTest {
             e.printStackTrace();
         }
 
-        assertDoesNotThrow(() -> xmlOpener.readFile(testFile.getAbsolutePath()), "Il ne doit pas lancer d'exception pour un XML valide");
+        assertDoesNotThrow(() -> xmlOpener.ReadFile(carte, testFile.getAbsolutePath()), "Il ne doit pas lancer d'exception pour un XML valide");
     }
 
     @Test
@@ -51,13 +53,13 @@ public class XMLOpenerTest {
             e.printStackTrace();
         }
 
-        assertThrows(Exception.class, () -> xmlOpener.readFile(testFile.getAbsolutePath()), "Il doit lancer une exception pour un XML invalide");
+        assertThrows(Exception.class, () -> xmlOpener.ReadFile(carte, testFile.getAbsolutePath()), "Il doit lancer une exception pour un XML invalide");
     }
 
     @Test
     public void readNonExistentFileTest() {
         String fakeFilePath = "path/to/nonexistent/file.xml";
-        assertThrows(Exception.class, () -> xmlOpener.readFile(fakeFilePath), "Il doit lancer une exception pour un fichier inexistant");
+        assertThrows(Exception.class, () -> xmlOpener.ReadFile(carte, fakeFilePath), "Il doit lancer une exception pour un fichier inexistant");
     }
 
     @Test
@@ -69,7 +71,7 @@ public class XMLOpenerTest {
             e.printStackTrace();
         }
 
-        assertThrows(Exception.class, () -> xmlOpener.readFile(testFile.getAbsolutePath()), "Il doit lancer une exception pour un fichier vide");
+        assertThrows(Exception.class, () -> xmlOpener.ReadFile(carte, testFile.getAbsolutePath()), "Il doit lancer une exception pour un fichier vide");
     }
 
     @Test

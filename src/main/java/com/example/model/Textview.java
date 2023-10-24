@@ -1,4 +1,6 @@
-package model;
+package com.example.model;
+
+import com.example.xml.XMLOpener;
 
 public class Textview {
 

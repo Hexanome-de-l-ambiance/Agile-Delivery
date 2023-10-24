@@ -37,7 +37,7 @@ public class HelloApplication extends Application {
 
         Segment segment = new Segment(100, 100, 200, 200);
 
-        gc.strokeLine(segment.getStart().getX(), segment.getStart().getY(), segment.getEnd().getX(), segment.getEnd().getY());
+        gc.strokeLine(segment.getOrigin().getLatitude(), segment.getOrigin().getLongitude(), segment.getDestination().getLatitude(), segment.getDestination().getLongitude());
     }
 
     public static void main(String[] args) {
