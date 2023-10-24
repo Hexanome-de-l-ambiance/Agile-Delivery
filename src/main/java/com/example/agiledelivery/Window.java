@@ -12,45 +12,55 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 
 
 public class Window extends Application {
-    private Pane pane;
+    private Pane leftPane;
+    private Pane rightPane;
     private Controller controller;
+    private Button loadMapButton;
+    private final int PREFWIDTH = 1920;
+    private final int PREFHEIGHT = 1080;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         controller = new Controller(primaryStage);
-        pane = new Pane();
 
-        Button loadMapButton = new Button("Charger une carte");
-        pane.getChildren().add(loadMapButton);
-        loadMapButton.setOnAction(event -> {
-            try {
-               controller.load();
-               displayMap();
-               // pane.getChildren().remove(loadMapButton);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        leftPane = new Pane();
+        rightPane = new Pane();
 
-        });
+        initializeButtons();
+
+        HBox mainLayout = new HBox();
+        mainLayout.getChildren().addAll(leftPane, rightPane);
+
+        leftPane.setPrefWidth(0.2 * PREFWIDTH);
+        rightPane.setPrefWidth(0.8 * PREFWIDTH);
 
 
 
-
-        Pane root = new Pane();
-        root.getChildren().add(pane);
-        pane.layoutXProperty().bind(root.widthProperty().subtract(1200).divide(2));
-        pane.layoutYProperty().bind(root.heightProperty().subtract(900).divide(2));
-
-        Scene scene = new Scene(root, 1920, 1080);
+        Scene scene = new Scene(mainLayout, PREFWIDTH, PREFHEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
+    public void initializeButtons() {
+        loadMapButton = new Button("Charger une carte");
+        loadMapButton.setOnAction(event -> {
+            try {
+                controller.load();
+                displayMap();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        leftPane.getChildren().add(loadMapButton); // Add the button to the left pane
+    }
+
     public void displayMap() {
-        // pane.getChildren().clear();
+        rightPane.getChildren().clear();
 
         Carte carte = controller.getCarte();
         if (carte == null) {
@@ -93,11 +103,10 @@ public class Window extends Application {
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + paneHeight / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
-            pane.getChildren().add(circle);
+            rightPane.getChildren().add(circle); // Add to right pane
         }
 
         // 4. Afficher les segments
-
         for (Segment segment : carte.getListeSegments().values()) {
             double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + paneWidth / 2;
             double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + paneHeight / 2;
@@ -105,11 +114,8 @@ public class Window extends Application {
             double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + paneHeight / 2;
 
             Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
-            pane.getChildren().add(line);
+            rightPane.getChildren().add(line); // Add to right pane
         }
-
-        pane.setPrefSize(paneWidth, paneHeight);
-
     }
 
     public static void main(String[] args) {
