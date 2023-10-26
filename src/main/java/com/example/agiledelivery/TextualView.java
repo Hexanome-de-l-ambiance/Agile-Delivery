@@ -1,38 +1,71 @@
 package com.example.agiledelivery;
 
 import com.example.model.Carte;
-import com.example.model.Intersection;
-import com.example.model.Segment;
+
 import com.example.model.Visitor;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
-public class TextualView implements Visitor {
+public class TextualView extends Pane implements PropertyChangeListener, Visitor {
 
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-    /**
-     * Default constructor
-     */
-    public TextualView() {
+    private Carte carte;
+    private TextFlow textFlow = new TextFlow();
+    private Text messageText;
+    private String content = "Welcome!";
+    public TextualView(Carte carte) {
+        this.setPrefWidth(Window.leftPaneScale * Window.PREFWIDTH);
+        this.setPrefHeight(Window.PREFHEIGHT);
+        this.carte = carte;
+        messageText = new Text(content);
+        messageText.setStyle("-fx-font-size: 24;");
+        textFlow.setPrefWidth(this.getPrefWidth());
+        textFlow.setLayoutX(0);
+        textFlow.setLayoutY((this.getPrefWidth() - textFlow.prefHeight(-1)) / 2);
+        textFlow.getChildren().add(messageText);
+        this.getChildren().add(textFlow);
+        carte.addPropertyChangeListener(this);
     }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String event = evt.getPropertyName();
+        switch (event) {
+            case Carte.RESET: textFlow.getChildren().clear(); content = "Reset"; break;
+            case Carte.READ: {
+                textFlow.getChildren().clear();
+                Text path = new Text((String) evt.getNewValue() + "\n");
+                path.setStyle("-fx-font-size: 24;");
+                textFlow.getChildren().add(path);
+                display(carte);
+                content = "Load success";
+                break;
+            }
+            case Carte.ERROR: showAlert((String) evt.getNewValue()); return;
+        }
+        messageText = new Text(content);
+        messageText.setStyle("-fx-font-size: 24;");
+        textFlow.getChildren().add(messageText);
     }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
-
-    public void updateView(Object newValue) {
-        support.firePropertyChange("update", null, newValue);
-    }
-
 
     @Override
     public void display(Carte carte) {
+        Text segment = new Text("Nb segments: " + carte.getListeSegments().size() + "\n");
+        segment.setStyle("-fx-font-size: 24;");
+        textFlow.getChildren().add(segment);
+        Text intersection = new Text("Nb segments: " + carte.getListeIntersections().size() + "\n");
+        intersection.setStyle("-fx-font-size: 24;");
+        textFlow.getChildren().add(intersection);
+    }
 
+    private void showAlert(String alert){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error Dialog");
+        errorAlert.setHeaderText("An error occurred");
+        errorAlert.setContentText(alert);
+        errorAlert.showAndWait();
     }
 }

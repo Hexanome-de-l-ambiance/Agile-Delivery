@@ -1,10 +1,8 @@
 package com.example.model;
 
-import com.example.agiledelivery.GraphicalView;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -20,7 +18,7 @@ public class Carte {
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     public static final String RESET = "reset";
     public static final String READ = "read";
-
+    public static final String ERROR = "error";
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
         listeIntersection.put(id, newIntersection);
@@ -73,7 +71,7 @@ public class Carte {
         firePropertyChange(RESET, null, null);
     }
 
-    public void readEnd(){
+    public void readEnd(String path){
         minLat = Double.MAX_VALUE;
         maxLat = Double.MIN_VALUE;
         minLon = Double.MAX_VALUE;
@@ -86,7 +84,11 @@ public class Carte {
             maxLon = Math.max(maxLon, intersection.getLongitude());
         }
 
-        firePropertyChange(READ, null, null);
+        firePropertyChange(READ, null, path);
+    }
+
+    public void sendException(Exception e){
+        firePropertyChange(ERROR, null, e.getMessage());
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
