@@ -4,7 +4,6 @@ import com.example.controller.Controller;
 import com.example.model.Carte;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -17,6 +16,8 @@ public class Window extends Application {
     private GraphicalView rightPane;
     private Button loadMapButton;
     private ButtonListener buttonListener;
+    private MouseListener mouseListener;
+
     protected static final int PREFWIDTH = 1600;
     protected static final int PREFHEIGHT = 800;
     protected static final double leftPaneScale = 0.2;
@@ -36,10 +37,10 @@ public class Window extends Application {
         rightPane = new GraphicalView(carte);
 
         initializeButtons(controller);
-
+        mouseListener = new MouseListener(rightPane, controller);
         HBox mainLayout = new HBox();
         mainLayout.getChildren().addAll(leftPane, rightPane);
-
+        leftPane.toFront();
         Scene scene = new Scene(mainLayout, PREFWIDTH, PREFHEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
