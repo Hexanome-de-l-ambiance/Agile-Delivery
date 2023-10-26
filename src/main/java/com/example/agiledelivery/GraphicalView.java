@@ -17,12 +17,12 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private Carte carte;
     private Pane graph;
     public GraphicalView(Carte carte) {
-        this.setPrefWidth(Window.rightPaneScale * Window.PREFWIDTH);
+        this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
         this.setPrefHeight(Window.PREFHEIGHT);
 
         this.carte = carte;
         graph = new Pane();
-        graph.setPrefWidth(Window.rightPaneScale * Window.PREFWIDTH);
+        graph.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
         graph.setPrefHeight(Window.PREFHEIGHT);
         graph.setLayoutX(0);
         graph.setLayoutY(0);
