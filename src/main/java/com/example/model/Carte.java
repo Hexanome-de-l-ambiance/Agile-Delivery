@@ -22,7 +22,7 @@ public class Carte {
     private ObservableMap<Pair<Long, Long>, Segment> listeSegments = FXCollections.observableHashMap();
     private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence = new HashMap<>();
 
-    private Entrepot entrepot;
+    private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     public static final String RESET = "reset";
     public static final String READ = "read";
@@ -43,21 +43,6 @@ public class Carte {
         }
     }
 
-    public double[][] constructCompleteGraph(ArrayList<Intersection> intersections)
-    {
-        double[][] completeGraph = new double[intersections.size()][intersections.size()];
-        for (int i = 0; i < intersections.size(); i++) {
-            for (int j = 0; j < intersections.size(); j++) {
-                if (i == j) {
-                    completeGraph[i][j] = -1;
-                } else {
-                    completeGraph[i][j] = Astar.calculDistance(this, intersections.get(i), intersections.get(j));
-                }
-            }
-        }
-        return completeGraph;
-    }
-
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
         listeIntersection.put(id, newIntersection);
@@ -71,9 +56,10 @@ public class Carte {
         idProperty.set(idProperty.get() + 1);
     }
 
-    public void setEntrepot(Intersection entrepot) {
-        this.entrepot = new Entrepot(entrepot);
+    public void setEntrepot(Long id) {
+        this.entrepotId = id;
     }
+    public Long getEntrepot() { return entrepotId; }
 
     public ObservableMap<Long, Intersection> getListeIntersections() {
         return listeIntersection;
