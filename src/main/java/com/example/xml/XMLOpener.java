@@ -31,10 +31,29 @@ public class XMLOpener{
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new HandlerPlan(carte);
             saxParser.parse(file, handler);
+            carte.initAdjacenceList();
         } catch (Exception e) {
             e.printStackTrace();
         }
         carte.readEnd();
+    }
+
+    public void readFile(Carte carte, String path) throws CustomXMLParsingException {
+        File file = new File(path);
+
+        if (file.length() == 0) {
+            throw new CustomXMLParsingException("Fichier vide");
+        }
+
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+            DefaultHandler handler = new HandlerPlan(carte);
+            saxParser.parse(file, handler);
+            carte.initAdjacenceList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static class HandlerPlan extends DefaultHandler {
@@ -56,6 +75,9 @@ public class XMLOpener{
                 String name = attributes.getValue("name");
                 Long origin = Long.valueOf(attributes.getValue("origin"));
                 carte.addSegment(origin, destination, length, name);
+            } else if("warehouse".equals(qName)){
+                Long id = Long.valueOf(attributes.getValue("address"));
+                carte.setEntrepot(id);
             }
         }
     }
