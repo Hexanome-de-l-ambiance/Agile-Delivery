@@ -4,7 +4,6 @@ import com.example.controller.Controller;
 import com.example.model.Carte;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;

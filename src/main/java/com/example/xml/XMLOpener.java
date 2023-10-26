@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.example.model.Carte;
-import com.example.model.Intersection;
 import javafx.stage.Stage;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
