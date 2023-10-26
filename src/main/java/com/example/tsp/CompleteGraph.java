@@ -19,8 +19,6 @@ public class CompleteGraph implements Graph{
 	 * @param intersections the list of intersections
 	 */
 	public CompleteGraph(Carte carte, ArrayList<Intersection> intersections) {
-		Intersection entrepot = carte.getListeIntersections().get(carte.getEntrepot());
-		intersections.add(0, entrepot);
 		this.nbVertices = intersections.size();
 		this.cost = new double[nbVertices][nbVertices];
 		this.indexToId = new HashMap<>();

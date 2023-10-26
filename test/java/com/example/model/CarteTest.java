@@ -162,26 +162,29 @@ public class CarteTest {
     }
 
     @Test
-    public void creerTourneePetiteCarte()
+    public void creerTourneeGrandeCarte()
     {
         ArrayList<Intersection> intersections = new ArrayList<>();
-        intersections.add(petiteCarte.getListeIntersections().get(25175791L));
-        intersections.add(petiteCarte.getListeIntersections().get(2129259178L));
-        intersections.add(petiteCarte.getListeIntersections().get(26086130L));
-        intersections.add(petiteCarte.getListeIntersections().get(26086123L));
-        intersections.add(petiteCarte.getListeIntersections().get(565375197L));
-        intersections.add(petiteCarte.getListeIntersections().get(55475025L));
-        intersections.add(petiteCarte.getListeIntersections().get(2117622721L));
-        intersections.add(petiteCarte.getListeIntersections().get(342867241L));
-        intersections.add(petiteCarte.getListeIntersections().get(26317246L));
-        intersections.add(petiteCarte.getListeIntersections().get(1423439485L));
+        intersections.add(grandeCarte.getListeIntersections().get(2129259178L));
+        intersections.add(grandeCarte.getListeIntersections().get(25175791L));
+        intersections.add(grandeCarte.getListeIntersections().get(26086130L));
+        intersections.add(grandeCarte.getListeIntersections().get(26086123L));
+        intersections.add(grandeCarte.getListeIntersections().get(565375197L));
+        intersections.add(grandeCarte.getListeIntersections().get(55475025L));
+        intersections.add(grandeCarte.getListeIntersections().get(2117622721L));
+        intersections.add(grandeCarte.getListeIntersections().get(342867241L));
+        intersections.add(grandeCarte.getListeIntersections().get(26317246L));
+        intersections.add(grandeCarte.getListeIntersections().get(1423439485L));
+        intersections.add(grandeCarte.getListeIntersections().get(26731885L));
+        intersections.add(grandeCarte.getListeIntersections().get(26086117L));
+        intersections.add(grandeCarte.getListeIntersections().get(26731890L));
 
         Tournee tournee = new Tournee();
         long tempsDebut = System.currentTimeMillis();
-        tournee.calculerTournee(petiteCarte, intersections);
+        tournee.calculerTournee(grandeCarte, intersections);
         System.out.println("Temps pour calculer la tournée: " + (System.currentTimeMillis() - tempsDebut) + "ms");
-        tournee.printTournee();
-        System.out.println("Longueur totale " + tournee.getLongueurTotale());
+        //tournee.printTournee();
+        //System.out.println("Longueur totale " + tournee.getLongueurTotale());
     }
 
     private void printCarte(Carte carte)
