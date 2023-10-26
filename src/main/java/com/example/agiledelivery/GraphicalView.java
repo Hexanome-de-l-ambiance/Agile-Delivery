@@ -16,6 +16,8 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private Carte carte;
 
     public GraphicalView(Carte carte) {
+        this.setPrefWidth(Window.rightPaneScale * Window.PREFWIDTH);
+        this.setPrefHeight(Window.PREFHEIGHT);
         this.carte = carte;
         carte.addPropertyChangeListener(this);
     }
@@ -45,7 +47,6 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double scaleY = this.getHeight() / rangeLat;
         double scale = Math.min(scaleX, scaleY);
 
-        // 3. Afficher les intersections
         for (Intersection intersection : carte.getListeIntersections().values()) {
             double adjustedX = (intersection.getLongitude() - midLon) * scale + this.getWidth() / 2;
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + this.getHeight() / 2;
@@ -54,7 +55,6 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             this.getChildren().add(circle); // Add to right pane
         }
 
-        // 4. Afficher les segments
         for (Segment segment : carte.getListeSegments().values()) {
             double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + this.getWidth() / 2;
             double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + this.getHeight() / 2;
