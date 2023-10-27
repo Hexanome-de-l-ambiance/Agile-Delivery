@@ -8,19 +8,18 @@ import java.util.*;
 public class Livraison {
 
     /**
-     * Default constructor
+     *
      */
-    public Livraison() {
-    }
-
+    private Intersection destination;
     /**
-     * 
+     *
      */
     private int heureDebut;
 
     /**
-     * 
+     * Default constructor
      */
-    private Intersection destination;
+    public Livraison() {
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.Intersection;
 import com.example.model.Livraison;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;
@@ -25,7 +26,7 @@ public class EtatDemandeAjoutee implements Etat {
     public void sauvegarderCarte(Controller c){
     }
 
-    public void CalculerTournee(Controller c, ArrayList<Livraison> livraisons){
+    public void CalculerTournee(Controller c, ArrayList<Intersection> livraisons){
 
     }
 }

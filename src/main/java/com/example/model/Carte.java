@@ -147,13 +147,4 @@ public class Carte {
     private void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         support.firePropertyChange(propertyName, oldValue, newValue);
     }
-
-
-    ArrayList<Livraison> livraisons = new ArrayList<Livraison>();
-    public void addLivraison(Livraison livraison, Tournee tournee) {
-        livraisons.add(livraison);
-    }
-
-    public void removeLivraison(Livraison livraison, Tournee tournee) {
-    }
 }

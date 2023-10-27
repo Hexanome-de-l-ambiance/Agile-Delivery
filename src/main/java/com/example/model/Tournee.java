@@ -32,6 +32,9 @@ public class Tournee{
         livraisons.add(livraison);
     }
 
+    public void removeLivraison(Intersection livraison) {livraisons.remove(livraison);}
+
+    public ArrayList<Intersection> getLivraisons(){return livraisons;}
     public LinkedList<Chemin> getListeChemins() {
         return listeChemins;
     }
