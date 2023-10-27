@@ -65,6 +65,10 @@ public class XMLOpener{
         }
     }
 
+    public void writeFile(Carte carte) throws CustomXMLParsingException {
+
+    }
+
     private static class HandlerPlan extends DefaultHandler {
         private Carte carte;
         public HandlerPlan(Carte carte){

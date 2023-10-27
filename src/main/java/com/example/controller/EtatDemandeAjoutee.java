@@ -27,6 +27,5 @@ public class EtatDemandeAjoutee implements Etat {
     }
 
     public void CalculerTournee(Controller c, ArrayList<Intersection> livraisons){
-
     }
 }
