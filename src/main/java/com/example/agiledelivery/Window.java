@@ -23,7 +23,9 @@ public class Window extends Application {
     protected static final double graphicalViewScale = 0.8;
     protected final int buttonHeight = 100;
     protected static final String LOAD_PLAN = "Charger un plan";
-    private final String[] buttonTexts = new String[]{LOAD_PLAN};
+
+    protected static final String ADD_DESTINATION = "Ajouter une destination";
+    private final String[] buttonTexts = new String[]{LOAD_PLAN, ADD_DESTINATION};
     private ArrayList<Button> buttons;
 
 
