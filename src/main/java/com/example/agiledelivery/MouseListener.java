@@ -47,7 +47,16 @@ public class MouseListener implements EventHandler<ActionEvent> {
 
         graphicalView.setOnScroll((ScrollEvent event) -> {
             double deltaY = event.getDeltaY();
-            double scaleFactor = 1.1;
+            double scaleFactor = 1.05;
+
+            double minScale = 0.1;
+            double maxScale = 5.0;
+            if (deltaY < 0 && graph.getScaleX() < minScale) {
+                return;
+            }
+            if (deltaY > 0 && graph.getScaleX() > maxScale) {
+                return;
+            }
 
             if (deltaY < 0) {
                 graph.setScaleX(graph.getScaleX() / scaleFactor);
