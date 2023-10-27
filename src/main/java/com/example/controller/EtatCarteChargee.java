@@ -27,7 +27,8 @@ public class EtatCarteChargee implements Etat {
     }
 
     public void addIntersection(Controller c, Intersection intersection){
-        c.setEtatCourant(c.etatDemandeAjoutee);
+        c.setEtatCourant(c.etatAjoutDestination);
+        c.etatAjoutDestination.addIntersection(c, intersection);
     }
 
     /**

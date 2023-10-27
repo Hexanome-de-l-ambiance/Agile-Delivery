@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
 import com.example.xml.XMLOpener;
@@ -15,17 +16,13 @@ public class EtatDemandeAjoutee implements Etat {
     public EtatDemandeAjoutee() {
     }
 
-    public void undo(Controller controller, ListeDeCommandes listeDeCommandes, Stage stage){
 
+    public void addIntersection(Controller c, Intersection intersection){
+        c.setEtatCourant(c.etatAjoutDestination);
+        c.etatAjoutDestination.addIntersection(c, intersection);
     }
 
-    public void creerUneDemande(Controller c) {
-
-    }
-
-    public void sauvegarderCarte(Controller c){
-    }
-
-    public void CalculerTournee(Controller c, ArrayList<Intersection> livraisons){
+    public void calculerLivraisons(Controller c, Carte carte){
+        carte.calculerTournees();
     }
 }

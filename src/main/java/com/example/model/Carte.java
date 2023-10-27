@@ -30,10 +30,14 @@ public class Carte {
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     public static final String RESET = "reset";
     public static final String READ = "read";
-
     public static final String UPDATE = "update";
+    public static final String ERROR = "error";
 
-
+    public Carte(int nombreCoursier){
+        for(int i = 1; i <= nombreCoursier; i++){
+            listeTournees.put(i, new Tournee());
+        }
+    }
     public void initAdjacenceList() {
 
         listeAdjacence = new HashMap<>();
@@ -52,7 +56,6 @@ public class Carte {
     }
 
 
-    public static final String ERROR = "error";
 
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
@@ -127,10 +130,24 @@ public class Carte {
 
         firePropertyChange(READ, null, path);
     }
+    public void addLivraison (int numeroCouriser, Intersection livraison) {
+        listeTournees.get(numeroCouriser).addLivraison(livraison);
+    }
 
+    public void removeLivraison (int numeroCouriser, Intersection livraison) {
+        listeTournees.get(numeroCouriser).removeLivraison(livraison);
+    }
     public void addTournee (int coursier, Tournee tournee) {
         listeTournees.put(coursier, tournee);
         firePropertyChange(UPDATE, null, listeTournees);
+    }
+    public void calculerTournees() {
+        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+            entry.getValue().calculerTournee(this);
+        }
+    }
+    public ObservableMap<Integer, Tournee> getListeTournees() {
+        return listeTournees;
     }
 
     public void sendException(Exception e){

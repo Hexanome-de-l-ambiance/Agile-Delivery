@@ -18,6 +18,7 @@ public class Controller {
     private ListeDeCommandes listeDeCommandes;
     protected final EtatInitial etatInitial = new EtatInitial();
     protected final EtatCarteChargee etatCarteChargee = new EtatCarteChargee();
+    protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
     protected final EtatDemandeAjoutee etatDemandeAjoutee = new EtatDemandeAjoutee();
 
@@ -36,7 +37,7 @@ public class Controller {
     }
 
     public void addDelivery() {
-        etatCourant.addDelivery(this, stage);
+        etatCourant.addDelivery(listeDeCommandes, 1, this, carte);
     }
 
     public void deleteDelivery() {
@@ -44,7 +45,7 @@ public class Controller {
     }
 
     public void calculateDelivery() {
-        etatCourant.calculateDelivery(this, stage);
+        etatCourant.calculerLivraisons(this, carte);
     }
 
     public void undo() {
