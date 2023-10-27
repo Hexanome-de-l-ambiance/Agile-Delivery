@@ -12,5 +12,8 @@ public class Entrepot extends Intersection {
      */
     public Entrepot() {
     }
+    public Entrepot(Intersection intersection){
+        super(intersection.getId(), intersection.getLatitude(), intersection.getLongitude());
+    }
 
 }

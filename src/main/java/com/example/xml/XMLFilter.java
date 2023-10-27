@@ -29,6 +29,9 @@ public class XMLFilter {
             selectedFile = fileChooser.showSaveDialog(stage);
         }
 
+        if (selectedFile == null) {
+            throw new CustomXMLParsingException("Problem when opening file");
+        }
         return selectedFile;
     }
 }

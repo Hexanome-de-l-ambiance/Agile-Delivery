@@ -3,7 +3,7 @@ package com.example.controller;
 /**
  * 
  */
-public class CommandeLireTournee {
+public class CommandeLireTournee implements Commande{
 
     /**
      * Default constructor
@@ -11,4 +11,13 @@ public class CommandeLireTournee {
     public CommandeLireTournee() {
     }
 
+    @Override
+    public void execute() {
+
+    }
+
+    @Override
+    public void undo() {
+
+    }
 }

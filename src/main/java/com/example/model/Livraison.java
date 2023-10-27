@@ -6,21 +6,30 @@ import java.util.*;
  * 
  */
 public class Livraison {
+    /**
+     *
+     */
+    private Intersection destination;
+    /**
+     *
+     */
+    private int heureDebut;
+
 
     /**
      * Default constructor
      */
-    public Livraison() {
+    public Livraison(Intersection destination, int heureDebut) {
+        this.destination = destination;
+        this.heureDebut = heureDebut;
     }
 
-    /**
-     * 
-     */
-    private int heureDebut;
 
-    /**
-     * 
-     */
-    private Intersection destination;
+    public int getHeureDebut() {
+        return heureDebut;
+    }
 
+    public Intersection getDestination() {
+        return destination;
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.model;
 
+import java.util.*;
+import com.example.model.Intersection;
+
 /**
  * 
  */
@@ -12,12 +15,19 @@ public class Segment {
     private Intersection destination;
     private double length;
     private String name;
+    public Segment() {
+    }
 
     public Segment(Intersection origin, Intersection destination, double length, String name) {
         this.origin = origin;
         this.destination = destination;
         this.length = length;
         this.name = name;
+    }
+
+    public Segment(double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude) {
+        this.origin = new Intersection(null, originLatitude, originLongitude);
+        this.destination = new Intersection(null, destinationLatitude, destinationLongitude);
     }
 
     public Intersection getOrigin() {
