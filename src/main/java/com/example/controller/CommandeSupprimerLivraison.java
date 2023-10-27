@@ -1,4 +1,5 @@
 package com.example.controller;
+import com.example.model.*;
 
 import com.example.model.Carte;
 import com.example.model.Intersection;
@@ -15,13 +16,12 @@ public class CommandeSupprimerLivraison implements Commande{
     private Tournee tournee;
 
     private Carte carte;
-    /**
-     * Default constructor
-     */
+
     public CommandeSupprimerLivraison(Intersection livraison, Tournee tournee, Carte carte) {
         this.livraison = livraison;
         this.tournee = tournee;
         this.carte = carte;
+
     }
 
     @Override

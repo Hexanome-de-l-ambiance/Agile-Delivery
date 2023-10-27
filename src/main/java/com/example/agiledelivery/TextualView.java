@@ -2,6 +2,7 @@ package com.example.agiledelivery;
 
 import com.example.model.Carte;
 
+import com.example.model.Tournee;
 import com.example.model.Visitor;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
@@ -26,7 +27,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         messageText.setStyle("-fx-font-size: 24;");
         textFlow.setPrefWidth(this.getPrefWidth());
         textFlow.setLayoutX(0);
-        textFlow.setLayoutY((this.getPrefWidth() - textFlow.prefHeight(-1)) / 2);
+        textFlow.setLayoutY((this.getPrefWidth() - textFlow.prefHeight(-1)) / 5*4);
         textFlow.getChildren().add(messageText);
         this.getChildren().add(textFlow);
         carte.addPropertyChangeListener(this);
@@ -60,6 +61,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         Text intersection = new Text("Nb segments: " + carte.getListeIntersections().size() + "\n");
         intersection.setStyle("-fx-font-size: 24;");
         textFlow.getChildren().add(intersection);
+    }
+
+    @Override
+    public void display(Tournee tournee)
+    {
+
     }
 
     private void showAlert(String alert){

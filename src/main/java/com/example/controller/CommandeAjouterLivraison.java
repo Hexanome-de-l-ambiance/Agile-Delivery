@@ -10,18 +10,21 @@ import com.example.model.Tournee;
  */
 public class CommandeAjouterLivraison implements Commande{
 
-    private Intersection livraison;
+
+
+    private Livraison livraison;
     private Tournee tournee;
 
     private Carte carte;
     /**
      * Default constructor
      */
-    public CommandeAjouterLivraison(Intersection livraison, Tournee tournee, Carte carte) {
+    public CommandeAjouterLivraison(Livraison livraison, Tournee tournee, Carte carte) {
         this.livraison = livraison;
         this.tournee = tournee;
         this.carte = carte;
     }
+
 
     @Override
     public void execute() {

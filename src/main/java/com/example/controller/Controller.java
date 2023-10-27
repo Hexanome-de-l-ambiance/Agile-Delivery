@@ -18,9 +18,7 @@ public class Controller {
     private ListeDeCommandes listeDeCommandes;
     protected final EtatInitial etatInitial = new EtatInitial();
     protected final EtatCarteChargee etatCarteChargee = new EtatCarteChargee();
-
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
-
     protected final EtatDemandeAjoutee etatDemandeAjoutee = new EtatDemandeAjoutee();
 
     protected void setEtatCourant(Etat etat){
@@ -31,6 +29,10 @@ public class Controller {
         etatCourant = etatInitial;
         this.stage = stage;
         this.carte = carte;
+    }
+
+    public void addDestination(Intersection intersection) {
+        etatCourant.addIntersection(this, intersection);
     }
 
     public void addDelivery() {
