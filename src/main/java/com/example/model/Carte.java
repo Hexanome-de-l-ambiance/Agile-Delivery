@@ -2,6 +2,7 @@ package com.example.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableMap;
 import javafx.util.Pair;
 
@@ -21,6 +22,8 @@ public class Carte {
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
     private ObservableMap<Long, Intersection> listeIntersection = FXCollections.observableHashMap();
     private ObservableMap<Pair<Long, Long>, Segment> listeSegments = FXCollections.observableHashMap();
+
+    private ObservableMap<Integer, Tournee> listeTournees = FXCollections.observableHashMap();
     private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence = new HashMap<>();
 
     private Long entrepotId;
@@ -28,8 +31,11 @@ public class Carte {
     public static final String RESET = "reset";
     public static final String READ = "read";
 
+    public static final String UPDATE = "update";
+
 
     public void initAdjacenceList() {
+
         listeAdjacence = new HashMap<>();
         for (Map.Entry<Pair<Long, Long>, Segment> entry : listeSegments.entrySet()) {
             Segment segment = entry.getValue();
@@ -120,6 +126,11 @@ public class Carte {
         }
 
         firePropertyChange(READ, null, path);
+    }
+
+    public void addTournee (int coursier, Tournee tournee) {
+    	listeTournees.put(coursier, tournee);
+        firePropertyChange(UPDATE, null, listeTournees);
     }
 
     public void sendException(Exception e){

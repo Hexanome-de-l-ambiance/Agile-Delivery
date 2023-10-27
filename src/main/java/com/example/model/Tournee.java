@@ -11,9 +11,10 @@ import java.util.*;
 /**
  * 
  */
-public class Tournee {
+public class Tournee{
 
     private LinkedList<Chemin> listeChemins;
+    private ArrayList<Intersection> livraisons;
 
     private int coursier;
 
@@ -24,9 +25,18 @@ public class Tournee {
      */
     public Tournee() {
         listeChemins = new LinkedList<>();
+        livraisons = new ArrayList<>();
     }
 
-    public void calculerTournee(Carte carte, ArrayList<Intersection> livraisons) {
+    public void addLivraison(Intersection livraison) {
+        livraisons.add(livraison);
+    }
+
+    public LinkedList<Chemin> getListeChemins() {
+        return listeChemins;
+    }
+
+    public void calculerTournee(Carte carte) {
         Intersection entrepot = carte.getListeIntersections().get(carte.getEntrepot());
         livraisons.add(0, entrepot);
 
