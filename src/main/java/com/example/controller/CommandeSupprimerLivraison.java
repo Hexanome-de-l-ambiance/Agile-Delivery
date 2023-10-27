@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.Carte;
+import com.example.model.Intersection;
 import com.example.model.Livraison;
 import com.example.model.Tournee;
 
@@ -9,7 +10,7 @@ import com.example.model.Tournee;
  */
 public class CommandeSupprimerLivraison implements Commande{
 
-    private Livraison livraison;
+    private Intersection livraison;
 
     private Tournee tournee;
 
@@ -17,7 +18,7 @@ public class CommandeSupprimerLivraison implements Commande{
     /**
      * Default constructor
      */
-    public CommandeSupprimerLivraison(Livraison livraison, Tournee tournee, Carte carte) {
+    public CommandeSupprimerLivraison(Intersection livraison, Tournee tournee, Carte carte) {
         this.livraison = livraison;
         this.tournee = tournee;
         this.carte = carte;
@@ -25,11 +26,11 @@ public class CommandeSupprimerLivraison implements Commande{
 
     @Override
     public void execute() {
-        carte.removeLivraison(livraison, tournee);
+        tournee.removeLivraison(livraison);
     }
 
     @Override
     public void undo() {
-        carte.addLivraison(livraison, tournee);
+        tournee.addLivraison(livraison);
     }
 }
