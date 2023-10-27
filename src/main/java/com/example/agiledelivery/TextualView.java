@@ -45,7 +45,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 content = "Load success";
                 break;
             }
-            case Carte.ERROR: showAlert((String) evt.getNewValue()); return;
+            //case Carte.ERROR: showAlert((String) evt.getNewValue()); return;
         }
         messageText = new Text(content);
         messageText.setStyle("-fx-font-size: 24;");

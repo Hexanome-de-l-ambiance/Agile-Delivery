@@ -118,9 +118,9 @@ public class Carte {
         firePropertyChange(READ, null, path);
     }
 
-    public void sendException(Exception e){
+   /*public void sendException(Exception e){
         firePropertyChange(ERROR, null, e.getMessage());
-    }
+    }*/
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);

@@ -28,7 +28,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
         graphicalView.setOnMousePressed(event -> {
             mouseX = event.getSceneX() - graph.getLayoutX();
             mouseY = event.getSceneY() - graph.getLayoutY();
-            //System.out.println("Pressed");
         });
 
         graphicalView.setOnMouseReleased(event -> {

@@ -27,7 +27,7 @@ public class XMLOpener{
     public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
         if (file == null) {
-            carte.sendException(new CustomXMLParsingException("File null"));
+            //carte.sendException(new CustomXMLParsingException("File null"));
             throw new CustomXMLParsingException("File null");
         }
         carte.reset();
