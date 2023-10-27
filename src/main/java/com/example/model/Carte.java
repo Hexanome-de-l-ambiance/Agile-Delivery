@@ -3,8 +3,14 @@ package com.example.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+import javafx.util.Pair;
+
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.*;
+
+import com.example.utils.Astar;
 
 
 public class Carte {
@@ -14,11 +20,34 @@ public class Carte {
     private double maxLon;
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
     private ObservableMap<Long, Intersection> listeIntersection = FXCollections.observableHashMap();
-    private ObservableMap<Integer, Segment> listeSegments = FXCollections.observableHashMap();
+    private ObservableMap<Pair<Long, Long>, Segment> listeSegments = FXCollections.observableHashMap();
+    private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence = new HashMap<>();
+
+    private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     public static final String RESET = "reset";
     public static final String READ = "read";
+
+
+    public void initAdjacenceList() {
+        listeAdjacence = new HashMap<>();
+        for (Map.Entry<Pair<Long, Long>, Segment> entry : listeSegments.entrySet()) {
+            Segment segment = entry.getValue();
+            Long origin = segment.getOrigin().getId();
+            Long destination = segment.getDestination().getId();
+            if (listeAdjacence.containsKey(origin)) {
+                listeAdjacence.get(origin).add(new Pair<>(destination, segment.getLength()));
+            } else {
+                ArrayList<Pair<Long, Double>> list = new ArrayList<>();
+                list.add(new Pair<>(destination, segment.getLength()));
+                listeAdjacence.put(origin, list);
+            }
+        }
+    }
+
+
     public static final String ERROR = "error";
+
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
         listeIntersection.put(id, newIntersection);
@@ -28,17 +57,23 @@ public class Carte {
         Intersection origin = listeIntersection.get(ori);
         Intersection destination = listeIntersection.get(dest);
         Segment newSegment = new Segment(origin, destination, length, name);
-        listeSegments.put(idProperty.get(), newSegment);
+        listeSegments.put(new Pair<>(ori, dest), newSegment);
         idProperty.set(idProperty.get() + 1);
     }
+
+    public void setEntrepot(Long id) {
+        this.entrepotId = id;
+    }
+    public Long getEntrepot() { return entrepotId; }
 
     public ObservableMap<Long, Intersection> getListeIntersections() {
         return listeIntersection;
     }
 
-    public ObservableMap<Integer, Segment> getListeSegments() {
+    public ObservableMap<Pair<Long, Long>, Segment> getListeSegments() {
         return listeSegments;
     }
+    public HashMap<Long, ArrayList<Pair<Long, Double>>> getListeAdjacence() { return listeAdjacence; }
 
     public int getId() {
         return idProperty.get();

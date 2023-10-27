@@ -40,7 +40,7 @@ public class XMLOpenerTest {
             e.printStackTrace();
         }
 
-        assertDoesNotThrow(() -> xmlOpener.ReadFile(carte, testFile.getAbsolutePath()), "Il ne doit pas lancer d'exception pour un XML valide");
+        assertDoesNotThrow(() -> xmlOpener.readFile(carte, testFile.getAbsolutePath()), "Il ne doit pas lancer d'exception pour un XML valide");
     }
 
     @Test
@@ -53,13 +53,13 @@ public class XMLOpenerTest {
             e.printStackTrace();
         }
 
-        assertThrows(Exception.class, () -> xmlOpener.ReadFile(carte, testFile.getAbsolutePath()), "Il doit lancer une exception pour un XML invalide");
+        assertThrows(Exception.class, () -> xmlOpener.readFile(carte, testFile.getAbsolutePath()), "Il doit lancer une exception pour un XML invalide");
     }
 
     @Test
     public void readNonExistentFileTest() {
         String fakeFilePath = "path/to/nonexistent/file.xml";
-        assertThrows(Exception.class, () -> xmlOpener.ReadFile(carte, fakeFilePath), "Il doit lancer une exception pour un fichier inexistant");
+        assertThrows(Exception.class, () -> xmlOpener.readFile(carte, fakeFilePath), "Il doit lancer une exception pour un fichier inexistant");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class XMLOpenerTest {
             e.printStackTrace();
         }
 
-        assertThrows(Exception.class, () -> xmlOpener.ReadFile(carte, testFile.getAbsolutePath()), "Il doit lancer une exception pour un fichier vide");
+        assertThrows(Exception.class, () -> xmlOpener.readFile(carte, testFile.getAbsolutePath()), "Il doit lancer une exception pour un fichier vide");
     }
 
     @Test

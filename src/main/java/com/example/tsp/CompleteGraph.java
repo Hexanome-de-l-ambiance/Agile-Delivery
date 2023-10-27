@@ -1,29 +1,43 @@
 package com.example.tsp;
 
-public class CompleteGraph implements Graph {
-	private static final int MAX_COST = 40;
-	private static final int MIN_COST = 10;
+import com.example.model.Carte;
+import com.example.model.Intersection;
+import com.example.utils.Astar;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+
+public class CompleteGraph implements Graph{
 	int nbVertices;
-	int[][] cost;
-	
+	double [][] cost;
+	HashMap<Integer, Long> indexToId;
+
 	/**
-	 * Create a complete directed graph such that each edge has a weight within [MIN_COST,MAX_COST]
-	 * @param nbVertices
+	 * Create a complete directed graph such that each edge is the shortest path between two intersections
+	 * @param carte the map
+	 * @param intersections the list of intersections
 	 */
-	public CompleteGraph(int nbVertices){
-		this.nbVertices = nbVertices;
-		int iseed = 1;
-		cost = new int[nbVertices][nbVertices];
-		for (int i=0; i<nbVertices; i++){
-		    for (int j=0; j<nbVertices; j++){
-		        if (i == j) cost[i][j] = -1;
-		        else {
-		            int it = 16807 * (iseed % 127773) - 2836 * (iseed / 127773);
-		            if (it > 0)	iseed = it;
-		            else iseed = 2147483647 + it;
-		            cost[i][j] = MIN_COST + iseed % (MAX_COST-MIN_COST+1);
-		        }
-		    }
+	public CompleteGraph(Carte carte, ArrayList<Intersection> intersections) {
+		this.nbVertices = intersections.size();
+		this.cost = new double[nbVertices][nbVertices];
+		this.indexToId = new HashMap<>();
+		for (int i = 0; i < nbVertices; i++) {
+			indexToId.put(i, intersections.get(i).getId());
+		}
+		for(int i=0 ; i<intersections.size() ; i++)
+		{
+			for(int j=0 ; j < intersections.size() ; j++)
+			{
+				if(Objects.equals(intersections.get(i).getId(), intersections.get(j).getId()))
+				{
+					cost[i][j] = -1;
+				}
+				else
+				{
+					cost[i][j] = Astar.calculDistance(carte, intersections.get(i), intersections.get(j));
+				}
+			}
 		}
 	}
 
@@ -33,17 +47,17 @@ public class CompleteGraph implements Graph {
 	}
 
 	@Override
-	public int getCost(int i, int j) {
-		if (i<0 || i>=nbVertices || j<0 || j>=nbVertices)
-			return -1;
+	public double getCost(int i, int j) {
 		return cost[i][j];
 	}
 
 	@Override
 	public boolean isArc(int i, int j) {
-		if (i<0 || i>=nbVertices || j<0 || j>=nbVertices)
-			return false;
 		return i != j;
 	}
 
+	@Override
+	public Long getId(int i) {
+		return indexToId.get(i);
+	}
 }

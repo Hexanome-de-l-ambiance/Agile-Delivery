@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+    <warehouse address="1"/>
+
+    <intersection id="1" latitude="45.750404" longitude="4.8744674"/>
+    <intersection id="2" latitude="45.74979" longitude="4.87572"/>
+    <intersection id="4" latitude="45.750214" longitude="4.8742905"/>
+    <intersection id="5" latitude="45.749214" longitude="4.875591"/>
+    <intersection id="6" latitude="45.74969" longitude="4.873468"/>
+
+    <segment destination="2" length="118.890465" name="Avenue Lacassagne" origin="1"/>
+    <segment destination="1" length="118.890465" name="Avenue Lacassagne" origin="2"/>
+
+    <segment destination="4" length="25.26484" name="Rue André" origin="1"/>
+    <segment destination="1" length="25.26484" name="Rue André" origin="4"/>
+
+    <segment destination="5" length="64.89446" name="Rue Feuillat" origin="2"/>
+    <segment destination="2" length="64.89446" name="Rue Feuillat" origin="5"/>
+
+    <segment destination="6" length="174.66516" name="Rue Fiol" origin="5"/>
+    <segment destination="5" length="174.66516" name="Rue Fiol" origin="6"/>
+
+    <segment destination="4" length="86.42" name="Rue Fiol" origin="6"/>
+    <segment destination="6" length="86.42" name="Rue Fiol" origin="4"/>
+
+    <segment destination="5" length="150.16" name="Rue Feuillat" origin="4"/>
+    <segment destination="4" length="150.16" name="Rue Feuillat" origin="5"/>
+
+</map>
