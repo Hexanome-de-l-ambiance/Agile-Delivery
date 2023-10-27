@@ -65,7 +65,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
-            graph.getChildren().add(circle); // Add to right pane
+            graph.getChildren().add(circle);
         }
 
         for (Segment segment : carte.getListeSegments().values()) {
@@ -75,7 +75,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
-            graph.getChildren().add(line); // Add to right pane
+            graph.getChildren().add(line);
         }
     }
 }
