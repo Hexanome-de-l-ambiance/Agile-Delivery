@@ -1,9 +1,10 @@
 package com.example.xml;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.example.model.Carte;
-import com.example.model.Intersection;
 import javafx.stage.Stage;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -25,17 +26,25 @@ public class XMLOpener{
 
     public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
+        if (file == null) {
+            carte.sendException(new CustomXMLParsingException("File null"));
+            throw new CustomXMLParsingException("File null");
+        }
         carte.reset();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new HandlerPlan(carte);
             saxParser.parse(file, handler);
+            Path path = Paths.get(file.getAbsolutePath());
+            String fileName = path.getFileName().toString();
+            carte.readEnd(fileName);
             carte.initAdjacenceList();
+
         } catch (Exception e) {
             e.printStackTrace();
+            carte.sendException(e);
         }
-        carte.readEnd();
     }
 
     public void readFile(Carte carte, String path) throws CustomXMLParsingException {

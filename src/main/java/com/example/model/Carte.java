@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.util.Pair;
 
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
@@ -27,6 +28,7 @@ public class Carte {
     public static final String RESET = "reset";
     public static final String READ = "read";
 
+
     public void initAdjacenceList() {
         listeAdjacence = new HashMap<>();
         for (Map.Entry<Pair<Long, Long>, Segment> entry : listeSegments.entrySet()) {
@@ -42,6 +44,9 @@ public class Carte {
             }
         }
     }
+
+
+    public static final String ERROR = "error";
 
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
@@ -101,7 +106,7 @@ public class Carte {
         firePropertyChange(RESET, null, null);
     }
 
-    public void readEnd(){
+    public void readEnd(String path){
         minLat = Double.MAX_VALUE;
         maxLat = Double.MIN_VALUE;
         minLon = Double.MAX_VALUE;
@@ -114,7 +119,11 @@ public class Carte {
             maxLon = Math.max(maxLon, intersection.getLongitude());
         }
 
-        firePropertyChange(READ, null, null);
+        firePropertyChange(READ, null, path);
+    }
+
+    public void sendException(Exception e){
+        firePropertyChange(ERROR, null, e.getMessage());
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

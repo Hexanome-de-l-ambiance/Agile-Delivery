@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 
 public class ButtonListener implements EventHandler<ActionEvent> {
     private Controller controller;
-
     public ButtonListener(Controller controller) {
         this.controller = controller;
     }
