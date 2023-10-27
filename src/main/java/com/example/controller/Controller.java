@@ -31,12 +31,14 @@ public class Controller {
         this.carte = carte;
     }
 
-    public void addDelivery() {
-        etatCourant.addDelivery(this, stage);
-    }
     public void addDestination(Intersection intersection) {
         etatCourant.addIntersection(this, intersection);
     }
+
+    public void addDelivery() {
+        etatCourant.addDelivery(this, stage);
+    }
+
     public void deleteDelivery() {
         etatCourant.deleteDelivery(this, stage);
     }
