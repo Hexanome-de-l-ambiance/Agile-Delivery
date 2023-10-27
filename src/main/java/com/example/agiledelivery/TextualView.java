@@ -27,7 +27,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         messageText.setStyle("-fx-font-size: 24;");
         textFlow.setPrefWidth(this.getPrefWidth());
         textFlow.setLayoutX(0);
-        textFlow.setLayoutY((this.getPrefWidth() - textFlow.prefHeight(-1)) / 2);
+        textFlow.setLayoutY((this.getPrefWidth() - textFlow.prefHeight(-1)) / 5*4);
         textFlow.getChildren().add(messageText);
         this.getChildren().add(textFlow);
         carte.addPropertyChangeListener(this);

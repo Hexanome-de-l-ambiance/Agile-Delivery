@@ -6,15 +6,17 @@ import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-
+import javafx.scene.paint.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
 
     private Carte carte;
     private Pane graph;
+    private HashMap<Circle, Intersection> circleMap;
+
     public GraphicalView(Carte carte) {
         this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
         this.setPrefHeight(Window.PREFHEIGHT);
@@ -29,10 +31,17 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         this.getChildren().add(graph);
         this.setStyle("-fx-background-color: yellow;");
         carte.addPropertyChangeListener(this);
+
+        this.circleMap = new HashMap<>();
     }
     public Pane getGraph() {
         return graph;
     }
+
+    public HashMap<Circle, Intersection> getCircleMap() {
+        return circleMap;
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
@@ -71,7 +80,13 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
+            circleMap.put(circle, intersection);
+            circle.setOnMouseEntered(event -> circle.setFill(Color.RED));
+            circle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
+
             graph.getChildren().add(circle); // Add to right pane
+
+
         }
 
         for (Segment segment : carte.getListeSegments().values()) {
