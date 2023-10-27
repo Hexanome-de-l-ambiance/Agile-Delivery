@@ -149,4 +149,11 @@ public class Carte {
     }
 
 
+    ArrayList<Livraison> livraisons = new ArrayList<Livraison>();
+    public void addLivraison(Livraison livraison, Tournee tournee) {
+        livraisons.add(livraison);
+    }
+
+    public void removeLivraison(Livraison livraison, Tournee tournee) {
+    }
 }
