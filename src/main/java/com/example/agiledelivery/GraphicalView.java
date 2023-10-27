@@ -5,10 +5,12 @@ import com.example.model.Intersection;
 import com.example.model.Segment;
 import com.example.model.Visitor;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -65,7 +67,11 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
-            graph.getChildren().add(circle); // Add to right pane
+
+            circle.setOnMouseEntered(event -> circle.setFill(Color.RED));
+            circle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
+
+            graph.getChildren().add(circle);
         }
 
         for (Segment segment : carte.getListeSegments().values()) {
