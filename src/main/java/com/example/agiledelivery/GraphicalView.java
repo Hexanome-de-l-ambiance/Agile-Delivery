@@ -16,6 +16,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
     private Carte carte;
     private Pane graph;
+
     public GraphicalView(Carte carte) {
         this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
         this.setPrefHeight(Window.PREFHEIGHT);
@@ -30,10 +31,16 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         this.getChildren().add(graph);
         this.setStyle("-fx-background-color: yellow;");
         carte.addPropertyChangeListener(this);
+
     }
     public Pane getGraph() {
         return graph;
     }
+
+
+
+
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
