@@ -17,4 +17,8 @@ public class EtatAjoutDestination implements Etat{
         l.addCommande(new CommandeAjouterLivraison(intersection, numeroCoursier, carte));
         c.setEtatCourant(c.etatDemandeAjoutee);
     }
+
+    public void undo(ListeDeCommandes l){
+        l.undo();
+    }
 }

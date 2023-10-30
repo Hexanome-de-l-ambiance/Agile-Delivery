@@ -25,4 +25,8 @@ public class EtatDemandeAjoutee implements Etat {
     public void calculerLivraisons(Controller c, Carte carte){
         carte.calculerTournees();
     }
+
+    public void undo(ListeDeCommandes l){
+        l.undo();
+    }
 }

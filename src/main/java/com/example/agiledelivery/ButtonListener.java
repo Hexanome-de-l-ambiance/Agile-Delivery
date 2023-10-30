@@ -20,7 +20,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.LOAD_PLAN: controller.load(); break;
             case Window.ADD_DESTINATION: controller.addDelivery(); break;
             case Window.CALCULATE_TOUR: controller.calculateDelivery();  break;
-            case Window.UNDO: break;
+            case Window.UNDO: controller.undo(); break;
             case Window.REDO: break;
         }
     }

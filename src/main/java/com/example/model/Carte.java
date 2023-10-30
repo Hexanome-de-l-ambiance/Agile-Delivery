@@ -34,6 +34,8 @@ public class Carte {
     public static final String ERROR = "error";
     public static final String ADD = "add destination";
 
+    public static final String REMOVE = "remove destination";
+
     public Carte(int nombreCoursier){
         for(int i = 1; i <= nombreCoursier; i++){
             listeTournees.put(i, new Tournee());
@@ -138,6 +140,7 @@ public class Carte {
 
     public void removeLivraison (int numeroCouriser, Intersection livraison) {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
+        firePropertyChange(REMOVE, null, livraison);
     }
     public void addTournee (int coursier, Tournee tournee) {
         listeTournees.put(coursier, tournee);

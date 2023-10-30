@@ -63,7 +63,9 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                     display(tournee);
                 }
                 break;
+            case Carte.REMOVE: break;
         }
+
     }
 
     @Override
