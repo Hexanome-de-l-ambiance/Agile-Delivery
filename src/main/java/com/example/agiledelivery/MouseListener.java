@@ -1,10 +1,15 @@
 package com.example.agiledelivery;
 
 import com.example.controller.Controller;
+import com.example.model.Intersection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -14,17 +19,19 @@ public class MouseListener implements EventHandler<ActionEvent> {
 
     private Controller controller;
     private GraphicalView graphicalView;
+    private TextualView textualView;
     private Pane graph;
     private double mouseX, mouseY;
     private boolean isDragged;
-    public MouseListener(GraphicalView graphicalView, Controller controller) {
+    public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
         this.controller = controller;
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();
+        this.textualView = textualView;
         setOnEvent();
     }
 
-    private void setOnEvent(){
+    protected void setOnEvent(){
         graphicalView.setOnMousePressed(event -> {
             mouseX = event.getSceneX() - graph.getLayoutX();
             mouseY = event.getSceneY() - graph.getLayoutY();
@@ -57,6 +64,15 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 graph.setScaleY(graph.getScaleY() * scaleFactor);
             }
         });
+
+        HashMap<Circle, Intersection> circleMap = graphicalView.getCircleMap();
+        for (Map.Entry<Circle, Intersection> entry : circleMap.entrySet()) {
+            Circle key = entry.getKey();
+            key.setOnMouseClicked(mouseEvent -> {
+                controller.addDestination(entry.getValue());
+                textualView.setHint("Intersection id: "+ entry.getValue().getId() + " longitude: " + entry.getValue().getLongitude()+ " latitude: " + entry.getValue().getLatitude()+"\n");
+            });
+        }
     }
     @Override
     public void handle(ActionEvent actionEvent) {

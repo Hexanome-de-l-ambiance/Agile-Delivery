@@ -10,28 +10,28 @@ import com.example.model.Tournee;
  */
 public class CommandeAjouterLivraison implements Commande{
 
-    private Intersection livraison;
-    private Tournee tournee;
-
+    private Intersection livraison;;
+    private int numeroCouriser;
     private Carte carte;
     /**
      * Default constructor
      */
-    public CommandeAjouterLivraison(Intersection livraison, Tournee tournee, Carte carte) {
+    public CommandeAjouterLivraison(Intersection livraison, int numeroCouriser, Carte carte) {
         this.livraison = livraison;
-        this.tournee = tournee;
+        this.numeroCouriser = numeroCouriser;
         this.carte = carte;
     }
 
+
     @Override
     public void execute() {
-        tournee.addLivraison(livraison);
+        carte.addLivraison(numeroCouriser, livraison);
     }
 
     @Override
     public void undo() {
-        if (tournee.getLivraisons().size()>0) {
-            tournee.removeLivraison(livraison);
+        if (carte.getListeTournees().get(numeroCouriser).getLivraisons().size()>0) {
+            carte.removeLivraison(numeroCouriser, livraison);
         }
     }
 }

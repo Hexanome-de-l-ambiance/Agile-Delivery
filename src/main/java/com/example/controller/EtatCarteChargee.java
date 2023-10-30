@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.Carte;
+import com.example.model.Intersection;
 import com.example.xml.CustomXMLParsingException;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;
@@ -23,6 +24,11 @@ public class EtatCarteChargee implements Etat {
         } catch (CustomXMLParsingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void addIntersection(Controller c, Intersection intersection){
+        c.setEtatCourant(c.etatAjoutDestination);
+        c.etatAjoutDestination.addIntersection(c, intersection);
     }
 
     /**

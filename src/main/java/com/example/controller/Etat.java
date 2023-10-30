@@ -9,11 +9,13 @@ import javafx.stage.Stage;
  */
 public interface Etat {
 
-    public default void addDelivery(Controller c, Stage stage){};
+    public default void addDelivery(ListeDeCommandes l, int numeroCoursier, Controller c, Carte carte){};
+
+    public default void addIntersection(Controller c, Intersection intersection) {};
 
     public default void deleteDelivery(Controller c, Stage stage){};
 
-    public default void calculateDelivery(Controller c, Stage stage) {}
+    public default void calculerLivraisons(Controller c, Carte carte) {}
 
     public default void undo(ListeDeCommandes l){};
 

@@ -155,7 +155,7 @@ public class CarteTest {
 
         Tournee tournee = new Tournee();
         long tempsDebut = System.currentTimeMillis();
-        tournee.calculerTournee(testCarte, intersections);
+        //tournee.calculerTournee(testCarte, intersections);
         System.out.println("Temps pour calculer la tournée: " + (System.currentTimeMillis() - tempsDebut) + "ms");
         tournee.printTournee();
         System.out.println("Longueur totale " + tournee.getLongueurTotale());
@@ -181,7 +181,7 @@ public class CarteTest {
 
         Tournee tournee = new Tournee();
         long tempsDebut = System.currentTimeMillis();
-        tournee.calculerTournee(grandeCarte, intersections);
+        //tournee.calculerTournee(grandeCarte, intersections);
         System.out.println("Temps pour calculer la tournée: " + (System.currentTimeMillis() - tempsDebut) + "ms");
         //tournee.printTournee();
         //System.out.println("Longueur totale " + tournee.getLongueurTotale());
