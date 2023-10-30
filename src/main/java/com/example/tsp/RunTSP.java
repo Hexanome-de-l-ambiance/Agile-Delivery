@@ -31,7 +31,7 @@ public class RunTSP {
 
 	public static void runTSP2(TSP tsp)
 	{
-		Carte carte = new Carte();
+		Carte carte = new Carte(1);
 		XMLOpener xmlOpener = XMLOpener.getInstance();
 		try{
 			xmlOpener.readFile(carte, "data/xml/testMap.xml");

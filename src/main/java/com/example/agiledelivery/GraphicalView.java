@@ -17,6 +17,8 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private Pane graph;
     private HashMap<Circle, Intersection> circleMap;
 
+    private MouseListener mouseListener;
+
     public GraphicalView(Carte carte) {
         this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
         this.setPrefHeight(Window.PREFHEIGHT);
@@ -42,6 +44,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         return circleMap;
     }
 
+    public void setMouseListener(MouseListener mouseListener) {
+        this.mouseListener = mouseListener;
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
@@ -49,6 +55,8 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             case Carte.RESET: graph.getChildren().clear(); break;
             case Carte.READ: display(carte); break;
             case Carte.UPDATE:
+                graph.getChildren().clear();
+                display(carte);
                 ObservableMap<Integer, Tournee> listeTournees = (ObservableMap<Integer, Tournee>) evt.getNewValue();
                 for(Tournee tournee : listeTournees.values())
                 {
@@ -85,8 +93,6 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             circle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
 
             graph.getChildren().add(circle); // Add to right pane
-
-
         }
 
         for (Segment segment : carte.getListeSegments().values()) {
@@ -98,6 +104,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
             graph.getChildren().add(line); // Add to right pane
         }
+        mouseListener.setOnEvent();
     }
 
     @Override

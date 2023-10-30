@@ -2,6 +2,7 @@ package com.example.agiledelivery;
 
 import com.example.model.Carte;
 
+import com.example.model.Intersection;
 import com.example.model.Tournee;
 import com.example.model.Visitor;
 import javafx.scene.control.Alert;
@@ -16,7 +17,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private Carte carte;
     private TextFlow textFlow = new TextFlow();
+    private TextFlow info = new TextFlow();
     private Text messageText;
+    private Text hint;
     private String content = "Welcome!";
     public TextualView(Carte carte) {
         this.setPrefWidth(Window.textualViewScale * Window.PREFWIDTH);
@@ -27,10 +30,22 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         messageText.setStyle("-fx-font-size: 24;");
         textFlow.setPrefWidth(this.getPrefWidth());
         textFlow.setLayoutX(0);
-        textFlow.setLayoutY((this.getPrefWidth() - textFlow.prefHeight(-1)) / 5*4);
+        textFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 6*3);
         textFlow.getChildren().add(messageText);
+        info.setPrefWidth(this.getPrefWidth());
+        info.setLayoutX(0);
+        info.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 6*4);
+        hint = new Text();
+        hint.setLayoutX(0);
+        hint.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 6*5);
         this.getChildren().add(textFlow);
+        this.getChildren().add(info);
+        this.getChildren().add(hint);
         carte.addPropertyChangeListener(this);
+    }
+
+    protected void setHint(String s){
+        hint.setText(s);
     }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -47,6 +62,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 break;
             }
             case Carte.ERROR: showAlert((String) evt.getNewValue()); return;
+            case Carte.ADD: info.getChildren().add(new Text(("Intersection id: "+((Intersection)evt.getNewValue()).getId() + " longitude: " + ((Intersection)evt.getNewValue()).getLongitude()+ " latitude: " + ((Intersection)evt.getNewValue()).getLatitude()+"\n"))); return;
+            case Carte.UPDATE: return;
         }
         messageText = new Text(content);
         messageText.setStyle("-fx-font-size: 24;");

@@ -34,14 +34,15 @@ public class Window extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Carte carte = new Carte();
+        Carte carte = new Carte(1);
         Controller controller = new Controller(carte, primaryStage);
 
         textualView = new TextualView(carte);
         graphicalView = new GraphicalView(carte);
 
         initializeButtons(controller);
-        mouseListener = new MouseListener(graphicalView, controller);
+        mouseListener = new MouseListener(textualView, graphicalView, controller);
+        graphicalView.setMouseListener(mouseListener);
         HBox mainLayout = new HBox(graphicalView, textualView);
         Scene scene = new Scene(mainLayout, PREFWIDTH, PREFHEIGHT);
         primaryStage.setScene(scene);

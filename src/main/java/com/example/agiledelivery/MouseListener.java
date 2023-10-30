@@ -19,17 +19,19 @@ public class MouseListener implements EventHandler<ActionEvent> {
 
     private Controller controller;
     private GraphicalView graphicalView;
+    private TextualView textualView;
     private Pane graph;
     private double mouseX, mouseY;
     private boolean isDragged;
-    public MouseListener(GraphicalView graphicalView, Controller controller) {
+    public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
         this.controller = controller;
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();
+        this.textualView = textualView;
         setOnEvent();
     }
 
-    private void setOnEvent(){
+    protected void setOnEvent(){
         graphicalView.setOnMousePressed(event -> {
             mouseX = event.getSceneX() - graph.getLayoutX();
             mouseY = event.getSceneY() - graph.getLayoutY();
@@ -68,6 +70,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
             Circle key = entry.getKey();
             key.setOnMouseClicked(mouseEvent -> {
                 controller.addDestination(entry.getValue());
+                textualView.setHint("Intersection id: "+ entry.getValue().getId() + " longitude: " + entry.getValue().getLongitude()+ " latitude: " + entry.getValue().getLatitude()+"\n");
             });
         }
     }

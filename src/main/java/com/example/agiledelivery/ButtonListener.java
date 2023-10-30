@@ -18,8 +18,8 @@ public class ButtonListener implements EventHandler<ActionEvent> {
         // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
             case Window.LOAD_PLAN: controller.load(); break;
-            case Window.ADD_DESTINATION: controller.calculateDelivery(); break;
-            case Window.CALCULATE_TOUR: break;
+            case Window.ADD_DESTINATION: controller.addDelivery(); break;
+            case Window.CALCULATE_TOUR: controller.calculateDelivery();  break;
             case Window.UNDO: break;
             case Window.REDO: break;
         }

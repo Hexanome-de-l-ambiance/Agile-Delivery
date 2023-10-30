@@ -32,6 +32,7 @@ public class Carte {
     public static final String READ = "read";
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
+    public static final String ADD = "add destination";
 
     public Carte(int nombreCoursier){
         for(int i = 1; i <= nombreCoursier; i++){
@@ -132,6 +133,7 @@ public class Carte {
     }
     public void addLivraison (int numeroCouriser, Intersection livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
+        firePropertyChange(ADD, null, livraison);
     }
 
     public void removeLivraison (int numeroCouriser, Intersection livraison) {
@@ -145,6 +147,7 @@ public class Carte {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             entry.getValue().calculerTournee(this);
         }
+        firePropertyChange(UPDATE, null, listeTournees);
     }
     public ObservableMap<Integer, Tournee> getListeTournees() {
         return listeTournees;
