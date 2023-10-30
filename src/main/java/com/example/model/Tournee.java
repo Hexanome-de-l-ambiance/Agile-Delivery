@@ -40,6 +40,7 @@ public class Tournee{
     }
 
     public void calculerTournee(Carte carte) {
+        listeChemins.clear();
         Intersection entrepot = carte.getListeIntersections().get(carte.getEntrepot());
         livraisons.add(0, entrepot);
 

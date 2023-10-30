@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.Carte;
+import com.example.model.Tournee;
 import com.example.xml.CustomXMLParsingException;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;

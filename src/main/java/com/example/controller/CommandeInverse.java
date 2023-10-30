@@ -4,15 +4,14 @@ import com.example.model.Carte;
 import com.example.model.Livraison;
 import com.example.model.Tournee;
 
+
 /**
  * 
  */
 public class CommandeInverse implements Commande{
 
     private Commande commande;
-    /**
-     * Default constructor
-     */
+
     public CommandeInverse(Commande commande){
         this.commande = commande;
     }
@@ -21,6 +20,7 @@ public class CommandeInverse implements Commande{
     public void execute() {
         commande.undo();
     }
+
 
     @Override
     public void undo() {

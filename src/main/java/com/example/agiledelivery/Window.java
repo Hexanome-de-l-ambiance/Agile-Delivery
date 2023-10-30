@@ -21,22 +21,28 @@ public class Window extends Application {
     protected static final int PREFHEIGHT = 800;
     protected static final double textualViewScale = 0.2;
     protected static final double graphicalViewScale = 0.8;
-    protected final int buttonHeight = 100;
+    protected final int buttonHeight = 50;
     protected static final String LOAD_PLAN = "Charger un plan";
-    private final String[] buttonTexts = new String[]{LOAD_PLAN};
+    protected static final String ADD_DESTINATION = "Ajouter une destination";
+    protected static final String CALCULATE_TOUR = "Calculer la tournée";
+    protected static final String UNDO = "Undo";
+    protected static final String REDO = "Redo";
+
+    private final String[] buttonTexts = new String[]{LOAD_PLAN, ADD_DESTINATION, CALCULATE_TOUR, UNDO, REDO};
     private ArrayList<Button> buttons;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Carte carte = new Carte();
+        Carte carte = new Carte(1);
         Controller controller = new Controller(carte, primaryStage);
 
         textualView = new TextualView(carte);
         graphicalView = new GraphicalView(carte);
 
         initializeButtons(controller);
-        mouseListener = new MouseListener(graphicalView, controller);
+        mouseListener = new MouseListener(textualView, graphicalView, controller);
+        graphicalView.setMouseListener(mouseListener);
         HBox mainLayout = new HBox(graphicalView, textualView);
         Scene scene = new Scene(mainLayout, PREFWIDTH, PREFHEIGHT);
         primaryStage.setScene(scene);
