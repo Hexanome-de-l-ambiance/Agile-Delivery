@@ -19,8 +19,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Carte carte;
     private TextFlow textFlow = new TextFlow();
     private TextFlow info = new TextFlow();
+    private TextFlow hintFlow = new TextFlow();
     private Text messageText;
-    private Text hint;
+    private Text hint = new Text();
     private String content = "Welcome!";
     private HashMap<Long, Text> textHashMap = new HashMap<>();
     public TextualView(Carte carte) {
@@ -38,12 +39,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         info.setPrefWidth(this.getPrefWidth());
         info.setLayoutX(0);
         info.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 6*4);
-        hint = new Text();
-        hint.setLayoutX(0);
-        hint.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 6*5);
+
+
+        hintFlow.setPrefWidth(this.getPrefWidth());
+        hintFlow.setLayoutX(0);
+        hintFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 6*5);
+        hintFlow.getChildren().add(hint);
         this.getChildren().add(textFlow);
         this.getChildren().add(info);
-        this.getChildren().add(hint);
+        this.getChildren().add(hintFlow);
         carte.addPropertyChangeListener(this);
     }
 

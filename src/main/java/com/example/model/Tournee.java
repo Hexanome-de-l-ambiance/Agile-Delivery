@@ -18,6 +18,7 @@ public class Tournee{
 
     private int coursier;
 
+
     private double longueurTotale;
 
     /**
