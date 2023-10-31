@@ -18,7 +18,4 @@ public class EtatAjoutDestination implements Etat{
         c.setEtatCourant(c.etatDemandeAjoutee);
     }
 
-    public void undo(ListeDeCommandes l){
-        l.undo();
-    }
 }

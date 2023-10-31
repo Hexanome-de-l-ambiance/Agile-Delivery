@@ -29,4 +29,8 @@ public class EtatDemandeAjoutee implements Etat {
     public void undo(ListeDeCommandes l){
         l.undo();
     }
+
+    public void redo(ListeDeCommandes l){
+        l.redo();
+    }
 }

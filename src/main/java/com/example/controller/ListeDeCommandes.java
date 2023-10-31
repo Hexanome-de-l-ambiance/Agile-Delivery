@@ -14,10 +14,13 @@ public class ListeDeCommandes {
      */
     public ListeDeCommandes() {
         index = -1;
-        listeDeCommandes = new LinkedList<Commande>();
+        listeDeCommandes = new LinkedList<>();
     }
 
     public void addCommande(Commande commande) {
+        for(int i = 1; i < listeDeCommandes.size()-index; i++){
+            listeDeCommandes.remove(index+1);
+        }
         index++;
         listeDeCommandes.add(index, commande);
         commande.execute();
