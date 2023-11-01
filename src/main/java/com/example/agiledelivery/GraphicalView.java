@@ -7,6 +7,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -138,11 +140,23 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
                 double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
+                double angle = Math.atan2((adjustedY2 - adjustedY1), (adjustedX2 - adjustedX1));
+
+                // Create a Polygon to represent the arrowhead
+                Polygon arrowhead = new Polygon();
+                arrowhead.getPoints().addAll(
+                        adjustedX2 - 10 * Math.cos(angle - Math.toRadians(30)), adjustedY2 - 10 * Math.sin(angle - Math.toRadians(30)),
+                        adjustedX2, adjustedY2,
+                        adjustedX2 - 10 * Math.cos(angle + Math.toRadians(30)), adjustedY2 - 10 * Math.sin(angle + Math.toRadians(30))
+                );
+                arrowhead.setFill(Color.BLACK);
+
                 Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
                 line.setStyle("-fx-stroke: rgb(" + r * 255 + "," + g * 255 + "," + b * 255 + ");");
                 // change line width
                 line.setStrokeWidth(3);
                 graph.getChildren().add(line); // Add to right pane
+                graph.getChildren().add(arrowhead); // Add to right pane
             }
 
         }
