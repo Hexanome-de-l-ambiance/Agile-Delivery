@@ -31,10 +31,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             "1"
     );
     private ObservableList<String> intervals = FXCollections.observableArrayList(
-            "8 a.m.",
-            "9 a.m.",
-            "10 a.m.",
-            "11 a.m."
+            "8",
+            "9",
+            "10",
+            "11"
     );
     private TextArea textArea;
     public TextualView(Carte carte) {

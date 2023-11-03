@@ -37,8 +37,8 @@ public class Controller {
     }
 
 
-    public void addDelivery(int numeroCoursier) {
-        etatCourant.addDelivery(listeDeCommandes, numeroCoursier, this, carte);
+    public void addDelivery(int numeroCoursier, int heure) {
+        etatCourant.addDelivery(listeDeCommandes, heure, numeroCoursier, this, carte);
     }
 
     public void deleteDelivery() {
