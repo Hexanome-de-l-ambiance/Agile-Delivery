@@ -2,7 +2,8 @@ package com.example.agiledelivery;
 
 import com.example.model.*;
 
-import javafx.scene.Group;
+
+import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -17,13 +18,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
 
     private Carte carte;
     private Pane graph;
     private HashMap<Circle, Intersection> circleMap;
-
+    private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
     private MouseListener mouseListener;
 
     public GraphicalView(Carte carte) {
@@ -63,6 +65,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             case Carte.READ: display(carte); break;
             case Carte.UPDATE:
                 graph.getChildren().clear();
+                hashSet.clear();
                 display(carte);
                 HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 for(Tournee tournee : listeTournees.values())
@@ -70,7 +73,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                     display(tournee);
                 }
                 break;
-            case Carte.REMOVE: break;
+            case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
         }
 
     }
@@ -132,10 +135,12 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double scaleX = graph.getWidth() / rangeLon;
         double scaleY = graph.getHeight() / rangeLat;
         double scale = Math.min(scaleX, scaleY);
-        HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
+
+        Random random = new Random();
+        Color randomColor1 = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        Color randomColor2 = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
         for(Chemin chemin : tournee.getListeChemins())
         {
-
             for (Segment segment : chemin.getListeSegments()) {
                 double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + graph.getWidth() / 2;
                 double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + graph.getHeight() / 2;
@@ -157,10 +162,9 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
                 line.setStrokeType(StrokeType.OUTSIDE); // Set the stroke type
                 if(hashSet.contains(new Pair<>(segment.getOrigin().getId(), segment.getDestination().getId())) || hashSet.contains(new Pair<>(segment.getDestination().getId(), segment.getOrigin().getId()))) {
-                    System.out.println("123");
                     line.setStroke(Color.RED);
                 }
-                else applyCustomStroke(line, Color.BLUE, Color.VIOLET);
+                else applyCustomStroke(line, randomColor1, randomColor2);
                 hashSet.add(new Pair<>(segment.getOrigin().getId(), segment.getDestination().getId()));
                 graph.getChildren().add(line);
                 graph.getChildren().add(arrowhead);
