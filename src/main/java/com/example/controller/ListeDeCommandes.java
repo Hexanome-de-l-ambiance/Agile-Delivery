@@ -37,4 +37,9 @@ public class ListeDeCommandes {
         index++;
         listeDeCommandes.get(index).execute();
     }
+
+    public void reset(){
+        index = -1;
+        listeDeCommandes.clear();
+    }
 }

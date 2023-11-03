@@ -16,6 +16,7 @@ public interface Etat {
     public default void deleteDelivery(Controller c, Stage stage){};
 
     public default void calculerLivraisons(Controller c, Carte carte) {}
+    public default void modiferCoursiers(Controller c, Carte carte, int nombre) {}
 
     public default void undo(ListeDeCommandes l){};
 
