@@ -67,10 +67,10 @@ public class Carte {
         idProperty.set(idProperty.get() + 1);
     }
 
-    public void setEntrepot(Long id) {
+    public void setEntrepotId(Long id) {
         this.entrepotId = id;
     }
-    public Long getEntrepot() { return entrepotId; }
+    public Intersection getEntrepot() { return listeIntersection.get(entrepotId); }
 
     public HashMap<Long, Intersection> getListeIntersections() {
         return listeIntersection;
@@ -80,6 +80,13 @@ public class Carte {
         return listeSegments;
     }
     public HashMap<Long, ArrayList<Pair<Long, Double>>> getListeAdjacence() { return listeAdjacence; }
+
+    public Intersection getIntersection(Long id) {
+        return listeIntersection.get(id);
+    }
+    public ArrayList<Pair<Long, Double>> getNeighbors(Long id) {
+        return listeAdjacence.get(id);
+    }
 
     public int getId() {
         return idProperty.get();
@@ -127,12 +134,12 @@ public class Carte {
 
         firePropertyChange(READ, null, path);
     }
-    public void addLivraison (int numeroCouriser, Intersection livraison) {
+    public void addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
         firePropertyChange(ADD, null, livraison);
     }
 
-    public void removeLivraison (int numeroCouriser, Intersection livraison) {
+    public void removeLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
         firePropertyChange(REMOVE, null, livraison);
     }

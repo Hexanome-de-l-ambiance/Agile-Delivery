@@ -37,7 +37,7 @@ public class Controller {
     }
 
     public void addDelivery() {
-        etatCourant.addDelivery(listeDeCommandes, 1, this, carte);
+        etatCourant.addDelivery(listeDeCommandes, 8,1, this, carte);
     }
 
     public void deleteDelivery() {

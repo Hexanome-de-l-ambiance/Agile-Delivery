@@ -52,7 +52,7 @@ public class Astar {
             }
 
             // Explore neighbors
-            ArrayList<Pair<Long, Double>> neighbors = carte.getListeAdjacence().get(current.id);
+            ArrayList<Pair<Long, Double>> neighbors = carte.getNeighbors(current.id);
             if (neighbors != null) {
                 for (Pair<Long, Double> neighbor : neighbors) {
                     Intersection neighborIntersection = carte.getListeIntersections().get(neighbor.getKey());
@@ -110,7 +110,7 @@ public class Astar {
             }
 
             // Explore neighbors
-            ArrayList<Pair<Long, Double>> neighbors = carte.getListeAdjacence().get(current.id);
+            ArrayList<Pair<Long, Double>> neighbors = carte.getNeighbors(current.id);
             if (neighbors != null) {
                 for (Pair<Long, Double> neighbor : neighbors) {
                     Intersection neighborIntersection = carte.getListeIntersections().get(neighbor.getKey());

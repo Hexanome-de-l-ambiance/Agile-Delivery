@@ -11,13 +11,13 @@ import com.example.model.Tournee;
  */
 public class CommandeSupprimerLivraison implements Commande{
 
-    private Intersection livraison;
+    private Livraison livraison;
 
     private Tournee tournee;
 
     private Carte carte;
 
-    public CommandeSupprimerLivraison(Intersection livraison, Tournee tournee, Carte carte) {
+    public CommandeSupprimerLivraison(Livraison livraison, Tournee tournee, Carte carte) {
         this.livraison = livraison;
         this.tournee = tournee;
         this.carte = carte;

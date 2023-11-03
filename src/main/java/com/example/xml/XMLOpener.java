@@ -90,7 +90,7 @@ public class XMLOpener{
                 carte.addSegment(origin, destination, length, name);
             } else if("warehouse".equals(qName)){
                 Long id = Long.valueOf(attributes.getValue("address"));
-                carte.setEntrepot(id);
+                carte.setEntrepotId(id);
             }
         }
     }
