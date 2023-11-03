@@ -2,6 +2,7 @@ package com.example.agiledelivery;
 
 import com.example.model.*;
 
+
 import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.CycleMethod;
@@ -66,7 +67,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 graph.getChildren().clear();
                 hashSet.clear();
                 display(carte);
-                ObservableMap<Integer, Tournee> listeTournees = (ObservableMap<Integer, Tournee>) evt.getNewValue();
+                HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 for(Tournee tournee : listeTournees.values())
                 {
                     display(tournee);

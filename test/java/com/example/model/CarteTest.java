@@ -25,10 +25,10 @@ public class CarteTest {
 
     @BeforeEach
     public void setUp() {
-        testCarte = new Carte();
-        petiteCarte = new Carte();
-        moyenneCarte = new Carte();
-        grandeCarte = new Carte();
+        testCarte = new Carte(1);
+        petiteCarte = new Carte(1);
+        moyenneCarte = new Carte(1);
+        grandeCarte = new Carte(1);
         XMLOpener xmlOpener = XMLOpener.getInstance();
         try {
             xmlOpener.readFile(testCarte, "data/xml/testMap.xml");
@@ -99,9 +99,9 @@ public class CarteTest {
     @Test
     public void graphCompletTestCarte()
     {
-        ArrayList<Intersection> nodes = new ArrayList<>();
-        nodes.add(testCarte.getListeIntersections().get(2L));
-        nodes.add(testCarte.getListeIntersections().get(4L));
+        ArrayList<Livraison> nodes = new ArrayList<>();
+        //nodes.add(testCarte.getListeIntersections().get(2L));
+        //nodes.add(testCarte.getListeIntersections().get(4L));
 
         long tempsDebut = System.currentTimeMillis();
         Graph graphComplet = new CompleteGraph(testCarte, nodes);
@@ -120,17 +120,17 @@ public class CarteTest {
     @Test
     public void graphCompletPetiteCarte()
     {
-        ArrayList<Intersection> intersections = new ArrayList<>();
-        intersections.add(petiteCarte.getListeIntersections().get(25175791L));
-        intersections.add(petiteCarte.getListeIntersections().get(2129259178L));
-        intersections.add(petiteCarte.getListeIntersections().get(26086130L));
-        intersections.add(petiteCarte.getListeIntersections().get(26086123L));
-        intersections.add(petiteCarte.getListeIntersections().get(565375197L));
-        intersections.add(petiteCarte.getListeIntersections().get(55475025L));
-        intersections.add(petiteCarte.getListeIntersections().get(2117622721L));
-        intersections.add(petiteCarte.getListeIntersections().get(342867241L));
-        intersections.add(petiteCarte.getListeIntersections().get(26317246L));
-        intersections.add(petiteCarte.getListeIntersections().get(1423439485L));
+        ArrayList<Livraison> intersections = new ArrayList<>();
+        //intersections.add(petiteCarte.getListeIntersections().get(25175791L));
+        //intersections.add(petiteCarte.getListeIntersections().get(2129259178L));
+        //intersections.add(petiteCarte.getListeIntersections().get(26086130L));
+        //intersections.add(petiteCarte.getListeIntersections().get(26086123L));
+        //intersections.add(petiteCarte.getListeIntersections().get(565375197L));
+        //intersections.add(petiteCarte.getListeIntersections().get(55475025L));
+        //intersections.add(petiteCarte.getListeIntersections().get(2117622721L));
+        //intersections.add(petiteCarte.getListeIntersections().get(342867241L));
+        //intersections.add(petiteCarte.getListeIntersections().get(26317246L));
+        //intersections.add(petiteCarte.getListeIntersections().get(1423439485L));
 
         long tempsDebut = System.currentTimeMillis();
         Graph completeGraph = new CompleteGraph(petiteCarte, intersections);

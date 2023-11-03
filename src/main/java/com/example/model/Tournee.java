@@ -1,9 +1,6 @@
 package com.example.model;
 
-import com.example.tsp.CompleteGraph;
-import com.example.tsp.Graph;
-import com.example.tsp.TSP;
-import com.example.tsp.TSP1;
+import com.example.tsp.*;
 import com.example.utils.Astar;
 
 import java.util.*;
@@ -14,7 +11,7 @@ import java.util.*;
 public class Tournee{
 
     private LinkedList<Chemin> listeChemins;
-    private ArrayList<Intersection> livraisons;
+    private ArrayList<Livraison> livraisons;
 
     private int coursier;
 
@@ -29,39 +26,39 @@ public class Tournee{
         livraisons = new ArrayList<>();
     }
 
-    public void addLivraison(Intersection livraison) {
+    public void addLivraison(Livraison livraison) {
         livraisons.add(livraison);
     }
 
-    public void removeLivraison(Intersection livraison) {livraisons.remove(livraison);}
+    public void removeLivraison(Livraison livraison) {livraisons.remove(livraison);}
 
-    public ArrayList<Intersection> getLivraisons(){return livraisons;}
+    public ArrayList<Livraison> getLivraisons(){return livraisons;}
     public LinkedList<Chemin> getListeChemins() {
         return listeChemins;
     }
 
     public void calculerTournee(Carte carte) {
         listeChemins.clear();
-        Intersection entrepot = carte.getListeIntersections().get(carte.getEntrepot());
-        livraisons.add(0, entrepot);
+        Intersection entrepot = carte.getEntrepot();
+        livraisons.add(0, new Livraison(entrepot, Livraison.HEURE_DEBUT));
 
         long start = System.currentTimeMillis();
         Graph g = new CompleteGraph(carte, livraisons);
         System.out.println("Graph created in " + (System.currentTimeMillis() - start) + " ms");
 
-        TSP tsp = new TSP1();
+        TSP tsp = new TSP2();
         start = System.currentTimeMillis();
         tsp.searchSolution(10000,g);
         System.out.println("TSP solved in " + (System.currentTimeMillis() - start) + " ms");
 
         Chemin chemin;
         start = System.currentTimeMillis();
-        for(int i=0; i < livraisons.size() -1; i++)
+        for(int i=0 ; i<livraisons.size()-1 ; i++)
         {
-            chemin = Astar.calculChemin(carte, livraisons.get(i), livraisons.get(i+1));
+            chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(i)), carte.getIntersection(tsp.getSolution(i+1)));
             listeChemins.add(chemin);
         }
-        chemin = Astar.calculChemin(carte, livraisons.get(livraisons.size()-1), entrepot);
+        chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(livraisons.size()-1)), entrepot);
         listeChemins.add(chemin);
         System.out.println("Astar solved in " + (System.currentTimeMillis() - start) + " ms");
         longueurTotale = tsp.getSolutionCost();

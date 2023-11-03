@@ -24,6 +24,16 @@ public class Chemin {
         return listeSegments;
     }
 
+    public Intersection getOrigin()
+    {
+        return listeSegments.getFirst().getOrigin();
+    }
+
+    public Intersection getDestination()
+    {
+        return listeSegments.getLast().getDestination();
+    }
+
     /**
      * Add a segment in first position of the list of segments and check if its destination is the same as the origin of the first segment
      * @param segment

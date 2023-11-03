@@ -10,15 +10,15 @@ import com.example.model.Tournee;
  */
 public class CommandeAjouterLivraison implements Commande{
 
-    private Intersection livraison;;
+    private Livraison livraison;
     private int numeroCouriser;
     private Carte carte;
     /**
      * Default constructor
      */
-    public CommandeAjouterLivraison(Intersection livraison, int numeroCouriser, Carte carte) {
+    public CommandeAjouterLivraison(Livraison livraison, int numeroCoursier, Carte carte) {
         this.livraison = livraison;
-        this.numeroCouriser = numeroCouriser;
+        this.numeroCouriser = numeroCoursier;
         this.carte = carte;
     }
 

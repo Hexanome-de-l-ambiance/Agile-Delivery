@@ -1,7 +1,7 @@
 package com.example.tsp;
 
 import com.example.model.Carte;
-import com.example.model.Intersection;
+import com.example.model.Livraison;
 import com.example.xml.XMLOpener;
 
 import java.util.ArrayList;
@@ -41,10 +41,10 @@ public class RunTSP {
 		}
 		carte.initAdjacenceList();
 
-		ArrayList<Intersection> nodes = new ArrayList<Intersection>();
-		nodes.add(carte.getListeIntersections().get(1L));
-		nodes.add(carte.getListeIntersections().get(2L));
-		nodes.add(carte.getListeIntersections().get(3L));
+		ArrayList<Livraison> nodes = new ArrayList<Livraison>();
+		nodes.add(new Livraison(carte.getListeIntersections().get(1L),8));
+		nodes.add(new Livraison(carte.getListeIntersections().get(2L),8));
+		nodes.add(new Livraison(carte.getListeIntersections().get(3L),8));
 
 		Graph g = new CompleteGraph(carte, nodes);
 

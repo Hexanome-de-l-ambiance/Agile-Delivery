@@ -1,10 +1,7 @@
 package com.example.agiledelivery;
 
-import com.example.model.Carte;
+import com.example.model.*;
 
-import com.example.model.Intersection;
-import com.example.model.Tournee;
-import com.example.model.Visitor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -115,14 +112,16 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             }
             case Carte.ERROR: showAlert((String) evt.getNewValue()); return;
             case Carte.ADD: {
-                Text tmp = new Text(("Coursier id : "+evt.getOldValue()+" Intersection id: "+((Intersection)evt.getNewValue()).getId() + " longitude: " + ((Intersection)evt.getNewValue()).getLongitude()+ " latitude: " + ((Intersection)evt.getNewValue()).getLatitude()+"\n"));
-                textHashMap.put(((Intersection)evt.getNewValue()).getId(), tmp);
+                Livraison livraison = (Livraison) evt.getNewValue();
+                Text tmp = new Text(("Intersection id: "+livraison.getDestination().getId() + " longitude: " + livraison.getDestination().getLongitude()+ " latitude: " + livraison.getDestination().getLatitude()+"\n"));
+                textHashMap.put(livraison.getDestination().getId(), tmp);
+
                 info.getChildren().add(tmp);
                 hint.setText("");
             } return;
             case Carte.UPDATE: hint.setText(""); return;
             case Carte.REMOVE: {
-                Text tmp = textHashMap.get(((Intersection)evt.getNewValue()).getId());
+                Text tmp = textHashMap.get(((Livraison)evt.getNewValue()).getDestination().getId());
                 info.getChildren().remove(tmp);
                 return;
             }

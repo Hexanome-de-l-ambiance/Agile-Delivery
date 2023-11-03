@@ -2,6 +2,7 @@ package com.example.tsp;
 
 import com.example.model.Carte;
 import com.example.model.Intersection;
+import com.example.model.Livraison;
 import com.example.utils.Astar;
 
 import java.util.ArrayList;
@@ -16,26 +17,28 @@ public class CompleteGraph implements Graph{
 	/**
 	 * Create a complete directed graph such that each edge is the shortest path between two intersections
 	 * @param carte the map
-	 * @param intersections the list of intersections
+	 * @param livraisons the list of intersections
 	 */
-	public CompleteGraph(Carte carte, ArrayList<Intersection> intersections) {
-		this.nbVertices = intersections.size();
+	public CompleteGraph(Carte carte, ArrayList<Livraison> livraisons) {
+		this.nbVertices = livraisons.size();
 		this.cost = new double[nbVertices][nbVertices];
 		this.indexToId = new HashMap<>();
 		for (int i = 0; i < nbVertices; i++) {
-			indexToId.put(i, intersections.get(i).getId());
+			indexToId.put(i, livraisons.get(i).getDestination().getId());
 		}
-		for(int i=0 ; i<intersections.size() ; i++)
+		for(int i=0 ; i<livraisons.size() ; i++)
 		{
-			for(int j=0 ; j < intersections.size() ; j++)
+			for(int j=0 ; j < livraisons.size() ; j++)
 			{
-				if(Objects.equals(intersections.get(i).getId(), intersections.get(j).getId()))
+				Intersection intersection1 = livraisons.get(i).getDestination();
+				Intersection intersection2 = livraisons.get(j).getDestination();
+				if(Objects.equals(intersection1.getId(), intersection2.getId()))
 				{
 					cost[i][j] = -1;
 				}
 				else
 				{
-					cost[i][j] = Astar.calculDistance(carte, intersections.get(i), intersections.get(j));
+					cost[i][j] = Astar.calculDistance(carte, intersection1, intersection2);
 				}
 			}
 		}

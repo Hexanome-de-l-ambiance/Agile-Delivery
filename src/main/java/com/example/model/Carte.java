@@ -1,18 +1,11 @@
 package com.example.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableMap;
 import javafx.util.Pair;
-
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
-
-import com.example.utils.Astar;
-
 
 public class Carte {
     private double minLat;
@@ -20,11 +13,11 @@ public class Carte {
     private double minLon;
     private double maxLon;
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private ObservableMap<Long, Intersection> listeIntersection = FXCollections.observableHashMap();
-    private ObservableMap<Pair<Long, Long>, Segment> listeSegments = FXCollections.observableHashMap();
+    private HashMap<Long, Intersection> listeIntersection;
+    private HashMap<Pair<Long, Long>, Segment> listeSegments;
+    private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence;
+    private HashMap<Integer, Tournee> listeTournees;
 
-    private ObservableMap<Integer, Tournee> listeTournees = FXCollections.observableHashMap();
-    private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence = new HashMap<>();
     private int nbCoursiers;
     private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
@@ -37,6 +30,11 @@ public class Carte {
     public static final String SET_NB_COURIERS = "set number of couriers";
 
     public Carte(int nombreCoursier){
+        listeIntersection = new HashMap<>();
+        listeSegments = new HashMap<>();
+        listeTournees = new HashMap<>();
+        listeAdjacence = new HashMap<>();
+
         this.nbCoursiers = nombreCoursier;
         for(int i = 1; i <= nbCoursiers; i++){
             listeTournees.put(i, new Tournee());
@@ -53,8 +51,7 @@ public class Carte {
     }
 
     public void initAdjacenceList() {
-
-        listeAdjacence = new HashMap<>();
+        listeAdjacence.clear();
         for (Map.Entry<Pair<Long, Long>, Segment> entry : listeSegments.entrySet()) {
             Segment segment = entry.getValue();
             Long origin = segment.getOrigin().getId();
@@ -82,19 +79,26 @@ public class Carte {
         idProperty.set(idProperty.get() + 1);
     }
 
-    public void setEntrepot(Long id) {
+    public void setEntrepotId(Long id) {
         this.entrepotId = id;
     }
-    public Long getEntrepot() { return entrepotId; }
+    public Intersection getEntrepot() { return listeIntersection.get(entrepotId); }
 
-    public ObservableMap<Long, Intersection> getListeIntersections() {
+    public HashMap<Long, Intersection> getListeIntersections() {
         return listeIntersection;
     }
 
-    public ObservableMap<Pair<Long, Long>, Segment> getListeSegments() {
+    public HashMap<Pair<Long, Long>, Segment> getListeSegments() {
         return listeSegments;
     }
     public HashMap<Long, ArrayList<Pair<Long, Double>>> getListeAdjacence() { return listeAdjacence; }
+
+    public Intersection getIntersection(Long id) {
+        return listeIntersection.get(id);
+    }
+    public ArrayList<Pair<Long, Double>> getNeighbors(Long id) {
+        return listeAdjacence.get(id);
+    }
 
     public int getId() {
         return idProperty.get();
@@ -142,12 +146,12 @@ public class Carte {
 
         firePropertyChange(READ, null, path);
     }
-    public void addLivraison (int numeroCouriser, Intersection livraison) {
+    public void addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
         firePropertyChange(ADD, numeroCouriser, livraison);
     }
 
-    public void removeLivraison (int numeroCouriser, Intersection livraison) {
+    public void removeLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
         firePropertyChange(REMOVE, null, livraison);
     }
@@ -158,7 +162,7 @@ public class Carte {
         }
         firePropertyChange(UPDATE, null, listeTournees);
     }
-    public ObservableMap<Integer, Tournee> getListeTournees() {
+    public HashMap<Integer, Tournee> getListeTournees() {
         return listeTournees;
     }
 
