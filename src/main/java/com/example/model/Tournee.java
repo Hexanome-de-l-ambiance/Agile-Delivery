@@ -40,7 +40,7 @@ public class Tournee{
     public void calculerTournee(Carte carte) {
         listeChemins.clear();
         Intersection entrepot = carte.getEntrepot();
-        livraisons.add(0, new Livraison(entrepot, Livraison.HEURE_DEBUT));
+        if(livraisons.size() == 0 || livraisons.get(0).getDestination() != entrepot) livraisons.add(0, new Livraison(entrepot, Livraison.HEURE_DEBUT));
 
         long start = System.currentTimeMillis();
         Graph g = new CompleteGraph(carte, livraisons);
