@@ -25,10 +25,10 @@ public class CarteTest {
 
     @BeforeEach
     public void setUp() {
-        testCarte = new Carte();
-        petiteCarte = new Carte();
-        moyenneCarte = new Carte();
-        grandeCarte = new Carte();
+        testCarte = new Carte(1);
+        petiteCarte = new Carte(1);
+        moyenneCarte = new Carte(1);
+        grandeCarte = new Carte(1);
         XMLOpener xmlOpener = XMLOpener.getInstance();
         try {
             xmlOpener.readFile(testCarte, "data/xml/testMap.xml");

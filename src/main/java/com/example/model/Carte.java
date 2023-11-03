@@ -1,18 +1,11 @@
 package com.example.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableMap;
 import javafx.util.Pair;
-
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
-
-import com.example.utils.Astar;
-
 
 public class Carte {
     private double minLat;
@@ -20,11 +13,10 @@ public class Carte {
     private double minLon;
     private double maxLon;
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private ObservableMap<Long, Intersection> listeIntersection = FXCollections.observableHashMap();
-    private ObservableMap<Pair<Long, Long>, Segment> listeSegments = FXCollections.observableHashMap();
-
-    private ObservableMap<Integer, Tournee> listeTournees = FXCollections.observableHashMap();
-    private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence = new HashMap<>();
+    private HashMap<Long, Intersection> listeIntersection;
+    private HashMap<Pair<Long, Long>, Segment> listeSegments;
+    private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence;
+    private HashMap<Integer, Tournee> listeTournees;
 
     private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
@@ -33,17 +25,19 @@ public class Carte {
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
     public static final String ADD = "add destination";
-
     public static final String REMOVE = "remove destination";
 
     public Carte(int nombreCoursier){
+        listeIntersection = new HashMap<>();
+        listeSegments = new HashMap<>();
+        listeTournees = new HashMap<>();
+        listeAdjacence = new HashMap<>();
         for(int i = 1; i <= nombreCoursier; i++){
             listeTournees.put(i, new Tournee());
         }
     }
     public void initAdjacenceList() {
-
-        listeAdjacence = new HashMap<>();
+        listeAdjacence.clear();
         for (Map.Entry<Pair<Long, Long>, Segment> entry : listeSegments.entrySet()) {
             Segment segment = entry.getValue();
             Long origin = segment.getOrigin().getId();
@@ -78,11 +72,11 @@ public class Carte {
     }
     public Long getEntrepot() { return entrepotId; }
 
-    public ObservableMap<Long, Intersection> getListeIntersections() {
+    public HashMap<Long, Intersection> getListeIntersections() {
         return listeIntersection;
     }
 
-    public ObservableMap<Pair<Long, Long>, Segment> getListeSegments() {
+    public HashMap<Pair<Long, Long>, Segment> getListeSegments() {
         return listeSegments;
     }
     public HashMap<Long, ArrayList<Pair<Long, Double>>> getListeAdjacence() { return listeAdjacence; }
@@ -152,7 +146,7 @@ public class Carte {
         }
         firePropertyChange(UPDATE, null, listeTournees);
     }
-    public ObservableMap<Integer, Tournee> getListeTournees() {
+    public HashMap<Integer, Tournee> getListeTournees() {
         return listeTournees;
     }
 
