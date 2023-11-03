@@ -25,7 +25,7 @@ public class Carte {
 
     private ObservableMap<Integer, Tournee> listeTournees = FXCollections.observableHashMap();
     private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence = new HashMap<>();
-
+    private int nbCoursiers;
     private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     public static final String RESET = "reset";
@@ -33,14 +33,25 @@ public class Carte {
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
     public static final String ADD = "add destination";
-
     public static final String REMOVE = "remove destination";
+    public static final String SET_NB_COURIERS = "set number of couriers";
 
     public Carte(int nombreCoursier){
-        for(int i = 1; i <= nombreCoursier; i++){
+        this.nbCoursiers = nombreCoursier;
+        for(int i = 1; i <= nbCoursiers; i++){
             listeTournees.put(i, new Tournee());
         }
     }
+
+    public void setNbCoursiers(int nbCoursiers) {
+        this.nbCoursiers = nbCoursiers;
+        this.listeTournees.clear();
+        for(int i = 1; i <= nbCoursiers; i++){
+            listeTournees.put(i, new Tournee());
+        }
+        firePropertyChange(SET_NB_COURIERS, null, nbCoursiers);
+    }
+
     public void initAdjacenceList() {
 
         listeAdjacence = new HashMap<>();
@@ -57,8 +68,6 @@ public class Carte {
             }
         }
     }
-
-
 
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
@@ -135,17 +144,14 @@ public class Carte {
     }
     public void addLivraison (int numeroCouriser, Intersection livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
-        firePropertyChange(ADD, null, livraison);
+        firePropertyChange(ADD, numeroCouriser, livraison);
     }
 
     public void removeLivraison (int numeroCouriser, Intersection livraison) {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
         firePropertyChange(REMOVE, null, livraison);
     }
-    public void addTournee (int coursier, Tournee tournee) {
-        listeTournees.put(coursier, tournee);
-        firePropertyChange(UPDATE, null, listeTournees);
-    }
+
     public void calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             entry.getValue().calculerTournee(this);

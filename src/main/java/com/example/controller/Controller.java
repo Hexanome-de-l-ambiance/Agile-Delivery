@@ -36,8 +36,8 @@ public class Controller {
         etatCourant.addIntersection(this, intersection);
     }
 
-    public void addDelivery() {
-        etatCourant.addDelivery(listeDeCommandes, 1, this, carte);
+    public void addDelivery(int numeroCoursier) {
+        etatCourant.addDelivery(listeDeCommandes, numeroCoursier, this, carte);
     }
 
     public void deleteDelivery() {
@@ -47,7 +47,10 @@ public class Controller {
     public void calculateDelivery() {
         etatCourant.calculerLivraisons(this, carte);
     }
-
+    public void modiferCoursiers(int nombre) {
+        etatCourant.modiferCoursiers(this, carte, nombre);
+        listeDeCommandes.reset();
+    }
     public void undo() {
         etatCourant.undo(listeDeCommandes);
     }

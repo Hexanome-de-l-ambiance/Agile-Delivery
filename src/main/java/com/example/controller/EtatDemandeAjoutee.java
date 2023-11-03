@@ -25,7 +25,10 @@ public class EtatDemandeAjoutee implements Etat {
     public void calculerLivraisons(Controller c, Carte carte){
         carte.calculerTournees();
     }
-
+    @Override
+    public void modiferCoursiers(Controller c, Carte carte, int nombre) {
+        carte.setNbCoursiers(nombre);
+    }
     public void undo(ListeDeCommandes l){
         l.undo();
     }
