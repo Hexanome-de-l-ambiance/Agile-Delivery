@@ -25,6 +25,11 @@ public class EtatDemandeAjoutee implements Etat {
     public void calculerLivraisons(Controller c, Carte carte){
         carte.calculerTournees();
     }
+
+    public void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){
+        l.addCommande(new CommandeSupprimerLivraison(livraison, numeroCoursier, carte));
+
+    };
     @Override
     public void modiferCoursiers(Controller c, Carte carte, int nombre) {
         carte.setNbCoursiers(nombre);
