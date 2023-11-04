@@ -40,7 +40,9 @@ public class Tournee{
     public void calculerTournee(Carte carte) {
         listeChemins.clear();
         Intersection entrepot = carte.getEntrepot();
-        if(livraisons.size() == 0 || livraisons.get(0).getDestination() != entrepot) livraisons.add(0, new Livraison(entrepot, Livraison.HEURE_DEBUT));
+        if(livraisons.size() == 0) return;
+
+        livraisons.add(0, new Livraison(entrepot, Livraison.DEBUT_TOURNEE));
 
         long start = System.currentTimeMillis();
         Graph g = new CompleteGraph(carte, livraisons);
@@ -58,11 +60,10 @@ public class Tournee{
             chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(i)), carte.getIntersection(tsp.getSolution(i+1)));
             listeChemins.add(chemin);
         }
-        if(livraisons.size() > 1){
-            chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(livraisons.size()-1)), entrepot);
-            listeChemins.add(chemin);
-        }
-        System.out.println("Astar solved in " + (System.currentTimeMillis() - start) + " ms");
+        chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(livraisons.size()-1)), entrepot);
+        listeChemins.add(chemin);
+
+        System.out.println("Chemins solved in " + (System.currentTimeMillis() - start) + " ms");
         longueurTotale = tsp.getSolutionCost();
     }
 

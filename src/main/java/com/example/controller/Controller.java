@@ -4,6 +4,7 @@ import com.example.model.Carte;
 import com.example.model.Intersection;
 import javafx.stage.Stage;
 
+import java.time.LocalTime;
 /**
  *
  */
@@ -38,7 +39,7 @@ public class Controller {
 
 
     public void addDelivery(int numeroCoursier, int heure) {
-        etatCourant.addDelivery(listeDeCommandes, heure, numeroCoursier, this, carte);
+        etatCourant.addDelivery(listeDeCommandes, LocalTime.of(heure,0,0), numeroCoursier, this, carte);
     }
 
     public void deleteDelivery() {

@@ -1,6 +1,8 @@
 package com.example.model;
 
 
+import java.util.Objects;
+
 /**
  * 
  */
@@ -21,6 +23,14 @@ public class Intersection {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	if (obj == null) return false;
+    	if (obj == this) return true;
+    	if (!(obj instanceof Intersection i)) return false;
+        return Objects.equals(this.id, i.id);
     }
 
     public Long getId() {

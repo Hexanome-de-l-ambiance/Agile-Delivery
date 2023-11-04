@@ -5,6 +5,8 @@ import com.example.model.Intersection;
 import com.example.model.Livraison;
 import javafx.stage.Stage;
 
+import java.time.LocalTime;
+
 public class EtatAjoutDestination implements Etat{
     Intersection intersection;
 
@@ -14,7 +16,7 @@ public class EtatAjoutDestination implements Etat{
     }
 
     @Override
-    public void addDelivery(ListeDeCommandes l, int heure, int numeroCoursier, Controller c, Carte carte) {
+    public void addDelivery(ListeDeCommandes l, LocalTime heure, int numeroCoursier, Controller c, Carte carte) {
         l.addCommande(new CommandeAjouterLivraison(new Livraison(intersection, heure), numeroCoursier, carte));
         c.setEtatCourant(c.etatDemandeAjoutee);
     }
