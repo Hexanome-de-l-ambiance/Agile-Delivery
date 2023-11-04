@@ -146,9 +146,16 @@ public class Carte {
 
         firePropertyChange(READ, null, path);
     }
-    public void addLivraison (int numeroCouriser, Livraison livraison) {
+    public boolean addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
-        firePropertyChange(ADD, numeroCouriser, listeTournees);
+        if(listeTournees.get(numeroCouriser).calculerTournee(this) == false){
+            listeTournees.get(numeroCouriser).removeLivraison(livraison);
+            firePropertyChange(ERROR, null, "Le coursier choisi ne peut pas faire cette livraison");
+            return false;
+        } else {
+            firePropertyChange(ADD, numeroCouriser, listeTournees);
+            return true;
+        }
     }
 
     public void removeLivraison (int numeroCouriser, Livraison livraison) {

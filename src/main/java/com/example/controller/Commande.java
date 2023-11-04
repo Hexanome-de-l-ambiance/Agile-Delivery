@@ -4,7 +4,7 @@ package com.example.controller;
  * 
  */
 public interface Commande {
-    public void execute();
+    public boolean execute();
 
 
     public void undo();

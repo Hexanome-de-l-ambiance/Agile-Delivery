@@ -24,8 +24,8 @@ public class CommandeAjouterLivraison implements Commande{
 
 
     @Override
-    public void execute() {
-        carte.addLivraison(numeroCouriser, livraison);
+    public boolean execute() {
+        return carte.addLivraison(numeroCouriser, livraison);
     }
 
     @Override

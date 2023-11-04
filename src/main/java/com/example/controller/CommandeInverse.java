@@ -17,8 +17,9 @@ public class CommandeInverse implements Commande{
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         commande.undo();
+        return true;
     }
 
 
