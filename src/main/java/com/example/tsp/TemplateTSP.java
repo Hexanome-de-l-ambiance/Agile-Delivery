@@ -10,9 +10,10 @@ public abstract class TemplateTSP implements TSP {
 	private double bestSolCost;
 	private int timeLimit;
 	private long startTime;
+	private Boolean solutionFound = false;
 	
-	public void searchSolution(int timeLimit, Graph g){
-		if (timeLimit <= 0) return;
+	public Boolean searchSolution(int timeLimit, Graph g){
+		if (timeLimit <= 0) return false;
 		startTime = System.currentTimeMillis();	
 		this.timeLimit = timeLimit;
 		this.g = g;
@@ -23,10 +24,11 @@ public abstract class TemplateTSP implements TSP {
 		visited.add(0); // The first visited vertex is 0
 		bestSolCost = Double.MAX_VALUE;
 		branchAndBound(0, unvisited, visited, 0);
+		return solutionFound;
 	}
 	
 	public Long getSolution(int i){
-		if (g != null && i>=0 && i<g.getNbVertices())
+		if (g != null && solutionFound && i>=0 && i<g.getNbVertices())
 			return g.getId(bestSol[i]);
 		return -1L;
 	}
@@ -67,7 +69,8 @@ public abstract class TemplateTSP implements TSP {
 		if (System.currentTimeMillis() - startTime > timeLimit) return;
 	    if (unvisited.size() == 0){ 
 	    	if (g.isArc(currentVertex,0)){ 
-	    		if (currentCost+g.getCost(currentVertex,0) < bestSolCost){ 
+	    		if (currentCost+g.getCost(currentVertex,0) < bestSolCost){
+					solutionFound = true;
 	    			visited.toArray(bestSol);
 	    			bestSolCost = currentCost+g.getCost(currentVertex,0);
 	    		}

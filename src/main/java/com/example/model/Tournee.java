@@ -50,7 +50,10 @@ public class Tournee{
         Graph g = new CompleteGraph(carte, livraisons);
 
         TSP tsp = new TSP2();
-        tsp.searchSolution(10000,g);
+        if(!tsp.searchSolution(10000,g)) {
+            System.out.println("No solution found");
+            return;
+        }
 
         Chemin chemin;
         for(int i=0 ; i<livraisons.size()-1 ; i++)
