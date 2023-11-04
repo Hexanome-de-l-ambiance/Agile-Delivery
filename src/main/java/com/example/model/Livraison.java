@@ -15,7 +15,7 @@ public class Livraison {
     /**
      * La vitesse de déplacement du livreur en mètre/min
      */
-    private static final Double VITESSE_DEPLACEMENT = 15 / 60.0;
+    public static final int VITESSE_DEPLACEMENT = 15000 / 60;
 
     /**
      * L'heure de début des tournées
@@ -71,5 +71,12 @@ public class Livraison {
         return destination;
     }
 
+    public LocalTime getHeureLivraison() {
+        return heureLivraison;
+    }
+
+    public void setHeureLivraison(LocalTime heureLivraison) {
+        this.heureLivraison = heureLivraison;
+    }
 
 }

@@ -3,6 +3,7 @@ package com.example.model;
 import com.example.tsp.*;
 import com.example.utils.Astar;
 
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -38,44 +39,52 @@ public class Tournee{
     }
 
     public void calculerTournee(Carte carte) {
+        long start = System.currentTimeMillis();
         listeChemins.clear();
-        Intersection entrepot = carte.getEntrepot();
         if(livraisons.size() == 0) return;
 
-        livraisons.add(0, new Livraison(entrepot, Livraison.DEBUT_TOURNEE));
+        Livraison entrepot = new Livraison(carte.getEntrepot(), Livraison.DEBUT_TOURNEE);
+        livraisons.add(0, entrepot);
 
-        long start = System.currentTimeMillis();
         Graph g = new CompleteGraph(carte, livraisons);
-        System.out.println("Graph created in " + (System.currentTimeMillis() - start) + " ms");
 
         TSP tsp = new TSP2();
-        start = System.currentTimeMillis();
         tsp.searchSolution(10000,g);
-        System.out.println("TSP solved in " + (System.currentTimeMillis() - start) + " ms");
 
         Chemin chemin;
-        start = System.currentTimeMillis();
         for(int i=0 ; i<livraisons.size()-1 ; i++)
         {
             chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(i)), carte.getIntersection(tsp.getSolution(i+1)));
-            listeChemins.add(chemin);
-        }
-        chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(livraisons.size()-1)), entrepot);
-        listeChemins.add(chemin);
+            LocalTime heureArrivee;
+            if(i == 0) {
+                heureArrivee = Livraison.DEBUT_TOURNEE.plusMinutes(chemin.getDuree().toMinutes());
+            }else {
+                heureArrivee = livraisons.get(i).getHeureLivraison().plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
+            }
 
-        System.out.println("Chemins solved in " + (System.currentTimeMillis() - start) + " ms");
-        longueurTotale = tsp.getSolutionCost();
+            if(heureArrivee.isBefore(livraisons.get(i+1).getCrenauHoraire())) {
+                livraisons.get(i+1).setHeureLivraison(livraisons.get(i+1).getCrenauHoraire());
+            }else {
+                livraisons.get(i+1).setHeureLivraison(heureArrivee);
+            }
+            listeChemins.add(chemin);
+            longueurTotale += chemin.getLongueur();
+        }
+        chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(livraisons.size()-1)), entrepot.getDestination());
+        entrepot.setHeureLivraison(livraisons.get(livraisons.size()-1).getHeureLivraison().plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()));
+        listeChemins.add(chemin);
+        longueurTotale += chemin.getLongueur();
+
+        System.out.println("Solution found in  " + (System.currentTimeMillis() - start) + " ms");
     }
 
     public void printTournee()
     {
-        for(Chemin chemin : listeChemins)
+        for(int i=0 ; i<listeChemins.size() ; i++)
         {
-            System.out.println("Chemin : ");
-            for(Segment segment : chemin.getListeSegments())
-            {
-                System.out.println(segment.getOrigin().getId() + " -> " + segment.getDestination().getId());
-            }
+            System.out.println("Chemin " + i + " : " + listeChemins.get(i).getOrigin().getId() + " -> " + listeChemins.get(i).getDestination().getId() + " (" + listeChemins.get(i).getDuree().toMinutes() + " min)");
+            System.out.println("Heure d'arrivée : " + livraisons.get((i+1)%listeChemins.size()).getHeureLivraison());
+            System.out.println();
         }
     }
 

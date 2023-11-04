@@ -113,7 +113,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             case Carte.ERROR: showAlert((String) evt.getNewValue()); return;
             case Carte.ADD: {
                 Livraison livraison = (Livraison) evt.getNewValue();
-                Text tmp = new Text(("Coursier id: "+evt.getOldValue()+" Intersection id: "+livraison.getDestination().getId() + " longitude: " + livraison.getDestination().getLongitude()+ " latitude: " + livraison.getDestination().getLatitude()+"\n"));
+                Text tmp = new Text(("Coursier id: "+evt.getOldValue()+" Intersection id: "+livraison.getDestination().getId() + " longitude: " + livraison.getDestination().getLongitude()+ " latitude: " + livraison.getDestination().getLatitude() + " Horaire: " + livraison.getCrenauHoraire() + "\n"));
                 textHashMap.put(livraison.getDestination().getId(), tmp);
 
                 info.getChildren().add(tmp);
