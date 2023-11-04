@@ -27,17 +27,18 @@ public class Tournee{
         livraisons = new ArrayList<>();
     }
 
+
+
     public void addLivraison(Livraison livraison) {
         livraisons.add(livraison);
     }
 
     public void removeLivraison(Livraison livraison) {livraisons.remove(livraison);}
 
-    public ArrayList<Livraison> getLivraisons(){return livraisons;}
+    public ArrayList<Livraison> getLivraisons() {return livraisons;}
     public LinkedList<Chemin> getListeChemins() {
         return listeChemins;
     }
-
     public void calculerTournee(Carte carte) {
         long start = System.currentTimeMillis();
         listeChemins.clear();

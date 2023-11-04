@@ -1,6 +1,7 @@
 package com.example.agiledelivery;
 
 import com.example.controller.Controller;
+import com.example.model.Livraison;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -39,6 +40,16 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                     controller.modiferCoursiers(Integer.parseInt(textualView.getTextArea().getText()));
                 } catch (NumberFormatException e){
                     textualView.showAlert("Veuillez saisir un entier positif");
+                }
+                break;
+            }
+            case Window.REMOVE:{
+                int numeroCoursier = textualView.getNumeroCoursier();
+                Livraison livraison = textualView.getLivraison();
+                if(numeroCoursier == -1 || livraison == null){
+                    textualView.showAlert("Livraison à supprimer non choisie");
+                } else {
+                    controller.deleteDelivery(numeroCoursier, livraison);
                 }
                 break;
             }

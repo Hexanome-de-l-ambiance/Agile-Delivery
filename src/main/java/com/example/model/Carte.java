@@ -148,12 +148,12 @@ public class Carte {
     }
     public void addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
-        firePropertyChange(ADD, numeroCouriser, livraison);
+        firePropertyChange(ADD, numeroCouriser, listeTournees);
     }
 
     public void removeLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
-        firePropertyChange(REMOVE, null, livraison);
+        firePropertyChange(REMOVE, null, listeTournees);
     }
 
     public void calculerTournees() {
