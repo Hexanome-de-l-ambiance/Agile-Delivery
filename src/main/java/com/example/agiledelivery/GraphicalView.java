@@ -13,11 +13,13 @@ import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
 import javafx.util.Pair;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
@@ -68,9 +70,8 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 hashSet.clear();
                 display(carte);
                 HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
-                for(Tournee tournee : listeTournees.values())
-                {
-                    display(tournee);
+                for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+                    display(entry.getKey(), entry.getValue());
                 }
                 break;
             case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
@@ -120,7 +121,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     }
 
     @Override
-    public void display(Tournee tournee) {
+    public void display(int numeroCoursier, Tournee tournee) {
         double minLat = carte.getMinLat();
         double maxLat = carte.getMaxLat();
         double minLon = carte.getMinLon();

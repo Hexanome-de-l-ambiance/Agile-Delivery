@@ -12,25 +12,25 @@ import com.example.model.Tournee;
 public class CommandeSupprimerLivraison implements Commande{
 
     private Livraison livraison;
-
-    private Tournee tournee;
-
+    private int numeroCouriser;
     private Carte carte;
 
-    public CommandeSupprimerLivraison(Livraison livraison, Tournee tournee, Carte carte) {
+    public CommandeSupprimerLivraison(Livraison livraison, int numeroCouriser, Carte carte) {
         this.livraison = livraison;
-        this.tournee = tournee;
+        this.numeroCouriser = numeroCouriser;
         this.carte = carte;
 
     }
 
     @Override
     public void execute() {
-        tournee.removeLivraison(livraison);
+        if (carte.getListeTournees().get(numeroCouriser).getLivraisons().size()>0) {
+            carte.removeLivraison(numeroCouriser, livraison);
+        }
     }
 
     @Override
     public void undo() {
-        tournee.addLivraison(livraison);
+        carte.addLivraison(numeroCouriser, livraison);
     }
 }

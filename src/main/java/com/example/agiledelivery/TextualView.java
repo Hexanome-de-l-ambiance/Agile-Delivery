@@ -7,12 +7,16 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.scene.control.TextArea;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TextualView extends Pane implements PropertyChangeListener, Visitor {
 
@@ -36,7 +40,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             "10",
             "11"
     );
+
+
     private TextArea textArea;
+
+    private int numeroCoursier = -1;
+    private Livraison livraison = null;
+    private Text selectedText = null;
+    private Rectangle border;
+
     public TextualView(Carte carte) {
         this.setPrefWidth(Window.textualViewScale * Window.PREFWIDTH);
         this.setPrefHeight(Window.PREFHEIGHT);
@@ -84,6 +96,14 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         this.textArea.setText("Veuillez saisir un nombre entier positif");
     }
 
+    public int getNumeroCoursier() {
+        return numeroCoursier;
+    }
+
+    public Livraison getLivraison() {
+        return livraison;
+    }
+
     public ComboBox<String> getComboBox() {
         return comboBox;
     }
@@ -100,7 +120,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
         switch (event) {
-            case Carte.RESET: textFlow.getChildren().clear(); content = "Reset"; break;
+            case Carte.RESET:
+            {
+                textFlow.getChildren().clear();
+                content = "Reset";
+                messageText = new Text(content);
+                messageText.setStyle("-fx-font-size: 12;");
+                textFlow.getChildren().add(messageText);
+                break;
+            }
             case Carte.READ: {
                 textFlow.getChildren().clear();
                 Text path = new Text((String) evt.getNewValue() + "\n");
@@ -108,22 +136,23 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 textFlow.getChildren().add(path);
                 display(carte);
                 content = "Load success";
+                messageText = new Text(content);
+                messageText.setStyle("-fx-font-size: 12;");
+                textFlow.getChildren().add(messageText);
                 break;
             }
-            case Carte.ERROR: showAlert((String) evt.getNewValue()); return;
+            case Carte.ERROR: showAlert((String) evt.getNewValue()); break;
             case Carte.ADD: {
-                Livraison livraison = (Livraison) evt.getNewValue();
-                Text tmp = new Text(("Coursier id: "+evt.getOldValue()+" Intersection id: "+livraison.getDestination().getId() + " longitude: " + livraison.getDestination().getLongitude()+ " latitude: " + livraison.getDestination().getLatitude()+"\n"));
-                textHashMap.put(livraison.getDestination().getId(), tmp);
-
-                info.getChildren().add(tmp);
+                HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
+                displayListeTournees(listeTournees);
                 hint.setText("");
-            } return;
-            case Carte.UPDATE: hint.setText(""); return;
+                break;
+            }
+            case Carte.UPDATE: hint.setText(""); break;
             case Carte.REMOVE: {
-                Text tmp = textHashMap.get(((Livraison)evt.getNewValue()).getDestination().getId());
-                info.getChildren().remove(tmp);
-                return;
+                HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
+                displayListeTournees(listeTournees);
+                break;
             }
             case Carte.SET_NB_COURIERS:{
                 int newNumber = (int) evt.getNewValue();
@@ -135,12 +164,25 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
                 info.getChildren().clear();
                 textHashMap.clear();
-                return;
+                break;
             }
         }
-        messageText = new Text(content);
-        messageText.setStyle("-fx-font-size: 12;");
-        textFlow.getChildren().add(messageText);
+
+    }
+
+    private void displayListeTournees(HashMap<Integer, Tournee> listeTournees){
+        info.getChildren().clear();
+        numeroCoursier = -1;
+        livraison = null;
+        selectedText = null;
+        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+            Tournee tournee = entry.getValue();
+            if(tournee.getLivraisons().size() > 1 || (tournee.getLivraisons().size() == 1 && tournee.getLivraisons().get(0).getDestination() != carte.getEntrepot())){
+                Text segment = new Text("Id Coursier: " + entry.getKey() + "\n");
+                info.getChildren().add(segment);
+                display(entry.getKey(), tournee);
+            }
+        }
     }
 
     @Override
@@ -155,9 +197,21 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     }
 
     @Override
-    public void display(Tournee tournee)
+    public void display(int numeroCoursier, Tournee tournee)
     {
-
+        ArrayList<Livraison> list = tournee.getLivraisons();
+        if(list.size() > 0 && list.get(0).getDestination() == carte.getEntrepot()) list.remove(0);
+        for(Livraison livraison : list){
+            Text newtext = new Text("Id : " + livraison.getDestination().getId() + " longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
+            newtext.setOnMouseClicked(event -> {
+                this.numeroCoursier = numeroCoursier;
+                this.livraison = livraison;
+                if(selectedText != null) selectedText.setStyle("-fx-fill: black;");
+                selectedText = newtext;
+                selectedText.setStyle("-fx-fill: yellow;");
+            });
+            info.getChildren().add(newtext);
+        }
     }
 
     protected void showAlert(String alert){

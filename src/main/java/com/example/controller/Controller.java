@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.Carte;
 import com.example.model.Intersection;
+import com.example.model.Livraison;
 import javafx.stage.Stage;
 
 import java.time.LocalTime;
@@ -42,8 +43,8 @@ public class Controller {
         etatCourant.addDelivery(listeDeCommandes, LocalTime.of(heure,0,0), numeroCoursier, this, carte);
     }
 
-    public void deleteDelivery() {
-        etatCourant.deleteDelivery(this, stage);
+    public void deleteDelivery(int numeroCoursier, Livraison livraison) {
+        etatCourant.deleteDelivery(listeDeCommandes, numeroCoursier, livraison, this, carte);
     }
 
     public void calculateDelivery() {

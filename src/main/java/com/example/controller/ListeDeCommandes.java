@@ -34,8 +34,10 @@ public class ListeDeCommandes {
     }
 
     public void redo(){
-        index++;
-        listeDeCommandes.get(index).execute();
+        if(index < listeDeCommandes.size()-1){
+            index++;
+            listeDeCommandes.get(index).execute();
+        }
     }
 
     public void reset(){

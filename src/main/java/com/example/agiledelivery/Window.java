@@ -31,8 +31,8 @@ public class Window extends Application {
     protected static final String UNDO = "Undo";
     protected static final String REDO = "Redo";
     protected static final String RESET_NB_COURIERS = "Modifier le nombre de coursiers";
-
-    protected static final String NB_COURIERS = "Nombres de coursiers : ";
+    protected static final String REMOVE = "Supprimer une livraison ajoutée";
+    protected static final String NB_COURIERS = "Numero de coursier : ";
     protected static final String INTERVAL = "Choisir une fenêtre temporelle : ";
     private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR};
     private ArrayList<Button> buttons;
@@ -109,6 +109,13 @@ public class Window extends Application {
         textArea.setPrefHeight(buttonHeight);
         textualView.getChildren().add(textArea);
         textualView.setTextArea(textArea);
+
+        Button button3 = new Button(REMOVE);
+        buttons.add(button3);
+        button3.setLayoutX(0);
+        button3.setLayoutY((buttons.size()+5)*buttonHeight);
+        button3.setOnAction(buttonListener);
+        textualView.getChildren().add(button3);
     }
 
 
