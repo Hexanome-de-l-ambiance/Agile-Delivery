@@ -30,6 +30,8 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
     private MouseListener mouseListener;
 
+    private final double DETECTION_RADIUS = 7.0;
+
     public GraphicalView(Carte carte) {
         this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
         this.setPrefHeight(Window.PREFHEIGHT);
@@ -103,11 +105,14 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
-            circleMap.put(circle, intersection);
-            circle.setOnMouseEntered(event -> circle.setFill(Color.RED));
-            circle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
+            Circle detectionCircle = new Circle(adjustedX, adjustedY, DETECTION_RADIUS);
+            detectionCircle.setFill(Color.TRANSPARENT);
+            detectionCircle.setOnMouseEntered(event -> circle.setFill(Color.RED));
+            detectionCircle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
 
+            circleMap.put(detectionCircle, intersection);
             graph.getChildren().add(circle); // Add to right pane
+            graph.getChildren().add(detectionCircle);
         }
 
         for (Segment segment : carte.getListeSegments().values()) {
