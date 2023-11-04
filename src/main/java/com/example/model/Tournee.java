@@ -39,20 +39,22 @@ public class Tournee{
     public LinkedList<Chemin> getListeChemins() {
         return listeChemins;
     }
-    public void calculerTournee(Carte carte) {
+    public boolean calculerTournee(Carte carte) {
         long start = System.currentTimeMillis();
         listeChemins.clear();
-        if(livraisons.size() == 0) return;
+        if(livraisons.size() == 0) {
+            return false;
+        }
 
         Livraison entrepot = new Livraison(carte.getEntrepot(), Livraison.DEBUT_TOURNEE);
-        livraisons.add(0, entrepot);
+        if(livraisons.get(0).getDestination() != entrepot.getDestination()) livraisons.add(0, entrepot);
 
         Graph g = new CompleteGraph(carte, livraisons);
 
         TSP tsp = new TSP2();
         if(!tsp.searchSolution(10000,g)) {
             System.out.println("No solution found");
-            return;
+            return false;
         }
 
         Chemin chemin;
@@ -80,6 +82,7 @@ public class Tournee{
         longueurTotale += chemin.getLongueur();
 
         System.out.println("Solution found in  " + (System.currentTimeMillis() - start) + " ms");
+        return true;
     }
 
     public void printTournee()
