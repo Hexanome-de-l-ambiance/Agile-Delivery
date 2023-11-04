@@ -5,6 +5,7 @@ import com.example.model.Intersection;
 import com.example.model.Livraison;
 import com.example.utils.Astar;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -30,15 +31,17 @@ public class CompleteGraph implements Graph{
 		{
 			for(int j=0 ; j < livraisons.size() ; j++)
 			{
-				Intersection intersection1 = livraisons.get(i).getDestination();
-				Intersection intersection2 = livraisons.get(j).getDestination();
-				if(Objects.equals(intersection1.getId(), intersection2.getId()))
-				{
+				LocalTime debutCreneauHoraire1 = livraisons.get(i).getCrenauHoraire();
+				LocalTime finCreneauHoraire1 = livraisons.get(i).getCrenauHoraire().plus(Livraison.DUREE_CRENEAU_HORAIRE);
+				LocalTime debutCreneauHoraire2 = livraisons.get(j).getCrenauHoraire();
+				if(i == j) {
 					cost[i][j] = -1;
-				}
-				else
-				{
-					cost[i][j] = Astar.calculDistance(carte, intersection1, intersection2);
+				}else if(j == 0) {
+					cost[i][j] = Astar.calculDistance(carte, livraisons.get(i).getDestination(), carte.getEntrepot());
+				} else if(debutCreneauHoraire1 == debutCreneauHoraire2 || finCreneauHoraire1.isBefore(debutCreneauHoraire2) || finCreneauHoraire1.equals(debutCreneauHoraire2)) {
+					cost[i][j] = Astar.calculDistance(carte, livraisons.get(i).getDestination(), livraisons.get(j).getDestination());
+				}else{
+					cost[i][j] = -1;
 				}
 			}
 		}
@@ -56,7 +59,7 @@ public class CompleteGraph implements Graph{
 
 	@Override
 	public boolean isArc(int i, int j) {
-		return i != j;
+		return cost[i][j] != -1;
 	}
 
 	@Override

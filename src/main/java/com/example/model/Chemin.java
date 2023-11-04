@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -8,18 +9,17 @@ import java.util.*;
 public class Chemin {
 
     private LinkedList<Segment> listeSegments;
+    private double longueur;
+    private Duration duree;
 
     /**
      * Default constructor
      */
     public Chemin() {
+        longueur = 0;
+        duree = Duration.ZERO;
         listeSegments = new LinkedList<>();
     }
-
-    public Chemin(LinkedList<Segment> listeSegments) {
-        this.listeSegments = listeSegments;
-    }
-
     public LinkedList<Segment> getListeSegments() {
         return listeSegments;
     }
@@ -34,22 +34,21 @@ public class Chemin {
         return listeSegments.getLast().getDestination();
     }
 
+    public Duration getDuree() {
+        return duree;
+    }
+
+    public double getLongueur() { return longueur; }
+
     /**
      * Add a segment in first position of the list of segments and check if its destination is the same as the origin of the first segment
-     * @param segment
-     * @return True if the segment was added, false otherwise
+     * @param segment the segment to add
      */
-    public Boolean addSegmentInFirstPosition(Segment segment) {
-        if (listeSegments.isEmpty()) {
-            listeSegments.add(segment);
-            return true;
-        } else {
-            if (Objects.equals(listeSegments.getFirst().getOrigin().getId(), segment.getDestination().getId())) {
-                listeSegments.addFirst(segment);
-                return true;
-            } else {
-                return false;
-            }
+    public void addSegmentInFirstPosition(Segment segment) {
+        if (listeSegments.isEmpty() || listeSegments.getFirst().getOrigin() == segment.getDestination()) {
+            listeSegments.addFirst(segment);
+            longueur += segment.getLength();
+            duree = Duration.ofMinutes((long)(longueur / Livraison.VITESSE_DEPLACEMENT));
         }
     }
 }

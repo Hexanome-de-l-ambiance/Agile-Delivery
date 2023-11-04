@@ -5,12 +5,14 @@ import com.example.model.Intersection;
 import com.example.model.Livraison;
 import javafx.stage.Stage;
 
+import java.time.LocalTime;
+
 /**
  *
  */
 public interface Etat {
 
-    public default void addDelivery(ListeDeCommandes l, int heure, int numeroCoursier, Controller c, Carte carte){};
+    public default void addDelivery(ListeDeCommandes l, LocalTime heure, int numeroCoursier, Controller c, Carte carte){};
 
     public default void addIntersection(Controller c, Intersection intersection) {};
 

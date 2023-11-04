@@ -42,9 +42,9 @@ public class RunTSP {
 		carte.initAdjacenceList();
 
 		ArrayList<Livraison> nodes = new ArrayList<Livraison>();
-		nodes.add(new Livraison(carte.getListeIntersections().get(1L),8));
-		nodes.add(new Livraison(carte.getListeIntersections().get(2L),8));
-		nodes.add(new Livraison(carte.getListeIntersections().get(3L),8));
+		nodes.add(new Livraison(carte.getListeIntersections().get(1L),Livraison.DEBUT_TOURNEE));
+		nodes.add(new Livraison(carte.getListeIntersections().get(2L),Livraison.DEBUT_TOURNEE));
+		nodes.add(new Livraison(carte.getListeIntersections().get(3L),Livraison.DEBUT_TOURNEE));
 
 		Graph g = new CompleteGraph(carte, nodes);
 

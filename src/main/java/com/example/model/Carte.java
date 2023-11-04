@@ -159,6 +159,7 @@ public class Carte {
     public void calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             entry.getValue().calculerTournee(this);
+            entry.getValue().printTournee();
         }
         firePropertyChange(UPDATE, null, listeTournees);
     }
