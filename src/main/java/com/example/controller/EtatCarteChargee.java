@@ -27,6 +27,15 @@ public class EtatCarteChargee implements Etat {
     }
 
     @Override
+    public void loadTour(Controller c, Carte carte, Stage stage) {
+        try{
+            XMLOpener.getInstance().readTour(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void modiferCoursiers(Controller c, Carte carte, int nombre) {
         carte.setNbCoursiers(nombre);
     }
@@ -35,6 +44,8 @@ public class EtatCarteChargee implements Etat {
         c.setEtatCourant(c.etatAjoutDestination);
         c.etatAjoutDestination.addIntersection(c, intersection);
     }
+
+
 
 
 

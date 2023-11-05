@@ -55,11 +55,11 @@ public class Controller {
         listeDeCommandes.reset();
     }
     public void loadTour() {
-        etatCourant.loadTour(this, carte, listeDeCommandes, stage);
+        etatCourant.loadTour(this, carte, stage);
     }
 
     public void saveTour() {
-        etatCourant.saveTour(this, carte, listeDeCommandes, stage);
+        etatCourant.saveTour(this, carte, stage);
     }
 
     public void undo() {

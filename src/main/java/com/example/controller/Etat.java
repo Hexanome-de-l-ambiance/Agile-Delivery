@@ -29,8 +29,8 @@ public interface Etat {
 
     public default void mouseMoved(Controller c, Carte carte, Intersection intersection){};
 
-    public default void loadTour(Controller controller, Carte carte, ListeDeCommandes listeDeCommandes, Stage stage){};
+    public default void loadTour(Controller c, Carte carte, Stage stage){};
 
-    public default void saveTour(Controller controller, Carte carte, ListeDeCommandes listeDeCommandes, Stage stage){};
+    public default void saveTour(Controller c, Carte carte, Stage stage){};
 
 }

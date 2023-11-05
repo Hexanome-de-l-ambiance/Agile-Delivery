@@ -75,6 +75,9 @@ public class Livraison {
         return heureLivraison;
     }
 
+    public void setIntersection(Intersection destination) {
+        this.destination = destination;
+    }
     public void setHeureLivraison(LocalTime heureLivraison) {
         this.heureLivraison = heureLivraison;
     }
