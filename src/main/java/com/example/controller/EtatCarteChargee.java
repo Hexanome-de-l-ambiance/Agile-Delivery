@@ -36,6 +36,8 @@ public class EtatCarteChargee implements Etat {
         c.etatAjoutDestination.addIntersection(c, intersection);
     }
 
+
+
     /**
      * Charger des demandes.
      * @param c Controller instance.
