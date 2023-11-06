@@ -9,9 +9,8 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -44,7 +43,7 @@ public class XMLMaker {
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
             Document document = documentBuilder.newDocument();
 
-            // Create root element <tournee>
+            // Create the root <tournee> element
             Element tourneeElement = document.createElement("tournee");
             document.appendChild(tourneeElement);
 
@@ -59,22 +58,30 @@ public class XMLMaker {
 
                 // Iterate through each Livraison and add to <livraisons>
                 List<Livraison> livraisonsList = tourneeEntry.getValue().getLivraisons(); // Assuming getLivraisons() exists and returns List<Livraison>
+                Long entrepotId = carte.getEntrepot().getId();
                 for (Livraison livraison : livraisonsList) {
+                    // Check if the Livraison is the entrepot; if so, skip it
+                    if (livraison.getDestination().getId().equals(entrepotId)) {
+                        continue; // Skip the entrepot
+                    }
+
+                    // Create <livraison> element for non-entrepot addresses
                     Element livraisonElement = document.createElement("livraison");
                     livraisonsElement.appendChild(livraisonElement);
 
-                    // Assuming that Livraison has an address ID and a delivery time
+                    // Create and append <address> element
                     Element addressElement = document.createElement("address");
-                    addressElement.setAttribute("id", String.valueOf(livraison.getDestination().getId())); // Assuming getAddressId() exists
+                    addressElement.setAttribute("id", String.valueOf(livraison.getDestination().getId())); // Assuming getDestination() and getId() exist
                     livraisonElement.appendChild(addressElement);
 
+                    // Create and append <heureLivraison> element
                     Element heureLivraisonElement = document.createElement("heureLivraison");
-                    heureLivraisonElement.setAttribute("heure", livraison.getCrenauHoraire().toString()); // Assuming getHeureLivraison() exists
+                    heureLivraisonElement.setTextContent(livraison.getHeureLivraison().toString()); // Assuming getHeureLivraison() exists and returns a Time object
                     livraisonElement.appendChild(heureLivraisonElement);
                 }
             }
 
-            // Save the XML content to the file
+            // Write the XML content to the file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -82,9 +89,10 @@ public class XMLMaker {
             StreamResult streamResult = new StreamResult(file);
 
             transformer.transform(domSource, streamResult);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle exceptions appropriately
+        } catch (ParserConfigurationException | TransformerException e) {
+            // Handle exceptions properly here
+            throw new CustomXMLParsingException("Error saving tournee to XML", e);
         }
     }
+
 }
