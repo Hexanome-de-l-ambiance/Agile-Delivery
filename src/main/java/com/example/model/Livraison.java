@@ -1,6 +1,5 @@
 package com.example.model;
 
-import java.time.format.FormatStyle;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 import java.time.Duration;
@@ -75,7 +74,7 @@ public class Livraison {
         return heureLivraison;
     }
 
-    public void setIntersection(Intersection destination) {
+    public void setDestination(Intersection destination) {
         this.destination = destination;
     }
     public void setHeureLivraison(LocalTime heureLivraison) {

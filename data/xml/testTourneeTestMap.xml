@@ -1,34 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<tournee coursier="12345">
+<tournee coursier="1">
     <livraisons>
         <livraison>
-            <address id="1" />
+            <address id="1"/>
             <heureLivraison>08:00:00</heureLivraison>
         </livraison>
         <livraison>
-            <address id="2" />
-            <heureLivraison>08:15:00</heureLivraison>
+            <address id="2"/>
+            <heureLivraison>08:02:00</heureLivraison> <!-- Assuming travel time from 1 to 2 is around 2 minutes -->
         </livraison>
         <livraison>
-            <address id="4" />
-            <heureLivraison>08:30:00</heureLivraison>
+            <address id="4"/>
+            <heureLivraison>08:03:30</heureLivraison> <!-- Assuming travel time from 2 to 4 is around 1.5 minutes -->
         </livraison>
         <!-- Add more livraison elements as needed for each delivery -->
     </livraisons>
-    <chemins>
-        <chemin>
-            <origin id="1" />
-            <destination id="2" />
-            <duree>00:05:00</duree> <!-- This is an example duration for the path -->
-            <longueur>118.890465</longueur> <!-- Length of the path in meters -->
-        </chemin>
-        <chemin>
-            <origin id="2" />
-            <destination id="4" />
-            <duree>00:10:00</duree>
-            <longueur>193.1553</longueur> <!-- Example length calculated from path segments -->
-        </chemin>
-        <!-- Add more chemin elements as needed for each path in the tour -->
-    </chemins>
-    <longueurTotale>312.045765</longueurTotale> <!-- Example total length of the tour -->
 </tournee>

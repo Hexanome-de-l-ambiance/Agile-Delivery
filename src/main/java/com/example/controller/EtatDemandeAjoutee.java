@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
+import com.example.xml.CustomXMLParsingException;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;
 
@@ -33,6 +34,14 @@ public class EtatDemandeAjoutee implements Etat {
     @Override
     public void modiferCoursiers(Controller c, Carte carte, int nombre) {
         carte.setNbCoursiers(nombre);
+    }
+    @Override
+    public void saveTour(Controller c, Carte carte, Stage stage) {
+        try {
+            XMLOpener.getInstance().saveTour(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void undo(ListeDeCommandes l){
         l.undo();

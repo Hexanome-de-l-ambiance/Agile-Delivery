@@ -19,12 +19,23 @@ public class XMLOpener{
 
     private XMLOpener() {}
 
+
+
     private static class SingletonHelper {
         private static final XMLOpener INSTANCE = new XMLOpener();
     }
 
     public static XMLOpener getInstance() {
         return SingletonHelper.INSTANCE;
+    }
+
+    public void saveTour(Stage stage, Carte carte) throws CustomXMLParsingException {
+        try {
+            XMLMaker.getInstance().saveTourneeToXML(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new CustomXMLParsingException(e.getMessage());
+        }
+
     }
 
     public void readTour(Stage stage, Carte carte) throws CustomXMLParsingException {
@@ -139,7 +150,7 @@ public class XMLOpener{
             if ("livraison".equals(qName) && currentLivraison != null && currentAddressId != null) {
                 // Assume that Livraison requires an Intersection object and a delivery time
                 Intersection intersection = carte.getIntersection(currentAddressId);
-                currentLivraison.setIntersection(intersection);
+                currentLivraison.setDestination(intersection);
                 // Add the complete Livraison to the Carte
                 carte.addLivraison(numeroCoursier, currentLivraison);
                 // Reset the currentLivraison and currentAddressId for the next delivery
