@@ -29,7 +29,7 @@ public class EtatCarteChargee implements Etat {
     @Override
     public void loadTour(Controller c, Carte carte, Stage stage) {
         try{
-            XMLOpener.getInstance().readTour(stage, carte);
+            XMLOpener.getInstance().loadTour(stage, carte);
         } catch (CustomXMLParsingException e) {
             throw new RuntimeException(e);
         }

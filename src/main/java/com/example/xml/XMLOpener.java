@@ -38,7 +38,7 @@ public class XMLOpener{
 
     }
 
-    public void readTour(Stage stage, Carte carte) throws CustomXMLParsingException {
+    public void loadTour(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
         if (file == null) {
             carte.sendException(new CustomXMLParsingException("File null"));
@@ -103,9 +103,7 @@ public class XMLOpener{
         }
     }
 
-    public void writeFile(Carte carte) throws CustomXMLParsingException {
 
-    }
 
     private static class HandlerTour extends DefaultHandler {
         private Carte carte;
