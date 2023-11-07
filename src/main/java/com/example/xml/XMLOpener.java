@@ -113,6 +113,7 @@ public class XMLOpener{
         private Long currentAddressId;
         private StringBuilder charactersBuffer = new StringBuilder();
         private int numeroCoursier;
+        private int nbCoursiers;
 
         public HandlerTour(Carte carte) {
             this.carte = carte;
@@ -122,41 +123,36 @@ public class XMLOpener{
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             charactersBuffer.setLength(0); // Clear the characters buffer
 
-            try {
-                if ("tournee".equals(qName)) {
-                    // If there are attributes specific to the "tournee" to handle, do it here.
-                    // e.g., String courierId = attributes.getValue("coursier");
-                    numeroCoursier = Integer.parseInt(attributes.getValue("coursier"));
-                } else if ("livraison".equals(qName)) {
-                    // Prepare to handle a new Livraison
-                    currentLivraison = new Livraison();
-                } else if ("address".equals(qName) && currentLivraison != null) {
-                    currentAddressId = Long.valueOf(attributes.getValue("id"));
-                } // Additional 'else if' blocks for other elements such as "chemin" would go here
-            } catch (NumberFormatException e) {
-                throw new SAXException("Number format exception encountered.", e);
+            if ("tournees".equals(qName)) {
+                String nbCoursiersValue = attributes.getValue("nbCoursiers");
+                if (nbCoursiersValue != null) {
+                    nbCoursiers = Integer.parseInt(nbCoursiersValue);
+                    carte.setNbCoursiers(nbCoursiers);
+                }
+            } else if ("tournee".equals(qName)) {
+                String coursierIdValue = attributes.getValue("numeroCoursier");
+                if (coursierIdValue != null) {
+                    numeroCoursier = Integer.parseInt(coursierIdValue);
+                }
+            } else if ("livraison".equals(qName)) {
+                currentLivraison = new Livraison();
+            } else if ("address".equals(qName) && currentLivraison != null) {
+                currentAddressId = Long.valueOf(attributes.getValue("id"));
             }
         }
 
         @Override
         public void characters(char[] ch, int start, int length) {
-            // Accumulate text content in a StringBuilder
             charactersBuffer.append(ch, start, length);
         }
 
         @Override
         public void endElement(String uri, String localName, String qName) {
-            String content = charactersBuffer.toString().trim(); // Trim whitespace from the accumulated text
             if ("creneauHoraire".equals(qName) && currentLivraison != null) {
-                // Parse the delivery time
-                LocalTime creneauHoraire = LocalTime.parse(content);
+                LocalTime creneauHoraire = LocalTime.parse(charactersBuffer.toString().trim());
                 currentLivraison.setCrenauHoraire(creneauHoraire);
-                // System.out.println("creneauHoraire : " + creneauHoraire);
             } else if ("address".equals(qName) && currentLivraison != null) {
-                // Set the destination address for the delivery
                 Intersection intersection = carte.getIntersection(currentAddressId);
-                // System.out.println("currentAddressId : " + currentAddressId);
-                // System.out.println("intersection : " + intersection);
                 currentLivraison.setDestination(intersection);
                 currentAddressId = null; // Reset the currentAddressId
             } else if ("livraison".equals(qName) && currentLivraison != null) {
@@ -165,10 +161,8 @@ public class XMLOpener{
             }
             charactersBuffer.setLength(0); // Clear the buffer after handling the element's content
         }
-
-
-        // Helper methods to add Livraison and other objects to the Carte would be defined outside of the endElement method
     }
+
 
 
     private static class HandlerPlan extends DefaultHandler {
