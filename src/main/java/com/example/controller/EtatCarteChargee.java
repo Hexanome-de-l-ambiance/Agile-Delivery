@@ -30,6 +30,7 @@ public class EtatCarteChargee implements Etat {
     public void loadTour(Controller c, Carte carte, Stage stage) {
         try{
             XMLOpener.getInstance().loadTour(stage, carte);
+            c.setEtatCourant(c.etatDemandeAjoutee);
         } catch (CustomXMLParsingException e) {
             throw new RuntimeException(e);
         }

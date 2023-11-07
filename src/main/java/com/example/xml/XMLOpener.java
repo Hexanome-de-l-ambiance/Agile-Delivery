@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
 
+import com.example.controller.EtatDemandeAjoutee;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
@@ -150,12 +151,12 @@ public class XMLOpener{
                 // Parse the delivery time
                 LocalTime creneauHoraire = LocalTime.parse(content);
                 currentLivraison.setCrenauHoraire(creneauHoraire);
-                System.out.println("creneauHoraire : " + creneauHoraire);
+                // System.out.println("creneauHoraire : " + creneauHoraire);
             } else if ("address".equals(qName) && currentLivraison != null) {
                 // Set the destination address for the delivery
                 Intersection intersection = carte.getIntersection(currentAddressId);
-                System.out.println("currentAddressId : " + currentAddressId);
-                System.out.println("intersection : " + intersection);
+                // System.out.println("currentAddressId : " + currentAddressId);
+                // System.out.println("intersection : " + intersection);
                 currentLivraison.setDestination(intersection);
                 currentAddressId = null; // Reset the currentAddressId
             } else if ("livraison".equals(qName) && currentLivraison != null) {
