@@ -50,4 +50,13 @@ public class EtatTourneeCalculee implements Etat {
         carte.resetTournee();
         c.setEtatCourant(c.etatCarteChargee);
     }
+
+    @Override
+    public void saveTour(Controller c, Carte carte, Stage stage) {
+        try {
+            XMLOpener.getInstance().saveTour(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
