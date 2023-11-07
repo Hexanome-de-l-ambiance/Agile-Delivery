@@ -84,4 +84,7 @@ public class Livraison {
         this.heureLivraison = heureLivraison;
     }
 
+    public void setCrenauHoraire(LocalTime crenauHoraire) {
+        this.crenauHoraire = crenauHoraire;
+    }
 }

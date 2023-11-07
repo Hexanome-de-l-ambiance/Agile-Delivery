@@ -3,16 +3,15 @@
     <livraisons>
         <livraison>
             <address id="1"/>
-            <heureLivraison>08:00:00</heureLivraison>
+            <creneauHoraire>08:00:00</creneauHoraire>
         </livraison>
         <livraison>
             <address id="2"/>
-            <heureLivraison>08:02:00</heureLivraison> <!-- Assuming travel time from 1 to 2 is around 2 minutes -->
+            <creneauHoraire>08:00:00</creneauHoraire>
         </livraison>
         <livraison>
             <address id="4"/>
-            <heureLivraison>08:03:30</heureLivraison> <!-- Assuming travel time from 2 to 4 is around 1.5 minutes -->
+            <creneauHoraire>09:00:00</creneauHoraire>
         </livraison>
-        <!-- Add more livraison elements as needed for each delivery -->
     </livraisons>
 </tournee>

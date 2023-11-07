@@ -40,11 +40,12 @@ public class XMLOpener{
 
     public void loadTour(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
+
         if (file == null) {
             carte.sendException(new CustomXMLParsingException("File null"));
             throw new CustomXMLParsingException("File null");
         }
-        // carte.reset();
+
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
@@ -145,10 +146,11 @@ public class XMLOpener{
         @Override
         public void endElement(String uri, String localName, String qName) {
             String content = charactersBuffer.toString().trim(); // Trim whitespace from the accumulated text
-            if ("heureLivraison".equals(qName) && currentLivraison != null) {
+            if ("creneauHoraire".equals(qName) && currentLivraison != null) {
                 // Parse the delivery time
-                LocalTime heureLivraison = LocalTime.parse(content);
-                currentLivraison.setHeureLivraison(heureLivraison);
+                LocalTime creneauHoraire = LocalTime.parse(content);
+                currentLivraison.setCrenauHoraire(creneauHoraire);
+                System.out.println("creneauHoraire : " + creneauHoraire);
             } else if ("address".equals(qName) && currentLivraison != null) {
                 // Set the destination address for the delivery
                 Intersection intersection = carte.getIntersection(currentAddressId);
