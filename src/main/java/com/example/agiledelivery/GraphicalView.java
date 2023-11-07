@@ -15,10 +15,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.util.Pair;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
 
@@ -27,6 +24,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private HashMap<Circle, Intersection> circleMap;
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
     private MouseListener mouseListener;
+    private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.YELLOWGREEN, Color.PURPLE, Color.ORANGE, Color.PINK, Color.AQUA, Color.FUCHSIA, Color.SIENNA));
 
     private final double DETECTION_RADIUS = 7.0;
 
@@ -150,19 +148,19 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double scaleX = graph.getWidth() / rangeLon;
         double scaleY = graph.getHeight() / rangeLat;
         double scale = Math.min(scaleX, scaleY);
+        Color color = colors.get((numeroCoursier-1) % colors.size());
 
         for (Livraison livraison : tournee.getLivraisons()) {
             if(livraison.getDestination() == carte.getEntrepot()) continue;
             double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
             double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
-            Circle circle = new Circle(adjustedX, adjustedY, 4, Color.BLUE);
+            Circle circle = new Circle(adjustedX, adjustedY, 6, Color.RED);
+            circle.toFront();
             graph.getChildren().add(circle);
         }
 
-        Random random = new Random();
-        Color randomColor1 = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-        Color randomColor2 = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        int i = 1;
         for(Chemin chemin : tournee.getListeChemins())
         {
             for (Segment segment : chemin.getListeSegments()) {
@@ -174,24 +172,38 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 double angle = Math.atan2((adjustedY2 - adjustedY1), (adjustedX2 - adjustedX1));
 
                 // Create a Polygon to represent the arrowhead for the last segment
-                if(segment == chemin.getListeSegments().get(chemin.getListeSegments().size() - 1)) {
+                if(segment == chemin.getListeSegments().get(chemin.getListeSegments().size() - 1) && segment.getDestination() != carte.getEntrepot()) {
                     Polygon arrowhead = new Polygon();
                     arrowhead.getPoints().addAll(
                             adjustedX2 - 15 * Math.cos(angle - Math.toRadians(30)), adjustedY2 - 15 * Math.sin(angle - Math.toRadians(30)),
                             adjustedX2, adjustedY2,
                             adjustedX2 - 15 * Math.cos(angle + Math.toRadians(30)), adjustedY2 - 15 * Math.sin(angle + Math.toRadians(30))
                     );
-                    arrowhead.setFill(Color.BLUE);
+                    arrowhead.setFill(Color.BLACK);
+                    arrowhead.toFront();
                     graph.getChildren().add(arrowhead);
+
+                    double adjustedX = (segment.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2 ;
+                    double adjustedY = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
+                    javafx.scene.text.Text text = new javafx.scene.text.Text("" + i++);
+                    text.setX(adjustedX - 5);
+                    text.setY(adjustedY - 15);
+                    text.setStroke(color);
+                    text.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: white; -fx-stroke-width: 1px;");
+                    text.toFront();
+                    graph.getChildren().add(text);
                 }
                 Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
 
                 line.setStrokeType(StrokeType.OUTSIDE); // Set the stroke type
+                line.setStrokeWidth(2); // Set the stroke width
+                line.setStroke(color);
                 if(hashSet.contains(new Pair<>(segment.getOrigin().getId(), segment.getDestination().getId())) || hashSet.contains(new Pair<>(segment.getDestination().getId(), segment.getOrigin().getId()))) {
-                    line.setStroke(Color.RED);
+                    line.getStrokeDashArray().addAll((double)(numeroCoursier%3), 8d);
                 }
-                else applyCustomStroke(line, randomColor1, randomColor2);
-                hashSet.add(new Pair<>(segment.getOrigin().getId(), segment.getDestination().getId()));
+                else {
+                    hashSet.add(new Pair<>(segment.getOrigin().getId(), segment.getDestination().getId()));
+                }
                 graph.getChildren().add(line);
             }
         }
