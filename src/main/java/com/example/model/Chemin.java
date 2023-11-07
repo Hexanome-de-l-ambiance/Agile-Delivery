@@ -1,6 +1,7 @@
 package com.example.model;
 
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -11,6 +12,7 @@ public class Chemin {
     private LinkedList<Segment> listeSegments;
     private double longueur;
     private Duration duree;
+    private LocalTime heureArrivee;
 
     /**
      * Default constructor
@@ -50,5 +52,13 @@ public class Chemin {
             longueur += segment.getLength();
             duree = Duration.ofMinutes((long)(longueur / Livraison.VITESSE_DEPLACEMENT));
         }
+    }
+
+    public LocalTime getHeureArrivee() {
+        return heureArrivee;
+    }
+
+    public void setHeureArrivee(LocalTime heureArrivee) {
+        this.heureArrivee = heureArrivee;
     }
 }

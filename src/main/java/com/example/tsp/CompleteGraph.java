@@ -22,6 +22,7 @@ public class CompleteGraph implements Graph{
 	 */
 	public CompleteGraph(Carte carte, ArrayList<Livraison> livraisons) {
 		Intersection entrepot = carte.getEntrepot();
+		int entrepotIndex = livraisons.size();
 		this.nbVertices = livraisons.size() + 1;
 		this.cost = new double[nbVertices][nbVertices];
 
@@ -29,7 +30,7 @@ public class CompleteGraph implements Graph{
 		for(int i = 0; i < livraisons.size() ; i++) {
 			indexToId.put(i, livraisons.get(i).getDestination().getId());
 		}
-		indexToId.put(livraisons.size(), entrepot.getId());
+		indexToId.put(entrepotIndex, entrepot.getId());
 
 		cost[livraisons.size()][livraisons.size()] = -1;
 		for(int i=0; i < livraisons.size(); i++)
