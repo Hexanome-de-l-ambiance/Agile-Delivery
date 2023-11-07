@@ -75,6 +75,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 }
                 break;
             case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
+            case Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;
         }
 
     }

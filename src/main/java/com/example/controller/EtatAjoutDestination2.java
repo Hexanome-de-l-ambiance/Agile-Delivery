@@ -3,14 +3,11 @@ package com.example.controller;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
-import javafx.stage.Stage;
 
 import java.time.LocalTime;
 
-public class EtatAjoutDestination implements Etat{
+public class EtatAjoutDestination2 implements Etat{
     Intersection intersection;
-
-
     public void addIntersection(Controller c, Intersection intersection) {
         this.intersection = intersection;
     }
@@ -18,7 +15,6 @@ public class EtatAjoutDestination implements Etat{
 
     public void addDelivery(ListeDeCommandes l, LocalTime heure, int numeroCoursier, Controller c, Carte carte) {
         l.addCommande(new CommandeAjouterLivraison(new Livraison(intersection, heure), numeroCoursier, carte));
-        c.setEtatCourant(c.etatDemandeAjoutee);
+        c.setEtatCourant(c.etatTourneeCalculee);
     }
-
 }
