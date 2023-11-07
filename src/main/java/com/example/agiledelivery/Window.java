@@ -31,14 +31,22 @@ public class Window extends Application {
     protected static final String LOAD_PLAN = "Charger un plan";
     protected static final String ADD_DESTINATION = "Ajouter une destination";
     protected static final String CALCULATE_TOUR = "Calculer la tournée";
+
+
+    protected static final String LOAD_TOUR = "Charger une tournée";
+    protected static final String SAVE_TOUR = "Sauvegarder la tournée";
+
     protected static final String RESET = "Reset les tournées";
+
     protected static final String UNDO = "Undo";
     protected static final String REDO = "Redo";
     protected static final String RESET_NB_COURIERS = "Modifier le nombre de coursiers";
     protected static final String REMOVE = "Supprimer une livraison ajoutée";
     protected static final String ID_COURIER = "Numero de coursier : ";
     protected static final String INTERVAL = "Choisir une fenêtre temporelle : ";
-    private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, RESET};
+
+    private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR, RESET};
+
     private ArrayList<Button> buttons;
 
 

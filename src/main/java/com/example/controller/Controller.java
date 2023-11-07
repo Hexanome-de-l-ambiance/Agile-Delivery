@@ -54,6 +54,14 @@ public class Controller {
         etatCourant.modiferCoursiers(this, carte, nombre);
         listeDeCommandes.reset();
     }
+    public void loadTour() {
+        etatCourant.loadTour(this, carte, stage);
+    }
+
+    public void saveTour() {
+        etatCourant.saveTour(this, carte, stage);
+    }
+
     public void undo() {
         etatCourant.undo(listeDeCommandes);
     }
@@ -71,5 +79,6 @@ public class Controller {
     }
 
     public void reset() { etatCourant.reset(this, carte);};
+
 
 }

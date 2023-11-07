@@ -33,6 +33,8 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 break;
             }
             case Window.CALCULATE_TOUR: controller.calculateDelivery();  break;
+            case Window.LOAD_TOUR: controller.loadTour(); break;
+            case Window.SAVE_TOUR: controller.saveTour(); break;
             case Window.UNDO: controller.undo(); break;
             case Window.REDO: controller.redo(); break;
             case Window.RESET_NB_COURIERS: {
