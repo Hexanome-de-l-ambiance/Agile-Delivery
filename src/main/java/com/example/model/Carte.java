@@ -21,6 +21,7 @@ public class Carte {
     private int nbCoursiers;
     private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
+    private boolean isCalculated = false;
     public static final String RESET = "reset";
     public static final String RESET_TOURS = "reset tours";
     public static final String READ = "read";
@@ -156,24 +157,34 @@ public class Carte {
         firePropertyChange(READ, null, path);
     }
     public void addLivraison (int numeroCouriser, Livraison livraison) {
-        listeTournees.get(numeroCouriser).addLivraison(livraison);
-
-        firePropertyChange(ADD, numeroCouriser, listeTournees);
-
+        if(isCalculated){
+            listeTournees.get(numeroCouriser).addLivraison(this, livraison, numeroCouriser);
+            firePropertyChange(ADD, numeroCouriser, listeTournees);
+            firePropertyChange(UPDATE, null, listeTournees);
+        } else {
+            listeTournees.get(numeroCouriser).addLivraison(livraison);
+            firePropertyChange(ADD, numeroCouriser, listeTournees);
+        }
     }
 
     public void removeLivraison (int numeroCouriser, Livraison livraison) {
-        listeTournees.get(numeroCouriser).removeLivraison(livraison);
-        firePropertyChange(REMOVE, null, listeTournees);
+        if(isCalculated){
+            listeTournees.get(numeroCouriser).removeLivraison(this, numeroCouriser);
+            firePropertyChange(REMOVE, null, listeTournees);
+            firePropertyChange(UPDATE, null, listeTournees);
+        } else {
+            listeTournees.get(numeroCouriser).removeLivraison(livraison);
+            firePropertyChange(ADD, numeroCouriser, listeTournees);
+        }
     }
 
     public void calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             if(entry.getValue().calculerTournee(this) == false){
-                firePropertyChange(ERROR, null, "Tournée invalide");
-                return;
+                firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
             }
         }
+        isCalculated = true;
         firePropertyChange(UPDATE, null, listeTournees);
     }
 
