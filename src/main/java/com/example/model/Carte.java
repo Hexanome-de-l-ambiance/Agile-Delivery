@@ -22,6 +22,7 @@ public class Carte {
     private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     public static final String RESET = "reset";
+    public static final String RESET_TOURS = "reset tours";
     public static final String READ = "read";
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
@@ -131,6 +132,14 @@ public class Carte {
         firePropertyChange(RESET, null, null);
     }
 
+    public void resetTournee(){
+        listeTournees.clear();
+        for(int i = 1; i <= nbCoursiers; i++){
+            listeTournees.put(i, new Tournee());
+        }
+        firePropertyChange(RESET_TOURS, null, nbCoursiers);
+    }
+
     public void readEnd(String path){
         minLat = Double.MAX_VALUE;
         maxLat = Double.MIN_VALUE;
@@ -148,7 +157,9 @@ public class Carte {
     }
     public void addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
+
         firePropertyChange(ADD, numeroCouriser, listeTournees);
+
     }
 
     public void removeLivraison (int numeroCouriser, Livraison livraison) {
@@ -158,11 +169,14 @@ public class Carte {
 
     public void calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            entry.getValue().calculerTournee(this);
-            entry.getValue().printTournee();
+            if(entry.getValue().calculerTournee(this) == false){
+                firePropertyChange(ERROR, null, "Tournée invalide");
+                return;
+            }
         }
         firePropertyChange(UPDATE, null, listeTournees);
     }
+
     public HashMap<Integer, Tournee> getListeTournees() {
         return listeTournees;
     }

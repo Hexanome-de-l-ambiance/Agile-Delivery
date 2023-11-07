@@ -28,7 +28,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 try {
                     controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
                 } catch (NumberFormatException e){
-                    textualView.showAlert("Veuillez choisir un numero de coursier");
+                    textualView.showAlert("Veuillez choisir un numero de coursier et un fenêtre temporelle");
                 }
                 break;
             }
@@ -55,6 +55,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 }
                 break;
             }
+            case Window.RESET: controller.reset();
         }
     }
 }

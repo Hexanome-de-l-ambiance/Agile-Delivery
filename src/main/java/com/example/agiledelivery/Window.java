@@ -3,9 +3,11 @@ package com.example.agiledelivery;
 import com.example.controller.Controller;
 import com.example.model.Carte;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
@@ -20,6 +22,7 @@ public class Window extends Application {
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
 
+    private VBox vbButtons = new VBox();
     protected static final int PREFWIDTH = 1600;
     protected static final int PREFHEIGHT = 800;
     protected static final double textualViewScale = 0.2;
@@ -29,15 +32,21 @@ public class Window extends Application {
     protected static final String ADD_DESTINATION = "Ajouter une destination";
     protected static final String CALCULATE_TOUR = "Calculer la tournée";
 
+
     protected static final String LOAD_TOUR = "Charger une tournée";
     protected static final String SAVE_TOUR = "Sauvegarder la tournée";
+
+    protected static final String RESET = "Reset les tournées";
+
     protected static final String UNDO = "Undo";
     protected static final String REDO = "Redo";
     protected static final String RESET_NB_COURIERS = "Modifier le nombre de coursiers";
     protected static final String REMOVE = "Supprimer une livraison ajoutée";
-    protected static final String NB_COURIERS = "Numero de coursier : ";
+    protected static final String ID_COURIER = "Numero de coursier : ";
     protected static final String INTERVAL = "Choisir une fenêtre temporelle : ";
-    private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR};
+
+    private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR, RESET};
+
     private ArrayList<Button> buttons;
 
 
@@ -48,7 +57,8 @@ public class Window extends Application {
 
         textualView = new TextualView(carte);
         graphicalView = new GraphicalView(carte);
-
+        vbButtons.setSpacing(10);
+        vbButtons.setPadding(new Insets(0, 35, buttonHeight, 35));
         initializeButtons(controller);
         initializeRequestArea();
         buttonListener.setTextualView(textualView);
@@ -63,67 +73,62 @@ public class Window extends Application {
     public void initializeButtons(Controller controller) {
         buttonListener = new ButtonListener(controller);
         buttons = new ArrayList<Button>();
+
         for (String text : buttonTexts){
             Button button = new Button(text);
             buttons.add(button);
-            button.setLayoutX(0);
-            button.setLayoutY((buttons.size()-1)*buttonHeight);
+            button.setMaxWidth(Double.MAX_VALUE);
             button.setOnAction(buttonListener);
-            textualView.getChildren().add(button); // Add the button to the left pane
+            vbButtons.getChildren().add(button);
         }
+        textualView.getChildren().add(vbButtons);
     }
 
     public void initializeRequestArea(){
+
         Button button1 = new Button(ADD_DESTINATION);
         buttons.add(button1);
-        button1.setLayoutX(0);
-        button1.setLayoutY((buttons.size()-1)*buttonHeight);
+
+        button1.setMaxWidth(Double.MAX_VALUE);
         button1.setOnAction(buttonListener);
-        textualView.getChildren().add(button1);
-        Text text1 = new Text(NB_COURIERS);
-        text1.setLayoutX(0);
-        text1.setLayoutY((buttons.size()+0.5)*buttonHeight);
-        textualView.getChildren().add(text1);
+        vbButtons.getChildren().add(button1);
+
+        Text text1 = new Text(ID_COURIER);
+        vbButtons.getChildren().add(text1);
         ComboBox<String> comboBox1 = new ComboBox<>();
-        comboBox1.setLayoutX(0);
-        comboBox1.setLayoutY((buttons.size()+1)*buttonHeight);
-        textualView.getChildren().add(comboBox1);
+        vbButtons.getChildren().add(comboBox1);
         textualView.setComboBox(comboBox1);
 
         Text text2 = new Text(INTERVAL);
-        text2.setLayoutX(0);
-        text2.setLayoutY((buttons.size()+2.5)*buttonHeight);
-        textualView.getChildren().add(text2);
+        vbButtons.getChildren().add(text2);
         ComboBox<String> comboBox2 = new ComboBox<>();
-        comboBox2.setLayoutX(0);
-        comboBox2.setLayoutY((buttons.size()+3)*buttonHeight);
-        textualView.getChildren().add(comboBox2);
+
+        vbButtons.getChildren().add(comboBox2);
         textualView.setComboBoxIntervals(comboBox2);
 
         Button button2 = new Button(RESET_NB_COURIERS);
         buttons.add(button2);
-        button2.setLayoutX(0);
-        button2.setLayoutY((buttons.size()+3)*buttonHeight);
+        button2.setMaxWidth(Double.MAX_VALUE);
         button2.setOnAction(buttonListener);
-        textualView.getChildren().add(button2);
+        vbButtons.getChildren().add(button2);
         TextArea textArea = new TextArea();
-        textArea.setLayoutX(0);
-        textArea.setLayoutY((buttons.size()+4)*buttonHeight);
+
         textArea.setPrefHeight(buttonHeight);
-        textualView.getChildren().add(textArea);
+        textArea.setPrefWidth(PREFWIDTH*textualViewScale*0.8);
+        vbButtons.getChildren().add(textArea);
         textualView.setTextArea(textArea);
 
         Button button3 = new Button(REMOVE);
         buttons.add(button3);
-        button3.setLayoutX(0);
-        button3.setLayoutY((buttons.size()+5)*buttonHeight);
+        button3.setMaxWidth(Double.MAX_VALUE);
         button3.setOnAction(buttonListener);
-        textualView.getChildren().add(button3);
+        vbButtons.getChildren().add(button3);
+
     }
+
 
 
     public static void main(String[] args) {
         launch(args);
-
     }
 }

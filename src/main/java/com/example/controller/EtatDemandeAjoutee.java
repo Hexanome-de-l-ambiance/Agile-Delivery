@@ -25,16 +25,18 @@ public class EtatDemandeAjoutee implements Etat {
 
     public void calculerLivraisons(Controller c, Carte carte){
         carte.calculerTournees();
+        c.setEtatCourant(c.etatTourneeCalculee);
     }
 
     public void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){
         l.addCommande(new CommandeSupprimerLivraison(livraison, numeroCoursier, carte));
-
     };
+
     @Override
     public void modiferCoursiers(Controller c, Carte carte, int nombre) {
         carte.setNbCoursiers(nombre);
     }
+  
     @Override
     public void saveTour(Controller c, Carte carte, Stage stage) {
         try {
@@ -43,11 +45,17 @@ public class EtatDemandeAjoutee implements Etat {
             throw new RuntimeException(e);
         }
     }
+
     public void undo(ListeDeCommandes l){
         l.undo();
     }
 
     public void redo(ListeDeCommandes l){
         l.redo();
+    }
+
+    public void reset(Controller c, Carte carte){
+        carte.resetTournee();
+        c.setEtatCourant(c.etatCarteChargee);
     }
 }

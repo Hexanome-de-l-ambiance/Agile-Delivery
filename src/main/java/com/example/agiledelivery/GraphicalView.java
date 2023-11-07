@@ -3,7 +3,6 @@ package com.example.agiledelivery;
 import com.example.model.*;
 
 
-import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -13,7 +12,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Text;
 import javafx.util.Pair;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,6 +28,8 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
     private MouseListener mouseListener;
 
+    private final double DETECTION_RADIUS = 7.0;
+
     public GraphicalView(Carte carte) {
         this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
         this.setPrefHeight(Window.PREFHEIGHT);
@@ -42,7 +42,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         graph.setLayoutY(0);
         graph.setStyle("-fx-background-color: lightblue;");
         this.getChildren().add(graph);
-        this.setStyle("-fx-background-color: yellow;");
+        this.setStyle("-fx-background-color: lightblue;");
         carte.addPropertyChangeListener(this);
 
         this.circleMap = new HashMap<>();
@@ -75,6 +75,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 }
                 break;
             case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
+            case Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;
         }
 
     }
@@ -97,15 +98,20 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double scale = Math.min(scaleX, scaleY);
 
         for (Intersection intersection : carte.getListeIntersections().values()) {
+            if(intersection == carte.getEntrepot()) continue;
+
             double adjustedX = (intersection.getLongitude() - midLon) * scale + graph.getWidth() / 2;
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
-            circleMap.put(circle, intersection);
-            circle.setOnMouseEntered(event -> circle.setFill(Color.RED));
-            circle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
+            Circle detectionCircle = new Circle(adjustedX, adjustedY, DETECTION_RADIUS);
+            detectionCircle.setFill(Color.TRANSPARENT);
+            detectionCircle.setOnMouseEntered(event -> circle.setFill(Color.RED));
+            detectionCircle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
 
+            circleMap.put(detectionCircle, intersection);
             graph.getChildren().add(circle); // Add to right pane
+            graph.getChildren().add(detectionCircle);
         }
 
         for (Segment segment : carte.getListeSegments().values()) {
@@ -117,6 +123,14 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
             graph.getChildren().add(line); // Add to right pane
         }
+        Intersection entrepot = carte.getEntrepot();
+        double adjustedX = (entrepot.getLongitude() - midLon) * scale + graph.getWidth() / 2;
+        double adjustedY = -(entrepot.getLatitude() - midLat) * scale + graph.getHeight() / 2;
+
+        Circle circle = new Circle(adjustedX, adjustedY, 5, Color.GREEN);
+        circle.toFront();
+        graph.getChildren().add(circle); // Add to right pane
+
         mouseListener.setOnEvent();
     }
 
@@ -137,6 +151,15 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double scaleY = graph.getHeight() / rangeLat;
         double scale = Math.min(scaleX, scaleY);
 
+        for (Livraison livraison : tournee.getLivraisons()) {
+            if(livraison.getDestination() == carte.getEntrepot()) continue;
+            double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
+            double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
+
+            Circle circle = new Circle(adjustedX, adjustedY, 4, Color.BLUE);
+            graph.getChildren().add(circle);
+        }
+
         Random random = new Random();
         Color randomColor1 = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
         Color randomColor2 = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
@@ -150,15 +173,17 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
                 double angle = Math.atan2((adjustedY2 - adjustedY1), (adjustedX2 - adjustedX1));
 
-                // Create a Polygon to represent the arrowhead
-                Polygon arrowhead = new Polygon();
-                arrowhead.getPoints().addAll(
-                        adjustedX2 - 10 * Math.cos(angle - Math.toRadians(30)), adjustedY2 - 10 * Math.sin(angle - Math.toRadians(30)),
-                        adjustedX2, adjustedY2,
-                        adjustedX2 - 10 * Math.cos(angle + Math.toRadians(30)), adjustedY2 - 10 * Math.sin(angle + Math.toRadians(30))
-                );
-                arrowhead.setFill(Color.BLACK);
-
+                // Create a Polygon to represent the arrowhead for the last segment
+                if(segment == chemin.getListeSegments().get(chemin.getListeSegments().size() - 1)) {
+                    Polygon arrowhead = new Polygon();
+                    arrowhead.getPoints().addAll(
+                            adjustedX2 - 15 * Math.cos(angle - Math.toRadians(30)), adjustedY2 - 15 * Math.sin(angle - Math.toRadians(30)),
+                            adjustedX2, adjustedY2,
+                            adjustedX2 - 15 * Math.cos(angle + Math.toRadians(30)), adjustedY2 - 15 * Math.sin(angle + Math.toRadians(30))
+                    );
+                    arrowhead.setFill(Color.BLUE);
+                    graph.getChildren().add(arrowhead);
+                }
                 Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
 
                 line.setStrokeType(StrokeType.OUTSIDE); // Set the stroke type
@@ -168,7 +193,6 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 else applyCustomStroke(line, randomColor1, randomColor2);
                 hashSet.add(new Pair<>(segment.getOrigin().getId(), segment.getDestination().getId()));
                 graph.getChildren().add(line);
-                graph.getChildren().add(arrowhead);
             }
         }
     }

@@ -17,7 +17,6 @@ public class EtatCarteChargee implements Etat {
     public EtatCarteChargee() {
     }
 
-    @Override
     public void loadMap(Controller c, Carte carte, ListeDeCommandes l, Stage stage) {
         try{
             XMLOpener.getInstance().readFile(stage, carte);
@@ -25,6 +24,7 @@ public class EtatCarteChargee implements Etat {
             throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public void loadTour(Controller c, Carte carte, Stage stage) {
