@@ -23,12 +23,9 @@ public class CommandeSupprimerLivraison implements Commande{
     }
 
     @Override
-    public boolean execute() {
+    public void execute() {
         if (carte.getListeTournees().get(numeroCouriser).getLivraisons().size()>0) {
             carte.removeLivraison(numeroCouriser, livraison);
-            return true;
-        } else {
-            return false;
         }
     }
 
