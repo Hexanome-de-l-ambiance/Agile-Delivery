@@ -76,7 +76,8 @@ public class XMLMaker {
 
                     // Create and append <heureLivraison> element
                     Element heureLivraisonElement = document.createElement("heureLivraison");
-                    heureLivraisonElement.setTextContent(livraison.getHeureLivraison().toString()); // Assuming getHeureLivraison() exists and returns a Time object
+
+                    heureLivraisonElement.setTextContent(livraison.getCrenauHoraire().toString()); // Assuming getHeureLivraison() exists and returns a Time object
                     livraisonElement.appendChild(heureLivraisonElement);
                 }
             }

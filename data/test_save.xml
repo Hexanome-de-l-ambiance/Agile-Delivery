@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<tournee coursier="1">
-    <livraisons>
-        <livraison>
-            <address id="4"/>
-            <heureLivraison>08:00</heureLivraison>
-        </livraison>
-    </livraisons>
-</tournee>
