@@ -1,6 +1,6 @@
 package com.example.agiledelivery;
 
-import com.example.controller.Controller;
+import com.example.controller.*;
 import com.example.model.Livraison;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,10 +25,17 @@ public class ButtonListener implements EventHandler<ActionEvent> {
         switch (actionCommand) {
             case Window.LOAD_PLAN: controller.load(); break;
             case Window.ADD_DESTINATION:{
-                try {
-                    controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
-                } catch (NumberFormatException e){
-                    textualView.showAlert("Veuillez choisir un numero de coursier et un fenêtre temporelle");
+                if (controller.getEtatCourant() instanceof EtatInitial){
+                    textualView.showAlert("Aucune carte n'est chargée. Veuillez charger une carte avant d'ajouter des destinations.");
+                } else if (!(controller.getEtatCourant() instanceof EtatAjoutDestination)) {
+                    textualView.showAlert("Veuillez sélectionner un point de livraison à ajouter.");
+                } else {
+                    try {
+                        controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
+                    } catch (NumberFormatException e) {
+                        textualView.showAlert("Veuillez choisir un numero de coursier et un fenêtre temporelle");
+                    }
+
                 }
                 break;
             }
