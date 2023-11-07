@@ -67,6 +67,9 @@ public class Livraison {
     private Intersection destination;
 
     public Intersection getDestination() {
+        if (destination == null) {
+            throw new IllegalStateException("Destination is not set for this delivery.");
+        }
         return destination;
     }
 

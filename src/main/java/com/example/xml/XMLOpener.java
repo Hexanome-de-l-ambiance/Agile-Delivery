@@ -44,7 +44,7 @@ public class XMLOpener{
             carte.sendException(new CustomXMLParsingException("File null"));
             throw new CustomXMLParsingException("File null");
         }
-        carte.reset();
+        // carte.reset();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
@@ -106,7 +106,7 @@ public class XMLOpener{
 
 
     private static class HandlerTour extends DefaultHandler {
-        private Carte carte;
+        private final Carte carte;
         private Livraison currentLivraison;
         private Long currentAddressId;
         private StringBuilder charactersBuffer = new StringBuilder();
@@ -145,23 +145,24 @@ public class XMLOpener{
         @Override
         public void endElement(String uri, String localName, String qName) {
             String content = charactersBuffer.toString().trim(); // Trim whitespace from the accumulated text
-            if ("livraison".equals(qName) && currentLivraison != null && currentAddressId != null) {
-                // Assume that Livraison requires an Intersection object and a delivery time
-                Intersection intersection = carte.getIntersection(currentAddressId);
-                currentLivraison.setDestination(intersection);
-                // Add the complete Livraison to the Carte
-                carte.addLivraison(numeroCoursier, currentLivraison);
-                // Reset the currentLivraison and currentAddressId for the next delivery
-                currentLivraison = null;
-                currentAddressId = null;
-            } else if ("heureLivraison".equals(qName) && currentLivraison != null) {
-                // Handle the heureLivraison if it's not directly in "livraison"
+            if ("heureLivraison".equals(qName) && currentLivraison != null) {
+                // Parse the delivery time
                 LocalTime heureLivraison = LocalTime.parse(content);
                 currentLivraison.setHeureLivraison(heureLivraison);
-            } // Additional 'else if' blocks for handling end of "chemin" and its children would go here
-
+            } else if ("address".equals(qName) && currentLivraison != null) {
+                // Set the destination address for the delivery
+                Intersection intersection = carte.getIntersection(currentAddressId);
+                System.out.println("currentAddressId : " + currentAddressId);
+                System.out.println("intersection : " + intersection);
+                currentLivraison.setDestination(intersection);
+                currentAddressId = null; // Reset the currentAddressId
+            } else if ("livraison".equals(qName) && currentLivraison != null) {
+                carte.addLivraison(numeroCoursier, currentLivraison);
+                currentLivraison = null;
+            }
             charactersBuffer.setLength(0); // Clear the buffer after handling the element's content
         }
+
 
         // Helper methods to add Livraison and other objects to the Carte would be defined outside of the endElement method
     }
