@@ -31,13 +31,7 @@ public class EtatTourneeCalculee implements Etat {
             throw new RuntimeException(e);
         }
     }
-    public void saveTour(Controller c, Carte carte, Stage stage) {
-        try {
-            XMLOpener.getInstance().saveTour(stage, carte);
-        } catch (CustomXMLParsingException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
     public void undo(ListeDeCommandes l){
         l.undo();
     }
