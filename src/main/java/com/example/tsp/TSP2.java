@@ -5,6 +5,14 @@ import java.util.Iterator;
 
 public class TSP2 extends TSP1{
 
+    public TSP2() {
+        super();
+    }
+
+    public TSP2(int startVertex) {
+        super(startVertex);
+    }
+
     @Override
     protected double bound(Integer currentVertex, Collection<Integer> unvisited) {
         double longueur = Double.MAX_VALUE;
