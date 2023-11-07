@@ -26,7 +26,7 @@ public class EtatCarteChargee implements Etat {
     }
 
 
-    @Override
+
     public void loadTour(Controller c, Carte carte, Stage stage) {
         try{
             XMLOpener.getInstance().loadTour(stage, carte);
@@ -36,7 +36,7 @@ public class EtatCarteChargee implements Etat {
         }
     }
 
-    @Override
+
     public void saveTour(Controller c, Carte carte, Stage stage) {
         try {
             XMLOpener.getInstance().saveTour(stage, carte);

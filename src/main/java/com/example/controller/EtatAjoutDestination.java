@@ -10,11 +10,9 @@ import java.time.LocalTime;
 public class EtatAjoutDestination implements Etat{
     Intersection intersection;
 
-
     public void addIntersection(Controller c, Intersection intersection) {
         this.intersection = intersection;
     }
-
 
     public void addDelivery(ListeDeCommandes l, LocalTime heure, int numeroCoursier, Controller c, Carte carte) {
         l.addCommande(new CommandeAjouterLivraison(new Livraison(intersection, heure), numeroCoursier, carte));

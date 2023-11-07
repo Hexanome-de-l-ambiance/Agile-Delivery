@@ -32,12 +32,20 @@ public class EtatDemandeAjoutee implements Etat {
         l.addCommande(new CommandeSupprimerLivraison(livraison, numeroCoursier, carte));
     };
 
-    @Override
+
     public void modiferCoursiers(Controller c, Carte carte, int nombre) {
         carte.setNbCoursiers(nombre);
     }
-  
-    @Override
+
+    public void loadTour(Controller c, Carte carte, Stage stage) {
+        try{
+            XMLOpener.getInstance().loadTour(stage, carte);
+            c.setEtatCourant(c.etatDemandeAjoutee);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void saveTour(Controller c, Carte carte, Stage stage) {
         try {
             XMLOpener.getInstance().saveTour(stage, carte);
