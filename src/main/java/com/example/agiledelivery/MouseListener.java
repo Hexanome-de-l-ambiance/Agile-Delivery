@@ -39,8 +39,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
         });
 
         graphicalView.setOnMouseReleased(event -> {
-            if(isDragged);
-            //System.out.println("Released");
             isDragged = false;
         });
 
@@ -68,9 +66,13 @@ public class MouseListener implements EventHandler<ActionEvent> {
         HashMap<Circle, Intersection> circleMap = graphicalView.getCircleMap();
         for (Map.Entry<Circle, Intersection> entry : circleMap.entrySet()) {
             Circle key = entry.getKey();
-            key.setOnMouseClicked(mouseEvent -> {
-                controller.addDestination(entry.getValue());
-                textualView.setHint("Intersection id: "+ entry.getValue().getId() + " longitude: " + entry.getValue().getLongitude()+ " latitude: " + entry.getValue().getLatitude()+"\n");
+            key.setOnMouseReleased(mouseEvent -> {
+                if (isDragged) {
+                    mouseEvent.consume();
+                } else {
+                    controller.addDestination(entry.getValue());
+                    textualView.setHint("Intersection id: "+ entry.getValue().getId() + " longitude: " + entry.getValue().getLongitude()+ " latitude: " + entry.getValue().getLatitude()+"\n");
+                }
             });
         }
     }
