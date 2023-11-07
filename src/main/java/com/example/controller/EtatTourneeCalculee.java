@@ -3,6 +3,9 @@ package com.example.controller;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
+import com.example.xml.CustomXMLParsingException;
+import com.example.xml.XMLOpener;
+import javafx.stage.Stage;
 
 public class EtatTourneeCalculee implements Etat {
 
@@ -30,5 +33,14 @@ public class EtatTourneeCalculee implements Etat {
     public void reset(Controller c, Carte carte){
         carte.resetTournee();
         c.setEtatCourant(c.etatCarteChargee);
+    }
+
+    @Override
+    public void saveTour(Controller c, Carte carte, Stage stage) {
+        try {
+            XMLOpener.getInstance().saveTour(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
