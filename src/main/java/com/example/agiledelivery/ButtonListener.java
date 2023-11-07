@@ -28,11 +28,13 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 try {
                     controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
                 } catch (NumberFormatException e){
-                    textualView.showAlert("Veuillez choisir un numero de coursier");
+                    textualView.showAlert("Veuillez choisir un numero de coursier et un fenêtre temporelle");
                 }
                 break;
             }
             case Window.CALCULATE_TOUR: controller.calculateDelivery();  break;
+            case Window.LOAD_TOUR: controller.loadTour(); break;
+            case Window.SAVE_TOUR: controller.saveTour(); break;
             case Window.UNDO: controller.undo(); break;
             case Window.REDO: controller.redo(); break;
             case Window.RESET_NB_COURIERS: {
@@ -53,6 +55,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 }
                 break;
             }
+            case Window.RESET: controller.reset();
         }
     }
 }

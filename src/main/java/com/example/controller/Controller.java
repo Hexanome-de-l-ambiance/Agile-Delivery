@@ -23,7 +23,7 @@ public class Controller {
     protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
     protected final EtatDemandeAjoutee etatDemandeAjoutee = new EtatDemandeAjoutee();
-
+    protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
     }
@@ -54,6 +54,14 @@ public class Controller {
         etatCourant.modiferCoursiers(this, carte, nombre);
         listeDeCommandes.reset();
     }
+    public void loadTour() {
+        etatCourant.loadTour(this, carte, stage);
+    }
+
+    public void saveTour() {
+        etatCourant.saveTour(this, carte, stage);
+    }
+
     public void undo() {
         etatCourant.undo(listeDeCommandes);
     }
@@ -69,6 +77,8 @@ public class Controller {
     public void mouseMoved(Intersection intersection) {
         etatCourant.mouseMoved(this, carte, intersection);
     }
+
+    public void reset() { etatCourant.reset(this, carte);};
 
 
 }

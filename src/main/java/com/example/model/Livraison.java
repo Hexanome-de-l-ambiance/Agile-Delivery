@@ -1,6 +1,5 @@
 package com.example.model;
 
-import java.time.format.FormatStyle;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 import java.time.Duration;
@@ -68,6 +67,9 @@ public class Livraison {
     private Intersection destination;
 
     public Intersection getDestination() {
+        if (destination == null) {
+            throw new IllegalStateException("Destination is not set for this delivery.");
+        }
         return destination;
     }
 
@@ -75,8 +77,14 @@ public class Livraison {
         return heureLivraison;
     }
 
+    public void setDestination(Intersection destination) {
+        this.destination = destination;
+    }
     public void setHeureLivraison(LocalTime heureLivraison) {
         this.heureLivraison = heureLivraison;
     }
 
+    public void setCrenauHoraire(LocalTime crenauHoraire) {
+        this.crenauHoraire = crenauHoraire;
+    }
 }

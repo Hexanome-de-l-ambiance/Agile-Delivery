@@ -3,7 +3,6 @@ package com.example.agiledelivery;
 import com.example.model.*;
 
 
-import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -13,7 +12,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Text;
 import javafx.util.Pair;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -77,6 +75,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 }
                 break;
             case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
+            case Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;
         }
 
     }
