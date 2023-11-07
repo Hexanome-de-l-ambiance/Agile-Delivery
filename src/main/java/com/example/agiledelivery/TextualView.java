@@ -60,16 +60,16 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         numberCouriersText.setStyle("-fx-font-size: 12;");
         textFlow.setPrefWidth(this.getPrefWidth());
         textFlow.setLayoutX(0);
-        textFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 6*3);
+        textFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 5*3);
         textFlow.getChildren().add(messageText);
         info.setPrefWidth(this.getPrefWidth());
         info.setLayoutX(0);
-        info.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 6*4);
+        info.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 5*4);
 
 
         hintFlow.setPrefWidth(this.getPrefWidth());
         hintFlow.setLayoutX(0);
-        hintFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 6*5);
+        hintFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 12*11);
         hintFlow.getChildren().add(hint);
         this.getChildren().add(textFlow);
         this.getChildren().add(info);
@@ -160,6 +160,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 for(int i = 1; i <= newNumber; i++){
                     couriers.add(String.valueOf(i));
                 }
+                comboBox.setItems(couriers);
+                numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
+                info.getChildren().clear();
+                textHashMap.clear();
+                break;
+            }
+            case Carte.RESET_TOURS:{
+                couriers.clear();
+                couriers.add("1");
                 comboBox.setItems(couriers);
                 numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
                 info.getChildren().clear();

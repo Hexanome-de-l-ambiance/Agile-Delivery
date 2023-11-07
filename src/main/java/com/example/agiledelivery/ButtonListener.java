@@ -53,6 +53,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 }
                 break;
             }
+            case Window.RESET: controller.reset();
         }
     }
 }

@@ -22,6 +22,7 @@ public class Carte {
     private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     public static final String RESET = "reset";
+    public static final String RESET_TOURS = "reset tours";
     public static final String READ = "read";
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
@@ -129,6 +130,14 @@ public class Carte {
         listeSegments.clear();
         idProperty.set(1);
         firePropertyChange(RESET, null, null);
+    }
+
+    public void resetTournee(){
+        listeTournees.clear();
+        for(int i = 1; i <= nbCoursiers; i++){
+            listeTournees.put(i, new Tournee());
+        }
+        firePropertyChange(RESET_TOURS, null, nbCoursiers);
     }
 
     public void readEnd(String path){
