@@ -44,17 +44,17 @@ public class XMLMaker {
             Document document = documentBuilder.newDocument();
 
             // Create the root <tournee> element
-            Element tourneeElement = document.createElement("tournee");
+            Element tourneeElement = document.createElement("tournees");
             document.appendChild(tourneeElement);
-
+            tourneeElement.setAttribute("nbCoursiers", String.valueOf(carte.getListeTournees().size()));
             // Assume each courier has a Tournee, and we save each Tournee in its own XML
             for (HashMap.Entry<Integer, Tournee> tourneeEntry : carte.getListeTournees().entrySet()) {
-                // Set attribute courser to tournee element
-                tourneeElement.setAttribute("coursier", tourneeEntry.getKey().toString());
-
+                Element tourElement = document.createElement("tournee");
+                tourneeElement.appendChild(tourElement);
+                tourElement.setAttribute("numeroCoursier", String.valueOf(tourneeEntry.getKey()));
                 // Create <livraisons> element
                 Element livraisonsElement = document.createElement("livraisons");
-                tourneeElement.appendChild(livraisonsElement);
+                tourElement.appendChild(livraisonsElement);
 
                 // Iterate through each Livraison and add to <livraisons>
                 List<Livraison> livraisonsList = tourneeEntry.getValue().getLivraisons(); // Assuming getLivraisons() exists and returns List<Livraison>
@@ -75,7 +75,7 @@ public class XMLMaker {
                     livraisonElement.appendChild(addressElement);
 
                     // Create and append <heureLivraison> element
-                    Element heureLivraisonElement = document.createElement("heureLivraison");
+                    Element heureLivraisonElement = document.createElement("creneauHoraire");
 
                     heureLivraisonElement.setTextContent(livraison.getCrenauHoraire().toString()); // Assuming getHeureLivraison() exists and returns a Time object
                     livraisonElement.appendChild(heureLivraisonElement);

@@ -3,6 +3,9 @@ package com.example.controller;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
+import com.example.xml.CustomXMLParsingException;
+import com.example.xml.XMLOpener;
+import javafx.stage.Stage;
 
 public class EtatTourneeCalculee implements Etat {
 
@@ -16,9 +19,25 @@ public class EtatTourneeCalculee implements Etat {
         c.setEtatCourant(c.etatAjoutDestination2);
         c.etatAjoutDestination2.addIntersection(c, intersection);
     }
+
     public void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){
         l.addCommande(new CommandeSupprimerLivraison(livraison, numeroCoursier, carte));
-    };
+    }
+    public void loadTour(Controller c, Carte carte, Stage stage) {
+        try{
+            XMLOpener.getInstance().loadTour(stage, carte);
+            c.setEtatCourant(c.etatDemandeAjoutee);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void saveTour(Controller c, Carte carte, Stage stage) {
+        try {
+            XMLOpener.getInstance().saveTour(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void undo(ListeDeCommandes l){
         l.undo();
     }
