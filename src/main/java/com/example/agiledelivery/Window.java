@@ -32,7 +32,7 @@ public class Window extends Application {
     protected static final String REDO = "Redo";
     protected static final String RESET_NB_COURIERS = "Modifier le nombre de coursiers";
     protected static final String REMOVE = "Supprimer une livraison ajoutée";
-    protected static final String NB_COURIERS = "Numero de coursier : ";
+    protected static final String ID_COURIER = "Numero de coursier : ";
     protected static final String INTERVAL = "Choisir une fenêtre temporelle : ";
     private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR};
     private ArrayList<Button> buttons;
@@ -77,7 +77,7 @@ public class Window extends Application {
         button1.setLayoutY((buttons.size()-1)*buttonHeight);
         button1.setOnAction(buttonListener);
         textualView.getChildren().add(button1);
-        Text text1 = new Text(NB_COURIERS);
+        Text text1 = new Text(ID_COURIER);
         text1.setLayoutX(0);
         text1.setLayoutY((buttons.size()+0.5)*buttonHeight);
         textualView.getChildren().add(text1);

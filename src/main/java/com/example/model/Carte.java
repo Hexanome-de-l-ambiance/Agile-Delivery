@@ -146,16 +146,11 @@ public class Carte {
 
         firePropertyChange(READ, null, path);
     }
-    public boolean addLivraison (int numeroCouriser, Livraison livraison) {
+    public void addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
-        if(listeTournees.get(numeroCouriser).calculerTournee(this) == false){
-            listeTournees.get(numeroCouriser).removeLivraison(livraison);
-            firePropertyChange(ERROR, null, "Le coursier choisi ne peut pas faire cette livraison");
-            return false;
-        } else {
-            firePropertyChange(ADD, numeroCouriser, listeTournees);
-            return true;
-        }
+
+        firePropertyChange(ADD, numeroCouriser, listeTournees);
+
     }
 
     public void removeLivraison (int numeroCouriser, Livraison livraison) {
@@ -165,11 +160,14 @@ public class Carte {
 
     public void calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            entry.getValue().calculerTournee(this);
-            entry.getValue().printTournee();
+            if(entry.getValue().calculerTournee(this) == false){
+                firePropertyChange(ERROR, null, "Tournée invalide");
+                return;
+            }
         }
         firePropertyChange(UPDATE, null, listeTournees);
     }
+
     public HashMap<Integer, Tournee> getListeTournees() {
         return listeTournees;
     }
