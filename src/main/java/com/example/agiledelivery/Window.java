@@ -3,9 +3,14 @@ package com.example.agiledelivery;
 import com.example.controller.Controller;
 import com.example.model.Carte;
 import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
@@ -13,12 +18,18 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+
 
 public class Window extends Application {
+    @FXML
+    public MenuItem loadMap;
     private TextualView textualView;
     private GraphicalView graphicalView;
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
+    @FXML
+    public VBox vbox;
 
     protected static final int PREFWIDTH = 1600;
     protected static final int PREFHEIGHT = 800;
@@ -40,7 +51,10 @@ public class Window extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Carte carte = new Carte(1);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view.fxml"));
+        Scene root = loader.load();
+
+        /*Carte carte = new Carte(1);
         Controller controller = new Controller(carte, primaryStage);
 
         textualView = new TextualView(carte);
@@ -52,11 +66,22 @@ public class Window extends Application {
         mouseListener = new MouseListener(textualView, graphicalView, controller);
         graphicalView.setMouseListener(mouseListener);
         HBox mainLayout = new HBox(graphicalView, textualView);
-        Scene scene = new Scene(mainLayout, PREFWIDTH, PREFHEIGHT);
-        primaryStage.setScene(scene);
+        **/
+        primaryStage.setScene(root);
         primaryStage.show();
-    }
 
+        /*scene.widthProperty().addListener((observable, oldValue, newValue) -> {
+            textualView.setPrefWidth(textualView.getPrefWidth()+(newValue.intValue()-oldValue.intValue()));
+            graphicalView.setPrefWidth(graphicalView.getPrefWidth()+(newValue.intValue()-oldValue.intValue()));
+        });
+
+        scene.heightProperty().addListener((observable, oldValue, newValue) -> {
+            textualView.setPrefHeight(textualView.getPrefHeight()+(newValue.intValue()-oldValue.intValue()));
+            graphicalView.setPrefHeight(graphicalView.getPrefHeight()+(newValue.intValue()-oldValue.intValue()));
+
+        });*/
+    }
+/*
     public void initializeButtons(Controller controller) {
         buttonListener = new ButtonListener(controller);
         buttons = new ArrayList<Button>();
@@ -117,7 +142,7 @@ public class Window extends Application {
         button3.setOnAction(buttonListener);
         textualView.getChildren().add(button3);
     }
-
+*/
 
     public static void main(String[] args) {
         launch(args);

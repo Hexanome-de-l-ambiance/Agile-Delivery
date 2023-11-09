@@ -50,8 +50,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Rectangle border;
 
     public TextualView(Carte carte) {
-        this.setPrefWidth(Window.textualViewScale * Window.PREFWIDTH);
-        this.setPrefHeight(Window.PREFHEIGHT);
         this.carte = carte;
 
         this.setStyle("-fx-background-color: red;");
