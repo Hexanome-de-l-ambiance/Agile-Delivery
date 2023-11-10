@@ -5,6 +5,7 @@ import com.example.model.Livraison;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
 public class ButtonListener implements EventHandler<ActionEvent> {
@@ -21,13 +22,18 @@ public class ButtonListener implements EventHandler<ActionEvent> {
     @Override
     @FXML
     public void handle(ActionEvent event) {
-        String actionCommand = ((MenuItem) event.getSource()).getId();
+        String actionCommand;
+        if(event.getSource().getClass().equals(MenuItem.class)){
+            actionCommand = ((MenuItem) event.getSource()).getId();
+        } else {
+            actionCommand = ((Button) event.getSource()).getId();
+        }
         System.out.println(actionCommand);
 
         // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
             case "loadMap" -> controller.load();
-            case Window.ADD_DESTINATION -> {
+            case "ajouterLivraison" -> {
                 try {
                     controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
                 } catch (NumberFormatException e) {

@@ -54,26 +54,29 @@
                    <MenuItem mnemonicParsing="false" text="Charger une tournée" />
                </Menu>
            </MenuBar>
-         <SplitPane dividerPositions="1.0, -1.0" prefWidth="1306.0">
-            <items>
-               <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
-                  <children>
-                     <Button layoutX="105.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
-                     <Button layoutX="105.0" layoutY="55.0" mnemonicParsing="false" text="Button" />
-                  </children>
-               </Pane>
-                  <Pane fx:id="mapPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="784.0" style="-fx-background-color: lightblue;">
-                      <Text layoutX="380.0" layoutY="264.0" strokeType="INSIDE" strokeWidth="0.0" text="Map" />
-                  </Pane>
-                  <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
-                      <ComboBox layoutX="56.0" layoutY="168.0" prefWidth="150.0" />
-                      <ComboBox layoutX="56.0" layoutY="102.0" prefWidth="150.0" />
-                  <Button layoutX="7.0" layoutY="27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="248.0" text="Button" />
-                  <Button layoutX="105.0" layoutY="219.0" mnemonicParsing="false" text="Button" />
-                  </Pane>
-            </items>
-         </SplitPane>
-           <Pane prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false" />
+          <SplitPane dividerPositions="1.0, -1.0">
+              <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;"
+                    SplitPane.resizableWithParent="false">
+                  <Button layoutX="105.0" layoutY="14.0" mnemonicParsing="false" text="Button"/>
+                  <Button layoutX="105.0" layoutY="55.0" mnemonicParsing="false" text="Button"/>
+              </Pane>
+              <Pane fx:id="mapPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="784.0"
+                    style="-fx-background-color: lightblue;">
+                  <Text layoutX="380.0" layoutY="264.0" strokeType="INSIDE" strokeWidth="0.0" text="Map"/>
+              </Pane>
+              <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    nodeOrientation="RIGHT_TO_LEFT" prefHeight="520.0" prefWidth="261.0"
+                    style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
+                  <ComboBox layoutX="56.0" layoutY="168.0" prefWidth="150.0"/>
+                  <ComboBox layoutX="56.0" layoutY="102.0" prefWidth="150.0"/>
+              <Button fx:id="ajouterLivraison" layoutX="7.0" layoutY="27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="248.0"
+                      text="Ajouter une Livraison"/>
+              <Button layoutX="105.0" layoutY="219.0" mnemonicParsing="false" text="Button"/>
+              </Pane>
+          </SplitPane>
+           <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false" />
       </items>
    </SplitPane>
 </Scene>

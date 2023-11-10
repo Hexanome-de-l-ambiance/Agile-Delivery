@@ -9,6 +9,7 @@ import com.example.model.Intersection;
 import com.example.model.Livraison;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
@@ -20,6 +21,7 @@ import java.time.LocalTime;
  */
 public class Controller {
 
+    @FXML
     public MenuItem loadMap;
     /**
      * Default constructor
@@ -41,6 +43,10 @@ public class Controller {
 
     @FXML
     private Pane mapPane;
+
+    @FXML
+    private Button ajouterLivraison;
+
     @FXML
     public void initialize() {
         graphicalView = new GraphicalView(carte, mapPane);
@@ -48,8 +54,11 @@ public class Controller {
         buttonListener = new ButtonListener(this);
         mouseListener = new MouseListener(this, graphicalView);
         graphicalView.setMouseListener(mouseListener);
+        buttonListener.setTextualView(textualView);
+
         mapPane.getChildren().add(graphicalView);
         loadMap.setOnAction(event -> buttonListener.handle(event));
+        ajouterLivraison.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
 
         mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             double newWidth = (double) newValue;
