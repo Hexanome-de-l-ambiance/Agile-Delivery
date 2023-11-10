@@ -167,14 +167,15 @@ public class Carte {
         firePropertyChange(REMOVE, null, listeTournees);
     }
 
-    public void calculerTournees() {
+    public boolean calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             if(entry.getValue().calculerTournee(this) == false){
                 firePropertyChange(ERROR, null, "Tournée invalide");
-                return;
+                return false;
             }
         }
         firePropertyChange(UPDATE, null, listeTournees);
+        return true;
     }
 
     public HashMap<Integer, Tournee> getListeTournees() {

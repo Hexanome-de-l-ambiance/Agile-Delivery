@@ -24,8 +24,9 @@ public class EtatDemandeAjoutee implements Etat {
     }
 
     public void calculerLivraisons(Controller c, Carte carte){
-        carte.calculerTournees();
-        c.setEtatCourant(c.etatTourneeCalculee);
+        if(carte.calculerTournees()){
+            c.setEtatCourant(c.etatTourneeCalculee);
+        };
     }
 
     public void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){
