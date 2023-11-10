@@ -21,6 +21,8 @@ public class Carte {
     private int nbCoursiers;
     private Long entrepotId;
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
+    private boolean isCalculated = false;
+    private boolean isTourEmpty = true;
     public static final String RESET = "reset";
     public static final String RESET_TOURS = "reset tours";
     public static final String READ = "read";
@@ -121,13 +123,17 @@ public class Carte {
         return maxLon;
     }
 
-    public SimpleIntegerProperty idProperty() {
-        return idProperty;
+    public boolean isTourEmpty() {
+        return isTourEmpty;
     }
 
     public void reset() {
         listeIntersection.clear();
         listeSegments.clear();
+        nbCoursiers = 1;
+        for(int i = 1; i <= nbCoursiers; i++){
+            listeTournees.put(i, new Tournee());
+        }
         idProperty.set(1);
         firePropertyChange(RESET, null, null);
     }
@@ -157,20 +163,54 @@ public class Carte {
     }
     public void addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
-
+        isTourEmpty = false;
         firePropertyChange(ADD, numeroCouriser, listeTournees);
-
     }
 
+    public void addLivraison(int numeroCouriser, Livraison livraison, int index){
+        listeTournees.get(numeroCouriser).addLivraison(livraison);
+        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+            if(entry.getValue().calculerTournee(this) == false){
+                firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
+            }
+        }
+        isTourEmpty = false;
+        firePropertyChange(ADD, numeroCouriser, listeTournees);
+        firePropertyChange(UPDATE, null, listeTournees);
+    }
     public void removeLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
-        firePropertyChange(REMOVE, null, listeTournees);
+        boolean b = true;
+        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+            if(entry.getValue().getLivraisons().size() != 0){
+                b = false;
+            }
+        }
+        isTourEmpty = b;
+        firePropertyChange(REMOVE, numeroCouriser, listeTournees);
     }
+    public void removeLivraison (int numeroCouriser, int index) {
+        //listeTournees.get(numeroCouriser).removeLivraison(listeTournees.get(numeroCouriser).getLivraisons().get(index));
+        boolean b = true;
+        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+            if(entry.getValue().calculerTournee(this) == false){
+                firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
+            }
+        }
+        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+            if(entry.getValue().getLivraisons().size() != 0){
+                b = false;
+            }
+        }
+        isTourEmpty = b;
+        firePropertyChange(REMOVE, numeroCouriser, listeTournees);
+        firePropertyChange(UPDATE, null, listeTournees);
 
+    }
     public boolean calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             if(entry.getValue().calculerTournee(this) == false){
-                firePropertyChange(ERROR, null, "Tournée invalide");
+                firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
                 return false;
             }
         }

@@ -31,6 +31,7 @@ public class ListeDeCommandes {
             listeDeCommandes.get(index).undo();
             index--;
         }
+        System.out.println(listeDeCommandes.size());
     }
 
     public void redo(){
@@ -38,10 +39,12 @@ public class ListeDeCommandes {
             index++;
             listeDeCommandes.get(index).execute();
         }
+        System.out.println(listeDeCommandes.size());
+
     }
 
     public void reset(){
         index = -1;
-        listeDeCommandes.clear();
+        listeDeCommandes = new LinkedList<>();
     }
 }
