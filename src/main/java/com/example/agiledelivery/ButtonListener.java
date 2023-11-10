@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
+
 public class ButtonListener implements EventHandler<ActionEvent> {
     private Controller controller;
     private TextualView textualView;
@@ -26,7 +27,11 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.LOAD_PLAN: controller.load(); break;
             case Window.ADD_DESTINATION:{
                 try {
-                    controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
+                    if(textualView.isCalculated()){
+                        controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()), 0);
+                    } else {
+                        controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
+                    }
                 } catch (NumberFormatException e){
                     textualView.showAlert("Veuillez choisir un numero de coursier et un fenêtre temporelle");
                 }
@@ -55,7 +60,46 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 }
                 break;
             }
-            case Window.RESET: controller.reset();
+            case Window.REMOVE_AFTER_CALCULATED:{
+                int numeroCoursier = textualView.getNumeroCoursier();
+                Livraison livraison = textualView.getLivraison();
+                int index = textualView.getSelectedIndex();
+                if(numeroCoursier == -1 || livraison == null){
+                    textualView.showAlert("Livraison à supprimer non choisie");
+                } else {
+                    controller.deleteDelivery(numeroCoursier, livraison, index);
+                }
+                break;
+            }
+            case Window.RESET: controller.reset(); break;
+            case Window.ADD_DESTINATION_BEFORE:{
+                int numeroCoursier = textualView.getNumeroCoursier();
+                Livraison livraison = textualView.getLivraison();
+                int index = textualView.getSelectedIndex();
+                if(numeroCoursier == -1 || livraison == null){
+                    textualView.showAlert("Livraison à supprimer non choisie");
+                }
+                try {
+                    controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);
+                } catch (NumberFormatException e){
+                    textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                }
+                break;
+            }
+            case Window.ADD_DESTINATION_AFTER:{
+                int numeroCoursier = textualView.getNumeroCoursier();
+                Livraison livraison = textualView.getLivraison();
+                int index = textualView.getSelectedIndex();
+                if(numeroCoursier == -1 || livraison == null){
+                    textualView.showAlert("Livraison à supprimer non choisie");
+                }
+                try {
+                    controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index+1);
+                } catch (NumberFormatException e){
+                    textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                }
+                break;
+            }
         }
     }
 }

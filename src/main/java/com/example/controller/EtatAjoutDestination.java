@@ -15,7 +15,8 @@ public class EtatAjoutDestination implements Etat{
     }
 
     public void addDelivery(ListeDeCommandes l, LocalTime heure, int numeroCoursier, Controller c, Carte carte) {
+
         l.addCommande(new CommandeAjouterLivraison(new Livraison(intersection, heure), numeroCoursier, carte));
-        c.setEtatCourant(c.etatDemandeAjoutee);
+        c.setEtatCourant(c.etatCarteChargee);
     }
 }

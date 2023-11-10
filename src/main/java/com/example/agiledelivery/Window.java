@@ -35,15 +35,17 @@ public class Window extends Application {
 
     protected static final String LOAD_TOUR = "Charger une tournée";
     protected static final String SAVE_TOUR = "Sauvegarder la tournée";
-
     protected static final String RESET = "Reset les tournées";
 
     protected static final String UNDO = "Undo";
     protected static final String REDO = "Redo";
     protected static final String RESET_NB_COURIERS = "Modifier le nombre de coursiers";
     protected static final String REMOVE = "Supprimer une livraison ajoutée";
+    protected static final String REMOVE_AFTER_CALCULATED = "Supprimer une livraison choisie";
     protected static final String ID_COURIER = "Numero de coursier : ";
     protected static final String INTERVAL = "Choisir une fenêtre temporelle : ";
+    protected static final String ADD_DESTINATION_BEFORE = "Ajouter une destination avant la livraison";
+    protected static final String ADD_DESTINATION_AFTER = "Ajouter une destination après la livraison";
 
     private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR, RESET};
 
@@ -86,15 +88,36 @@ public class Window extends Application {
 
     public void initializeRequestArea(){
 
-        Button button1 = new Button(ADD_DESTINATION);
-        buttons.add(button1);
+        Button button_add = new Button(ADD_DESTINATION);
+        buttons.add(button_add);
+        button_add.setMaxWidth(Double.MAX_VALUE);
+        button_add.setOnAction(buttonListener);
+        vbButtons.getChildren().add(button_add);
+        textualView.setButton_add(button_add);
 
-        button1.setMaxWidth(Double.MAX_VALUE);
-        button1.setOnAction(buttonListener);
-        vbButtons.getChildren().add(button1);
+        Button button_add_before = new Button(ADD_DESTINATION_BEFORE);
+        buttons.add(button_add_before);
+        button_add_before.setMaxWidth(Double.MAX_VALUE);
+        button_add_before.setOnAction(buttonListener);
+        vbButtons.getChildren().add(button_add_before);
+        button_add_before.setManaged(false);
+        button_add_before.setDisable(true);
+        button_add_before.setVisible(false);
+        textualView.setButton_add_before(button_add_before);
+
+        Button button_add_after = new Button(ADD_DESTINATION_AFTER);
+        buttons.add(button_add_after);
+        button_add_after.setMaxWidth(Double.MAX_VALUE);
+        button_add_after.setOnAction(buttonListener);
+        vbButtons.getChildren().add(button_add_after);
+        button_add_after.setManaged(false);
+        button_add_after.setDisable(true);
+        button_add_after.setVisible(false);
+        textualView.setButton_add_after(button_add_after);
 
         Text text1 = new Text(ID_COURIER);
         vbButtons.getChildren().add(text1);
+        textualView.setTextNumeroCoursier(text1);
         ComboBox<String> comboBox1 = new ComboBox<>();
         vbButtons.getChildren().add(comboBox1);
         textualView.setComboBox(comboBox1);
@@ -102,7 +125,6 @@ public class Window extends Application {
         Text text2 = new Text(INTERVAL);
         vbButtons.getChildren().add(text2);
         ComboBox<String> comboBox2 = new ComboBox<>();
-
         vbButtons.getChildren().add(comboBox2);
         textualView.setComboBoxIntervals(comboBox2);
 
@@ -118,12 +140,19 @@ public class Window extends Application {
         vbButtons.getChildren().add(textArea);
         textualView.setTextArea(textArea);
 
-        Button button3 = new Button(REMOVE);
-        buttons.add(button3);
-        button3.setMaxWidth(Double.MAX_VALUE);
-        button3.setOnAction(buttonListener);
-        vbButtons.getChildren().add(button3);
+        Button button_remove = new Button(REMOVE);
+        buttons.add(button_remove);
+        button_remove.setMaxWidth(Double.MAX_VALUE);
+        button_remove.setOnAction(buttonListener);
+        vbButtons.getChildren().add(button_remove);
+        textualView.setButton_remove(button_remove);
 
+        Button button_remove_after = new Button(REMOVE_AFTER_CALCULATED);
+        buttons.add(button_remove_after);
+        button_remove_after.setMaxWidth(Double.MAX_VALUE);
+        button_remove_after.setOnAction(buttonListener);
+        vbButtons.getChildren().add(button_remove_after);
+        textualView.setButton_remove_after(button_remove_after);
     }
 
 

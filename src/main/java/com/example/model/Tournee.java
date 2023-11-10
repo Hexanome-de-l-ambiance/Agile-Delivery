@@ -91,7 +91,7 @@ public class Tournee{
         long start = System.currentTimeMillis();
         listeChemins.clear();
         if(livraisons.size() == 0) {
-            return false;
+            return true;
         }
 
         HashMap<Long, Livraison> livraisonsMap = new HashMap<>();
@@ -153,5 +153,7 @@ public class Tournee{
     	return longueurTotale;
     }
 
-
+    public void clearListeChemins(){
+        listeChemins.clear();
+    }
 }
