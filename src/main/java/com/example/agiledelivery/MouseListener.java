@@ -23,7 +23,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private Pane graph;
     private double mouseX, mouseY;
     private boolean isDragged;
-    public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
+    public MouseListener(Controller controller, GraphicalView graphicalView) {
         this.controller = controller;
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();

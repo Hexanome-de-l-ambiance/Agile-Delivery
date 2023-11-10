@@ -3,7 +3,6 @@ package com.example.agiledelivery;
 import com.example.model.*;
 
 
-import javafx.collections.ObservableMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -13,7 +12,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Text;
 import javafx.util.Pair;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -32,14 +30,14 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
     private final double DETECTION_RADIUS = 7.0;
 
-    public GraphicalView(Carte carte) {
-        this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
-        this.setPrefHeight(Window.PREFHEIGHT);
+    public GraphicalView(Carte carte, Pane mapPane) {
+        this.setPrefWidth(mapPane.getPrefWidth());
+        this.setPrefHeight(mapPane.getPrefHeight());
 
         this.carte = carte;
         graph = new Pane();
-        graph.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
-        graph.setPrefHeight(Window.PREFHEIGHT);
+        graph.setPrefWidth(0.8 * mapPane.getPrefWidth());
+        graph.setPrefHeight(mapPane.getPrefHeight()*0.8);
         graph.setLayoutX(0);
         graph.setLayoutY(0);
         graph.setStyle("-fx-background-color: lightblue;");

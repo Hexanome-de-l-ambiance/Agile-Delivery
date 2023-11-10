@@ -51,8 +51,13 @@ public class Window extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Carte carte = new Carte(1);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view.fxml"));
-        Scene root = loader.load();
+        Controller controller = new Controller(carte,primaryStage);
+        loader.setController(controller);
+        Scene scene = loader.load();
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
         /*Carte carte = new Carte(1);
         Controller controller = new Controller(carte, primaryStage);
@@ -67,8 +72,6 @@ public class Window extends Application {
         graphicalView.setMouseListener(mouseListener);
         HBox mainLayout = new HBox(graphicalView, textualView);
         **/
-        primaryStage.setScene(root);
-        primaryStage.show();
 
         /*scene.widthProperty().addListener((observable, oldValue, newValue) -> {
             textualView.setPrefWidth(textualView.getPrefWidth()+(newValue.intValue()-oldValue.intValue()));

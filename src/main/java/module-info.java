@@ -5,6 +5,7 @@ module com.example.agiledelivery {
     requires java.desktop;
 
 
-    opens com.example.agiledelivery to javafx.fxml;
+    opens com.example.controller to javafx.fxml;
     exports com.example.agiledelivery;
+    exports com.example.controller;
 }

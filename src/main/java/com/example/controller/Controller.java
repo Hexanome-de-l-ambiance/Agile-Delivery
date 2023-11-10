@@ -1,8 +1,15 @@
 package com.example.controller;
 
+import com.example.agiledelivery.ButtonListener;
+import com.example.agiledelivery.GraphicalView;
+import com.example.agiledelivery.MouseListener;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.time.LocalTime;
@@ -11,6 +18,7 @@ import java.time.LocalTime;
  */
 public class Controller {
 
+    public MenuItem loadMap;
     /**
      * Default constructor
      */
@@ -23,6 +31,23 @@ public class Controller {
     protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
     protected final EtatDemandeAjoutee etatDemandeAjoutee = new EtatDemandeAjoutee();
+    private ButtonListener buttonListener;
+    private MouseListener mouseListener;
+    private GraphicalView graphicalView;
+
+    @FXML
+    private Pane mapPane;
+
+    @FXML
+    public void initialize() {
+        graphicalView = new GraphicalView(carte, mapPane);
+        buttonListener = new ButtonListener(this);
+        mouseListener = new MouseListener(this, graphicalView);
+        graphicalView.setMouseListener(mouseListener);
+        mapPane.getChildren().add(graphicalView);
+
+        loadMap.setOnAction(event -> buttonListener.handle((ActionEvent) event));
+    }
 
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
@@ -32,6 +57,9 @@ public class Controller {
         etatCourant = etatInitial;
         this.stage = stage;
         this.carte = carte;
+
+
+
     }
 
     public void addDestination(Intersection intersection) {
@@ -69,6 +97,4 @@ public class Controller {
     public void mouseMoved(Intersection intersection) {
         etatCourant.mouseMoved(this, carte, intersection);
     }
-
-
 }
