@@ -17,4 +17,6 @@ public class EtatAjoutDestination2 implements Etat{
         l.addCommande(new CommandeAjouterLivraisonApresCalcul(new Livraison(intersection, heure), index, numeroCoursier, carte, c));
         c.setEtatCourant(c.etatTourneeCalculee);
     }
+    public void unselectIntersection(Controller c){c.setEtatCourant(c.etatTourneeCalculee);}
+
 }

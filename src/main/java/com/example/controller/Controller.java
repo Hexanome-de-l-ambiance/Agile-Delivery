@@ -26,6 +26,9 @@ public class Controller {
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
     }
+    public Etat getEtatCourant() {
+        return etatCourant;
+    }
     public Controller(Carte carte, Stage stage) {
         listeDeCommandes = new ListeDeCommandes();
         etatCourant = etatInitial;
@@ -81,5 +84,6 @@ public class Controller {
 
     public void reset() { etatCourant.reset(this, carte);};
 
+    public void unselectIntersection() { etatCourant.unselectIntersection(this);}
 
 }

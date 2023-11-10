@@ -25,5 +25,6 @@ public interface Etat {
     public default void reset(Controller c, Carte carte) {};
     public default void loadTour(Controller c, Carte carte, Stage stage){};
     public default void saveTour(Controller c, Carte carte, Stage stage){};
+    public default void unselectIntersection(Controller c){};
 
 }

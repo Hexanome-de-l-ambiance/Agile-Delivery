@@ -33,8 +33,13 @@ public class MouseListener implements EventHandler<ActionEvent> {
 
     protected void setOnEvent(){
         graphicalView.setOnMousePressed(event -> {
-            mouseX = event.getSceneX() - graph.getLayoutX();
-            mouseY = event.getSceneY() - graph.getLayoutY();
+            if(event.isPrimaryButtonDown()) {
+                mouseX = event.getSceneX() - graph.getLayoutX();
+                mouseY = event.getSceneY() - graph.getLayoutY();
+            }if(event.isSecondaryButtonDown()){
+                controller.unselectIntersection();
+                textualView.setHint("");
+            }
             //System.out.println("Pressed");
         });
 
