@@ -27,7 +27,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.ADD_DESTINATION:{
                 if (controller.getEtatCourant() instanceof EtatInitial){
                     textualView.showAlert("Aucune carte n'est chargée. Veuillez charger une carte avant d'ajouter des destinations.");
-                } else if (!(controller.getEtatCourant() instanceof EtatAjoutDestination)) {
+                } else if (!(controller.getEtatCourant() instanceof EtatAjoutDestination || controller.getEtatCourant() instanceof EtatAjoutDestination2)) {
                     textualView.showAlert("Veuillez sélectionner un point de livraison à ajouter.");
                 } else {
                     try {

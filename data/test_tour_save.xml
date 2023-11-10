@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tournees nbCoursiers="1">
+    <tournee numeroCoursier="1">
+        <livraisons>
+            <livraison>
+                <address id="25303805"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+            <livraison>
+                <address id="26464323"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+            <livraison>
+                <address id="325213179"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+</tournees>
