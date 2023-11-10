@@ -46,7 +46,7 @@ public class EtatCarteChargee implements Etat {
     }
 
     @Override
-    public void modiferCoursiers(Controller c, Carte carte, int nombre) {
+    public void modifierCoursiers(Controller c, Carte carte, int nombre) {
         carte.setNbCoursiers(nombre);
     }
 

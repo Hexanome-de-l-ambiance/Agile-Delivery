@@ -19,7 +19,7 @@ public interface Etat {
     public default void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){};
 
     public default void calculerLivraisons(Controller c, Carte carte) {}
-    public default void modiferCoursiers(Controller c, Carte carte, int nombre) {}
+    public default void modifierCoursiers(Controller c, Carte carte, int nombre) {}
 
     public default void undo(ListeDeCommandes l){};
 
@@ -33,5 +33,7 @@ public interface Etat {
     public default void loadTour(Controller c, Carte carte, Stage stage){};
 
     public default void saveTour(Controller c, Carte carte, Stage stage){};
+
+    public default void unselectIntersection(Controller c){};
 
 }

@@ -46,7 +46,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.REDO: controller.redo(); break;
             case Window.RESET_NB_COURIERS: {
                 try {
-                    controller.modiferCoursiers(Integer.parseInt(textualView.getTextArea().getText()));
+                    controller.modifierCoursiers(Integer.parseInt(textualView.getTextArea().getText()));
                 } catch (NumberFormatException e){
                     textualView.showAlert("Veuillez saisir un entier positif");
                 }

@@ -33,21 +33,28 @@ public class MouseListener implements EventHandler<ActionEvent> {
 
     protected void setOnEvent(){
         graphicalView.setOnMousePressed(event -> {
-            mouseX = event.getSceneX() - graph.getLayoutX();
-            mouseY = event.getSceneY() - graph.getLayoutY();
+            if(event.isPrimaryButtonDown()) {
+                mouseX = event.getSceneX() - graph.getLayoutX();
+                mouseY = event.getSceneY() - graph.getLayoutY();
+            }if(event.isSecondaryButtonDown()){
+                controller.unselectIntersection();
+                textualView.setHint("");
+            }
             //System.out.println("Pressed");
         });
 
         graphicalView.setOnMouseReleased(event -> {
-            isDragged = false;
+                isDragged = false;
         });
 
         graphicalView.setOnMouseDragged(event -> {
-            double newX = event.getSceneX() - mouseX;
-            double newY = event.getSceneY() - mouseY;
-            graph.setLayoutX(newX);
-            graph.setLayoutY(newY);
-            isDragged = true;
+            if(event.isPrimaryButtonDown()) {
+                double newX = event.getSceneX() - mouseX;
+                double newY = event.getSceneY() - mouseY;
+                graph.setLayoutX(newX);
+                graph.setLayoutY(newY);
+                isDragged = true;
+            }
         });
 
         graphicalView.setOnScroll((ScrollEvent event) -> {
