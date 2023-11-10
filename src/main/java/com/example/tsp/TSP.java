@@ -1,5 +1,7 @@
 package com.example.tsp;
 
+import java.util.ArrayList;
+
 public interface TSP {
 	/**
 	 * Search for a shortest cost hamiltonian circuit in <code>g</code> within <code>timeLimit</code> milliseconds
@@ -23,4 +25,5 @@ public interface TSP {
 	 */
 	public double getSolutionCost();
 
+	public ArrayList<Long> getSolutions();
 }
