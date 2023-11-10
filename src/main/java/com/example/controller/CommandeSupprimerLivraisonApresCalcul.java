@@ -18,7 +18,6 @@ public class CommandeSupprimerLivraisonApresCalcul implements Commande{
 
     @Override
     public void execute() {
-        System.out.println();
         if (carte.getListeTournees().get(numeroCouriser).getLivraisons().size() > index) {
             carte.removeLivraison(numeroCouriser, index);
         }

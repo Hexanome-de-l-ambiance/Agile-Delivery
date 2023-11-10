@@ -32,9 +32,10 @@ public class EtatCarteChargee implements Etat {
     }
 
     public void calculerLivraisons(ListeDeCommandes l, Controller c, Carte carte){
-        carte.calculerTournees();
-        c.setEtatCourant(c.etatTourneeCalculee);
-        l.reset();
+        if(carte.calculerTournees()){
+            c.setEtatCourant(c.etatTourneeCalculee);
+            l.reset();
+        }
     }
 
     public void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){
@@ -42,7 +43,7 @@ public class EtatCarteChargee implements Etat {
     };
 
 
-    public void modiferCoursiers(Controller c, Carte carte, int nombre) {
+    public void modifierCoursiers(Controller c, Carte carte, int nombre) {
         carte.setNbCoursiers(nombre);
     }
 
@@ -62,7 +63,7 @@ public class EtatCarteChargee implements Etat {
         }
     }
 
-    public void undo(ListeDeCommandes l){
+    public void undo(ListeDeCommandes l) {
         l.undo();
     }
 

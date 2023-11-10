@@ -3,7 +3,6 @@ package com.example.controller;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
-import javafx.stage.Stage;
 
 import java.time.LocalTime;
 
@@ -21,4 +20,5 @@ public class EtatAjoutDestination implements Etat{
     }
 
     public void unselectIntersection(Controller c){c.setEtatCourant(c.etatCarteChargee);}
+
 }

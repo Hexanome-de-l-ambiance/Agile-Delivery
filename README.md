@@ -1,7 +1,6 @@
 # Agile-Delivery
 
 ## To do
-- import et export des livraisons
 - meilleur affichage de la carte, des tournées
 - traduire le code en français
 - faire des tests unitaires

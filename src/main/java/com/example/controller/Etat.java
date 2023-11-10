@@ -18,7 +18,9 @@ public interface Etat {
     public default void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){};
     public default void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, int index, Controller c, Carte carte){};
     public default void calculerLivraisons(ListeDeCommandes l, Controller c, Carte carte) {}
-    public default void modiferCoursiers(Controller c, Carte carte, int nombre) {}
+
+    public default void modifierCoursiers(Controller c, Carte carte, int nombre) {}
+
     public default void undo(ListeDeCommandes l){};
     public default void redo(ListeDeCommandes l){};
     public default void loadMap(Controller c, Carte carte, ListeDeCommandes l, Stage stage){};

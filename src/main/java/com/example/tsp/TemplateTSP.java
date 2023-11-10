@@ -50,6 +50,14 @@ public abstract class TemplateTSP implements TSP {
 			return bestSolCost;
 		return -1;
 	}
+
+	public ArrayList<Long> getSolutions() {
+		ArrayList<Long> solutions = new ArrayList<>(g.getNbVertices());
+		for (int i = 0; i < bestSol.length; i++) {
+			solutions.add(g.getId(bestSol[i]));
+		}
+		return solutions;
+	}
 	
 	/**
 	 * Method that must be defined in TemplateTSP subclasses

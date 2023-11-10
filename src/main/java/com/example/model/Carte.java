@@ -190,7 +190,7 @@ public class Carte {
         firePropertyChange(REMOVE, numeroCouriser, listeTournees);
     }
     public void removeLivraison (int numeroCouriser, int index) {
-        listeTournees.get(numeroCouriser).removeLivraison(listeTournees.get(numeroCouriser).getLivraisons().get(index));
+        //listeTournees.get(numeroCouriser).removeLivraison(listeTournees.get(numeroCouriser).getLivraisons().get(index));
         boolean b = true;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             if(entry.getValue().calculerTournee(this) == false){
@@ -207,13 +207,15 @@ public class Carte {
         firePropertyChange(UPDATE, null, listeTournees);
 
     }
-    public void calculerTournees() {
+    public boolean calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             if(entry.getValue().calculerTournee(this) == false){
                 firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
+                return false;
             }
         }
         firePropertyChange(UPDATE, null, listeTournees);
+        return true;
     }
 
     public HashMap<Integer, Tournee> getListeTournees() {

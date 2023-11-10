@@ -25,10 +25,15 @@ public class Controller {
     protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
+        System.out.println(etat);
     }
+
+
     public Etat getEtatCourant() {
         return etatCourant;
     }
+
+
     public Controller(Carte carte, Stage stage) {
         listeDeCommandes = new ListeDeCommandes();
         etatCourant = etatInitial;
@@ -58,8 +63,8 @@ public class Controller {
     public void calculateDelivery() {
         etatCourant.calculerLivraisons(listeDeCommandes,this, carte);
     }
-    public void modiferCoursiers(int nombre) {
-        etatCourant.modiferCoursiers(this, carte, nombre);
+    public void modifierCoursiers(int nombre) {
+        etatCourant.modifierCoursiers(this, carte, nombre);
         listeDeCommandes.reset();
     }
     public void loadTour() {
@@ -85,5 +90,6 @@ public class Controller {
     public void reset() { etatCourant.reset(this, carte);};
 
     public void unselectIntersection() { etatCourant.unselectIntersection(this);}
+
 
 }
