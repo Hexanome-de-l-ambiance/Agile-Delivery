@@ -158,9 +158,8 @@ public class Carte {
     }
     public void addLivraison (int numeroCouriser, Livraison livraison) {
         if(isCalculated){
-            listeTournees.get(numeroCouriser).addLivraison(this, livraison, numeroCouriser);
+            listeTournees.get(numeroCouriser).addLivraison(livraison);
             firePropertyChange(ADD, numeroCouriser, listeTournees);
-            firePropertyChange(UPDATE, null, listeTournees);
         } else {
             listeTournees.get(numeroCouriser).addLivraison(livraison);
             firePropertyChange(ADD, numeroCouriser, listeTournees);
@@ -169,12 +168,11 @@ public class Carte {
 
     public void removeLivraison (int numeroCouriser, Livraison livraison) {
         if(isCalculated){
-            listeTournees.get(numeroCouriser).removeLivraison(this, numeroCouriser);
-            firePropertyChange(REMOVE, null, listeTournees);
-            firePropertyChange(UPDATE, null, listeTournees);
+            listeTournees.get(numeroCouriser).removeLivraison(livraison);
+            firePropertyChange(REMOVE, numeroCouriser, listeTournees);
         } else {
             listeTournees.get(numeroCouriser).removeLivraison(livraison);
-            firePropertyChange(ADD, numeroCouriser, listeTournees);
+            firePropertyChange(REMOVE, numeroCouriser, listeTournees);
         }
     }
 

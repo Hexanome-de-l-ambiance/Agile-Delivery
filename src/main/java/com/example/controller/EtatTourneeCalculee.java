@@ -53,4 +53,8 @@ public class EtatTourneeCalculee implements Etat {
             throw new RuntimeException(e);
         }
     }
+
+    public void calculerLivraisons(Controller c, Carte carte){
+        carte.calculerTournees();
+    }
 }
