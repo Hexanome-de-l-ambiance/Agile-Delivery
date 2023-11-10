@@ -46,7 +46,30 @@ public class Controller {
         graphicalView.setMouseListener(mouseListener);
         mapPane.getChildren().add(graphicalView);
 
-        loadMap.setOnAction(event -> buttonListener.handle((ActionEvent) event));
+        loadMap.setOnAction(event -> buttonListener.handle(event));
+
+        mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double newWidth = (double) newValue;
+            double oldWidth = (double) oldValue;
+            if (oldWidth == 0.0) {
+                oldWidth = newWidth;
+            }
+            double scaleFactor = (newWidth/oldWidth);
+            System.out.println(scaleFactor);
+
+            graphicalView.setScaleX(scaleFactor);
+        });
+
+        mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            double newHeight = (double) newValue;
+            double oldHeight = (double) oldValue;
+            if (oldHeight == 0.0) {
+                oldHeight = newHeight;
+            }
+            double scaleFactor = (newHeight/oldHeight);
+            graphicalView.setScaleY(scaleFactor);
+            graphicalView.setLayoutY(0);
+        });
     }
 
     protected void setEtatCourant(Etat etat){

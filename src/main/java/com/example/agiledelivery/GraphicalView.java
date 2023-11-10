@@ -23,7 +23,6 @@ import java.util.Random;
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
 
     private Carte carte;
-    private Pane graph;
     private HashMap<Circle, Intersection> circleMap;
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
     private MouseListener mouseListener;
@@ -33,22 +32,15 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     public GraphicalView(Carte carte, Pane mapPane) {
         this.setPrefWidth(mapPane.getPrefWidth());
         this.setPrefHeight(mapPane.getPrefHeight());
-
         this.carte = carte;
-        graph = new Pane();
-        graph.setPrefWidth(0.8 * mapPane.getPrefWidth());
-        graph.setPrefHeight(mapPane.getPrefHeight()*0.8);
-        graph.setLayoutX(0);
-        graph.setLayoutY(0);
-        graph.setStyle("-fx-background-color: lightblue;");
-        this.getChildren().add(graph);
+        this.setLayoutX(0);
+        this.setLayoutY(0);
         this.setStyle("-fx-background-color: lightblue;");
         carte.addPropertyChangeListener(this);
-
         this.circleMap = new HashMap<>();
     }
     public Pane getGraph() {
-        return graph;
+        return this;
     }
 
     public HashMap<Circle, Intersection> getCircleMap() {
@@ -63,10 +55,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
         switch (event) {
-            case Carte.RESET: graph.getChildren().clear(); break;
+            case Carte.RESET: this.getChildren().clear(); break;
             case Carte.READ: display(carte); break;
             case Carte.UPDATE:
-                graph.getChildren().clear();
+                this.getChildren().clear();
                 hashSet.clear();
                 display(carte);
                 HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
@@ -74,7 +66,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                     display(entry.getKey(), entry.getValue());
                 }
                 break;
-            case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
+            case Carte.SET_NB_COURIERS: this.getChildren().clear();display(carte);break;
         }
 
     }
@@ -92,15 +84,15 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double rangeLat = maxLat - minLat;
         double rangeLon = maxLon - minLon;
 
-        double scaleX = graph.getWidth() / rangeLon;
-        double scaleY = graph.getHeight() / rangeLat;
+        double scaleX = this.getWidth() / rangeLon;
+        double scaleY = this.getHeight() / rangeLat;
         double scale = Math.min(scaleX, scaleY);
 
         for (Intersection intersection : carte.getListeIntersections().values()) {
             if(intersection == carte.getEntrepot()) continue;
 
-            double adjustedX = (intersection.getLongitude() - midLon) * scale + graph.getWidth() / 2;
-            double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;
+            double adjustedX = (intersection.getLongitude() - midLon) * scale + this.getWidth() / 2;
+            double adjustedY = -(intersection.getLatitude() - midLat) * scale + this.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 3);
             Circle detectionCircle = new Circle(adjustedX, adjustedY, DETECTION_RADIUS);
@@ -109,26 +101,26 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             detectionCircle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
 
             circleMap.put(detectionCircle, intersection);
-            graph.getChildren().add(circle); // Add to right pane
-            graph.getChildren().add(detectionCircle);
+            this.getChildren().add(circle); // Add to right pane
+            this.getChildren().add(detectionCircle);
         }
 
         for (Segment segment : carte.getListeSegments().values()) {
-            double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + graph.getWidth() / 2;
-            double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + graph.getHeight() / 2;
-            double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
-            double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
+            double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + this.getWidth() / 2;
+            double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + this.getHeight() / 2;
+            double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + this.getWidth() / 2;
+            double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + this.getHeight() / 2;
 
             Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
-            graph.getChildren().add(line); // Add to right pane
+            this.getChildren().add(line); // Add to right pane
         }
         Intersection entrepot = carte.getEntrepot();
-        double adjustedX = (entrepot.getLongitude() - midLon) * scale + graph.getWidth() / 2;
-        double adjustedY = -(entrepot.getLatitude() - midLat) * scale + graph.getHeight() / 2;
+        double adjustedX = (entrepot.getLongitude() - midLon) * scale + this.getWidth() / 2;
+        double adjustedY = -(entrepot.getLatitude() - midLat) * scale + this.getHeight() / 2;
 
         Circle circle = new Circle(adjustedX, adjustedY, 5, Color.GREEN);
         circle.toFront();
-        graph.getChildren().add(circle); // Add to right pane
+        this.getChildren().add(circle); // Add to right pane
 
         mouseListener.setOnEvent();
     }
@@ -146,17 +138,17 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double rangeLat = maxLat - minLat;
         double rangeLon = maxLon - minLon;
 
-        double scaleX = graph.getWidth() / rangeLon;
-        double scaleY = graph.getHeight() / rangeLat;
+        double scaleX = this.getWidth() / rangeLon;
+        double scaleY = this.getHeight() / rangeLat;
         double scale = Math.min(scaleX, scaleY);
 
         for (Livraison livraison : tournee.getLivraisons()) {
             if(livraison.getDestination() == carte.getEntrepot()) continue;
-            double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
-            double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
+            double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + this.getWidth() / 2;
+            double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + this.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 4, Color.BLUE);
-            graph.getChildren().add(circle);
+            this.getChildren().add(circle);
         }
 
         Random random = new Random();
@@ -165,10 +157,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         for(Chemin chemin : tournee.getListeChemins())
         {
             for (Segment segment : chemin.getListeSegments()) {
-                double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + graph.getWidth() / 2;
-                double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + graph.getHeight() / 2;
-                double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
-                double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
+                double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + this.getWidth() / 2;
+                double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + this.getHeight() / 2;
+                double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + this.getWidth() / 2;
+                double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + this.getHeight() / 2;
 
                 double angle = Math.atan2((adjustedY2 - adjustedY1), (adjustedX2 - adjustedX1));
 
@@ -181,7 +173,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                             adjustedX2 - 15 * Math.cos(angle + Math.toRadians(30)), adjustedY2 - 15 * Math.sin(angle + Math.toRadians(30))
                     );
                     arrowhead.setFill(Color.BLUE);
-                    graph.getChildren().add(arrowhead);
+                    this.getChildren().add(arrowhead);
                 }
                 Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
 
@@ -191,7 +183,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 }
                 else applyCustomStroke(line, randomColor1, randomColor2);
                 hashSet.add(new Pair<>(segment.getOrigin().getId(), segment.getDestination().getId()));
-                graph.getChildren().add(line);
+                this.getChildren().add(line);
             }
         }
     }
