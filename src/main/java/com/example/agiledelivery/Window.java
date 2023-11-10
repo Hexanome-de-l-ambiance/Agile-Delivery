@@ -22,15 +22,11 @@ import static java.lang.Math.abs;
 
 
 public class Window extends Application {
-    @FXML
-    public MenuItem loadMap;
+
     private TextualView textualView;
     private GraphicalView graphicalView;
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
-    @FXML
-    public VBox vbox;
-
     protected static final int PREFWIDTH = 1600;
     protected static final int PREFHEIGHT = 800;
     protected static final double textualViewScale = 0.2;

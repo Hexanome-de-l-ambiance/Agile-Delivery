@@ -20,19 +20,21 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private Controller controller;
     private GraphicalView graphicalView;
     private TextualView textualView;
+    private Pane graph;
     private double mouseX, mouseY;
     private boolean isDragged;
-    public MouseListener(Controller controller, GraphicalView graphicalView) {
+    public MouseListener(Controller controller,GraphicalView graphicalView) {
         this.controller = controller;
         this.graphicalView = graphicalView;
+        this.graph = graphicalView.getGraph();
         this.textualView = textualView;
         setOnEvent();
     }
 
     protected void setOnEvent(){
         graphicalView.setOnMousePressed(event -> {
-            mouseX = event.getSceneX() - graphicalView.getLayoutX();
-            mouseY = event.getSceneY() - graphicalView.getLayoutY();
+            mouseX = event.getSceneX() - graph.getLayoutX();
+            mouseY = event.getSceneY() - graph.getLayoutY();
             //System.out.println("Pressed");
         });
 
@@ -45,8 +47,8 @@ public class MouseListener implements EventHandler<ActionEvent> {
         graphicalView.setOnMouseDragged(event -> {
             double newX = event.getSceneX() - mouseX;
             double newY = event.getSceneY() - mouseY;
-            graphicalView.setLayoutX(newX);
-            graphicalView.setLayoutY(newY);
+            graph.setLayoutX(newX);
+            graph.setLayoutY(newY);
             isDragged = true;
         });
 
@@ -55,11 +57,11 @@ public class MouseListener implements EventHandler<ActionEvent> {
             double scaleFactor = 1.1;
 
             if (deltaY < 0) {
-                graphicalView.setScaleX(graphicalView.getScaleX() / scaleFactor);
-                graphicalView.setScaleY(graphicalView.getScaleY() / scaleFactor);
+                graph.setScaleX(graph.getScaleX() / scaleFactor);
+                graph.setScaleY(graph.getScaleY() / scaleFactor);
             } else {
-                graphicalView.setScaleX(graphicalView.getScaleX() * scaleFactor);
-                graphicalView.setScaleY(graphicalView.getScaleY() * scaleFactor);
+                graph.setScaleX(graph.getScaleX() * scaleFactor);
+                graph.setScaleY(graph.getScaleY() * scaleFactor);
             }
         });
 

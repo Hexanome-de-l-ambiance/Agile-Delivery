@@ -3,11 +3,13 @@ package com.example.controller;
 import com.example.agiledelivery.ButtonListener;
 import com.example.agiledelivery.GraphicalView;
 import com.example.agiledelivery.MouseListener;
+import com.example.agiledelivery.TextualView;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -35,17 +37,18 @@ public class Controller {
     private MouseListener mouseListener;
     private GraphicalView graphicalView;
 
+    private TextualView textualView;
+
     @FXML
     private Pane mapPane;
-
     @FXML
     public void initialize() {
         graphicalView = new GraphicalView(carte, mapPane);
+        textualView = new TextualView(carte);
         buttonListener = new ButtonListener(this);
         mouseListener = new MouseListener(this, graphicalView);
         graphicalView.setMouseListener(mouseListener);
         mapPane.getChildren().add(graphicalView);
-
         loadMap.setOnAction(event -> buttonListener.handle(event));
 
         mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -55,11 +58,9 @@ public class Controller {
                 oldWidth = newWidth;
             }
             double scaleFactor = (newWidth/oldWidth);
-            System.out.println(scaleFactor);
 
-            graphicalView.setScaleX(scaleFactor);
+            graphicalView.getGraph().setScaleX(scaleFactor*graphicalView.getGraph().getScaleX());
         });
-
         mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = (double) newValue;
             double oldHeight = (double) oldValue;
@@ -67,9 +68,10 @@ public class Controller {
                 oldHeight = newHeight;
             }
             double scaleFactor = (newHeight/oldHeight);
-            graphicalView.setScaleY(scaleFactor);
-            graphicalView.setLayoutY(0);
+            graphicalView.getGraph().setScaleY(scaleFactor*graphicalView.getGraph().getScaleY());
+            graphicalView.getGraph().setTranslateY(10);
         });
+
     }
 
     protected void setEtatCourant(Etat etat){
