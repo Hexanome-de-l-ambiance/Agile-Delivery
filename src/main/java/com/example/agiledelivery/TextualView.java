@@ -319,7 +319,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 this.selectedIndex = list.indexOf(livraison);
                 if(selectedText != null) selectedText.setStyle("-fx-fill: black;");
                 selectedText = newtext;
-                System.out.println(selectedIndex);
                 selectedText.setStyle("-fx-fill: yellow;");
             });
             info.getChildren().add(newtext);

@@ -25,7 +25,6 @@ public class Controller {
     protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
-        System.out.println(etat);
     }
 
 
