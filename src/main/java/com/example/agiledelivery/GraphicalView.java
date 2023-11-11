@@ -23,7 +23,7 @@ import java.util.*;
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
 
     private Carte carte;
-    private Pane graph;
+    private final Pane graph;
     private HashMap<Circle, Intersection> circleMap;
     private HashSet<Pair<Circle, Circle>> circlePairSet = new HashSet<>();
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
@@ -82,6 +82,17 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                     display(entry.getKey(), entry.getValue());
                 }
                 break;
+            case Carte.ADD:
+                graph.getChildren().clear();
+                display(carte);
+                HashMap<Integer, Tournee> listeTournees2 = (HashMap<Integer, Tournee>) evt.getNewValue();
+                for (Map.Entry<Integer, Tournee> entry : listeTournees2.entrySet()) {
+                    for (Livraison livraison : entry.getValue().getLivraisons()) {
+                        if (livraison.getDestination() == carte.getEntrepot()) continue;
+                        displayLivraison(livraison, carte);
+                        // System.out.println("display livraison");
+                    }
+                }
             case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
             case Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;
         }
@@ -105,7 +116,6 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double scaleY = graph.getHeight() / rangeLat;
         double scale = Math.min(scaleX, scaleY);
 
-        Intersection selectedIntersection = null;
 
         for (Intersection intersection : carte.getListeIntersections().values()) {
             if(intersection == carte.getEntrepot()) continue;
@@ -123,23 +133,11 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                     circle.setFill(Color.BLACK);
                 }
             });
-//            detectionCircle.setOnMousePressed(event -> {
-//                if (selectedIntersection != null) {
-//                    Circle previousCircle = circleMap.entrySet().stream().filter(entry -> entry.getValue() == selectedIntersection).findFirst().get().getKey();
-//                    if (previousCircle != null) {
-//                        previousCircle.setFill(Color.BLACK);
-//                        previousCircle.setRadius(CIRCLE_RADIUS);
-//                    }
-//                }
-//                selectedIntersection = intersection;
-//                circle.setFill(Color.RED);
-//                circle.setRadius(CIRCLE_RADIUS * 2);
-//            });
 
 
             circleMap.put(detectionCircle, intersection);
             circlePairSet.add(new Pair<>(detectionCircle, circle));
-            graph.getChildren().add(circle); // Add to right pane
+            graph.getChildren().add(circle);
             graph.getChildren().add(detectionCircle);
         }
 
@@ -150,7 +148,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);
-            graph.getChildren().add(line); // Add to right pane
+            graph.getChildren().add(line);
         }
         Intersection entrepot = carte.getEntrepot();
         double adjustedX = (entrepot.getLongitude() - midLon) * scale + graph.getWidth() / 2;
@@ -158,7 +156,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
         Circle circle = new Circle(adjustedX, adjustedY, 5, Color.GREEN);
         circle.toFront();
-        graph.getChildren().add(circle); // Add to right pane
+        graph.getChildren().add(circle);
 
         mouseListener.setOnEvent();
     }
@@ -239,6 +237,69 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             }
         }
     }
+
+
+    public void displayLivraison(Livraison livraison, Carte carte) {
+
+        System.out.println("livraison: " + livraison.getDestination().getId());
+        double minLat = carte.getMinLat();
+        double maxLat = carte.getMaxLat();
+        double minLon = carte.getMinLon();
+        double maxLon = carte.getMaxLon();
+
+        double midLat = (minLat + maxLat) / 2;
+        double midLon = (minLon + maxLon) / 2;
+
+        double rangeLat = maxLat - minLat;
+        double rangeLon = maxLon - minLon;
+
+        double scaleX = graph.getWidth() / rangeLon;
+        double scaleY = graph.getHeight() / rangeLat;
+        double scale = Math.min(scaleX, scaleY);
+
+        double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
+        double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
+
+        Circle circle = new Circle(adjustedX, adjustedY, CIRCLE_RADIUS * 2, Color.RED);
+        System.out.println("Circle radius: " + circle.getRadius());
+        circle.setFill(Color.RED);
+        circle.toFront();
+        graph.getChildren().add(circle);
+    }
+//    @Override
+//    public void display(HashMap<Integer, Tournee> listeTournees) {
+//        double minLat = carte.getMinLat();
+//        double maxLat = carte.getMaxLat();
+//        double minLon = carte.getMinLon();
+//        double maxLon = carte.getMaxLon();
+//
+//        double midLat = (minLat + maxLat) / 2;
+//        double midLon = (minLon + maxLon) / 2;
+//
+//        double rangeLat = maxLat - minLat;
+//        double rangeLon = maxLon - minLon;
+//
+//        double scaleX = graph.getWidth() / rangeLon;
+//        double scaleY = graph.getHeight() / rangeLat;
+//        double scale = Math.min(scaleX, scaleY);
+//
+//        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+//            for(Livraison livraison : entry.getValue().getLivraisons()){
+//                displayLivraison(livraison, scale, midLat, midLon);
+//            }
+//        }
+//    }
+//
+//    public void displayLivraison(Livraison livraison, double scale, double midLat, double midLon) {
+//        double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
+//        double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
+//
+//        Circle circle = new Circle(adjustedX, adjustedY, 6, Color.RED);
+//        circle.toFront();
+//        graph.getChildren().add(circle);
+//    }
+
+
 
     private void applyCustomStroke(Line line, Color startColor, Color endColor) {
         line.setStroke(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, startColor), new Stop(1, endColor)));
