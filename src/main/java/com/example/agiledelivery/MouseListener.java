@@ -26,7 +26,11 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private Pane graph;
     private double mouseX, mouseY;
     private boolean isDragged;
+
+    private static final double MAX_SCALE = 5.0;
+    private static final double MIN_SCALE = 0.5;
     private Circle lastClickedCircle;
+
     public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
         this.controller = controller;
         this.graphicalView = graphicalView;
@@ -67,13 +71,24 @@ public class MouseListener implements EventHandler<ActionEvent> {
             double deltaY = event.getDeltaY();
             double scaleFactor = 1.1;
 
+            double newScaleX = graph.getScaleX();
+            double newScaleY = graph.getScaleY();
+
             if (deltaY < 0) {
-                graph.setScaleX(graph.getScaleX() / scaleFactor);
-                graph.setScaleY(graph.getScaleY() / scaleFactor);
+                newScaleX /= scaleFactor;
+                newScaleY /= scaleFactor;
             } else {
-                graph.setScaleX(graph.getScaleX() * scaleFactor);
-                graph.setScaleY(graph.getScaleY() * scaleFactor);
+                newScaleX *= scaleFactor;
+                newScaleY *= scaleFactor;
             }
+
+            newScaleX = Math.max(newScaleX, MIN_SCALE);
+            newScaleY = Math.max(newScaleY, MIN_SCALE);
+            newScaleX = Math.min(newScaleX, MAX_SCALE);
+            newScaleY = Math.min(newScaleY, MAX_SCALE);
+
+            graph.setScaleX(newScaleX);
+            graph.setScaleY(newScaleY);
         });
 
         HashMap<Circle, Intersection> circleMap = graphicalView.getCircleMap();
