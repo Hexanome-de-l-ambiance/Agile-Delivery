@@ -22,11 +22,14 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private Carte carte;
     private Pane graph;
     private HashMap<Circle, Intersection> circleMap;
+    private HashSet<Pair<Circle, Circle>> circlePairSet = new HashSet<>();
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
     private MouseListener mouseListener;
     private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.YELLOWGREEN, Color.PURPLE, Color.ORANGE, Color.PINK, Color.AQUA, Color.FUCHSIA, Color.SIENNA));
 
     private final double DETECTION_RADIUS = 7.0;
+    private Intersection selectedIntersection = null;
+    protected final double CIRCLE_RADIUS = 3.0;
 
     public GraphicalView(Carte carte) {
         this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
@@ -52,6 +55,9 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     public HashMap<Circle, Intersection> getCircleMap() {
         return circleMap;
     }
+    public HashSet<Pair<Circle, Circle>> getCirclePairSet() {
+        return circlePairSet;
+    }
 
     public void setMouseListener(MouseListener mouseListener) {
         this.mouseListener = mouseListener;
@@ -63,7 +69,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         switch (event) {
             case Carte.RESET: graph.getChildren().clear(); break;
             case Carte.READ: display(carte); break;
-            case Carte.UPDATE:
+            case Carte.ADD, Carte.REMOVE, Carte.UPDATE:{
                 graph.getChildren().clear();
                 hashSet.clear();
                 display(carte);
@@ -72,6 +78,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                     display(entry.getKey(), entry.getValue());
                 }
                 break;
+            }
             case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
             case Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;
         }
@@ -101,13 +108,18 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedX = (intersection.getLongitude() - midLon) * scale + graph.getWidth() / 2;
             double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
-            Circle circle = new Circle(adjustedX, adjustedY, 3);
+            Circle circle = new Circle(adjustedX, adjustedY, CIRCLE_RADIUS, Color.BLACK);
             Circle detectionCircle = new Circle(adjustedX, adjustedY, DETECTION_RADIUS);
             detectionCircle.setFill(Color.TRANSPARENT);
             detectionCircle.setOnMouseEntered(event -> circle.setFill(Color.RED));
-            detectionCircle.setOnMouseExited(event -> circle.setFill(Color.BLACK));
+            detectionCircle.setOnMouseExited(event -> {
+                if (circle.getRadius() == CIRCLE_RADIUS) {
+                    circle.setFill(Color.BLACK);
+                }
+            });
 
             circleMap.put(detectionCircle, intersection);
+            circlePairSet.add(new Pair<>(detectionCircle, circle));
             graph.getChildren().add(circle); // Add to right pane
             graph.getChildren().add(detectionCircle);
         }

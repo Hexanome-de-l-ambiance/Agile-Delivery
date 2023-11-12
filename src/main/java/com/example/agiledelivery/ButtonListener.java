@@ -1,8 +1,6 @@
 package com.example.agiledelivery;
 
-import com.example.controller.Controller;
-import com.example.controller.EtatCarteChargee;
-import com.example.controller.EtatInitial;
+import com.example.controller.*;
 import com.example.model.Livraison;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,7 +28,8 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.ADD_DESTINATION:{
                 if (controller.getEtatCourant() instanceof EtatInitial){
                     textualView.showAlert("Aucune carte n'est chargée. Veuillez charger une carte avant d'ajouter des destinations.");
-                } else if (!(controller.getEtatCourant() instanceof EtatCarteChargee)) {
+                } else if (!(controller.getEtatCourant() instanceof EtatAjoutDestination || controller.getEtatCourant() instanceof EtatAjoutDestination2)) {
+                    System.out.println(controller.getEtatCourant());
                     textualView.showAlert("Veuillez sélectionner un point de livraison à ajouter.");
                 } else {
                     try {
