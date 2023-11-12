@@ -6,9 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 
@@ -23,11 +26,14 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private Pane graph;
     private double mouseX, mouseY;
     private boolean isDragged;
+    private Circle lastClickedCircle;
     public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
         this.controller = controller;
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();
         this.textualView = textualView;
+
+
         setOnEvent();
     }
 
@@ -71,17 +77,37 @@ public class MouseListener implements EventHandler<ActionEvent> {
         });
 
         HashMap<Circle, Intersection> circleMap = graphicalView.getCircleMap();
+        HashSet<Pair<Circle, Circle>> circlePairSet = graphicalView.getCirclePairSet();
+
         for (Map.Entry<Circle, Intersection> entry : circleMap.entrySet()) {
             Circle key = entry.getKey();
             key.setOnMouseReleased(mouseEvent -> {
                 if (isDragged) {
                     mouseEvent.consume();
                 } else {
-                    controller.addDestination(entry.getValue());
-                    textualView.setHint("Intersection id: "+ entry.getValue().getId() + " longitude: " + entry.getValue().getLongitude()+ " latitude: " + entry.getValue().getLatitude()+"\n");
+                    Intersection selectedIntersection = entry.getValue();
+                    controller.addDestination(selectedIntersection);
+                    textualView.setHint("Intersection id: "+ entry.getValue().getId() +
+                            " longitude: " + entry.getValue().getLongitude()+
+                            " latitude: " + entry.getValue().getLatitude()+"\n");
+                    for (Pair<Circle, Circle> circlePair : circlePairSet) {
+                        if (circlePair.getKey().equals(key) && circlePair.getValue() != lastClickedCircle) {
+                            Circle associatedCircle = circlePair.getValue();
+                            associatedCircle.setFill(Color.RED);
+                            associatedCircle.setRadius(graphicalView.CIRCLE_RADIUS * 2);
+
+                            if (lastClickedCircle != null) {
+                                lastClickedCircle.setFill(Color.BLACK);
+                                lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);
+                            }
+                            lastClickedCircle = associatedCircle;
+                            break;
+                        }
+                    }
                 }
             });
         }
+
     }
     @Override
     public void handle(ActionEvent actionEvent) {
