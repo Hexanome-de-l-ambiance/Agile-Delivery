@@ -273,6 +273,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 button_remove_after.setManaged(false);
                 button_remove_after.setDisable(true);
                 button_remove_after.setVisible(false);
+                isCalculated = false;
                 break;
             }
         }
