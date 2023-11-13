@@ -4,6 +4,7 @@ import com.example.controller.Controller;
 import com.example.model.Intersection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -29,6 +30,14 @@ public class MouseListener implements EventHandler<ActionEvent> {
 
     private static final double MAX_SCALE = 5.0;
     private static final double MIN_SCALE = 0.5;
+
+    private static final double MAP_BOUNDARY_LEFT = -100;
+    private static final double MAP_BOUNDARY_RIGHT = 100;
+    private static final double MAP_BOUNDARY_TOP = -100;
+    private static final double MAP_BOUNDARY_BOTTOM = 100;
+    private static final double PADDING = 10;
+
+    private static final double SCALE_FACTOR = 5.0;
     private Circle lastClickedCircle;
 
     public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
@@ -50,7 +59,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 controller.unselectIntersection();
                 textualView.setHint("");
             }
-            //System.out.println("Pressed");
         });
 
         graphicalView.setOnMouseReleased(event -> {
@@ -61,11 +69,19 @@ public class MouseListener implements EventHandler<ActionEvent> {
             if(event.isPrimaryButtonDown()) {
                 double newX = event.getSceneX() - mouseX;
                 double newY = event.getSceneY() - mouseY;
+
+                newX = Math.max(newX, MAP_BOUNDARY_LEFT * SCALE_FACTOR * graph.getScaleX() - PADDING);
+                newX = Math.min(newX, MAP_BOUNDARY_RIGHT * SCALE_FACTOR * graph.getScaleX() + PADDING);
+                newY = Math.max(newY, MAP_BOUNDARY_TOP * SCALE_FACTOR * graph.getScaleY() - PADDING);
+                newY = Math.min(newY, MAP_BOUNDARY_BOTTOM * SCALE_FACTOR * graph.getScaleY() + PADDING);
+
                 graph.setLayoutX(newX);
                 graph.setLayoutY(newY);
                 isDragged = true;
             }
         });
+
+
 
         graphicalView.setOnScroll((ScrollEvent event) -> {
             double deltaY = event.getDeltaY();
@@ -74,6 +90,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
             double newScaleX = graph.getScaleX();
             double newScaleY = graph.getScaleY();
 
+            // System.out.println("deltaY: " + deltaY);
             if (deltaY < 0) {
                 newScaleX /= scaleFactor;
                 newScaleY /= scaleFactor;
