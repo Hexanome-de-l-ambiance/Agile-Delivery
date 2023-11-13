@@ -9,8 +9,6 @@ import java.time.Duration;
  */
 public class Livraison {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
     /**
      * La vitesse de déplacement du livreur en mètre/min
      */
@@ -19,7 +17,10 @@ public class Livraison {
     /**
      * L'heure de début des tournées
      */
-    public static final LocalTime DEBUT_TOURNEE = LocalTime.parse("08:00", formatter);
+    public static final LocalTime DEBUT_TOURNEE = LocalTime.of(8,0,0);
+
+    public static final LocalTime FIN_TOURNEE = LocalTime.of(12,0,0);
+
 
     /**
      * Durée de la réalisation d'une livraison

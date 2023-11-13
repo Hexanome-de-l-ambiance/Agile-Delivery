@@ -39,10 +39,11 @@ public class Tournee{
      * @param livraison a ajoutée à la tournée.
      * @param index indice de la livraison dans la tournée. Si <code>index</code> vaut <code>livraisons.size()</code> alors la livraison est ajoutée à la fin de la tournée.
      */
-    public void addLivraison(Carte carte, Livraison livraison, int index) {
+    public boolean addLivraison(Carte carte, Livraison livraison, int index) {
         if(listeChemins.isEmpty() || index < 0 || index > livraisons.size()) {
-            return;
+            return false;
         }
+        boolean success = true;
 
         livraisons.add(index, livraison);
         Chemin cheminPrecedent;
@@ -76,10 +77,17 @@ public class Tournee{
             }else {
                 livraisons.get(i).setHeureLivraison(heureArrivee);
             }
+            if(heureArrivee.isAfter(livraisons.get(i).getCrenauHoraire())) {
+                success = false;
+            }
             cheminSuivant = listeChemins.get(i+1);
             heureArrivee = livraisons.get(i).getHeureLivraison().plusMinutes(cheminSuivant.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
         }
         heureFinTournee = heureArrivee;
+        if(heureFinTournee.isAfter(Livraison.FIN_TOURNEE)) {
+            success = false;
+        }
+        return success;
     }
 
     public void removeLivraison(Livraison livraison) {livraisons.remove(livraison);}
@@ -119,7 +127,7 @@ public class Tournee{
             listeChemins.remove(index);
             listeChemins.set(index, nouveauChemin);
 
-            Chemin cheminSuivant = nouveauChemin;
+            Chemin cheminSuivant;
             for(int i=index; i< livraisons.size(); i++) {
                 if(heureArrivee.isBefore(livraisons.get(i).getCrenauHoraire())) {
                     livraisons.get(i).setHeureLivraison(livraisons.get(i).getCrenauHoraire());
@@ -131,8 +139,6 @@ public class Tournee{
             }
             heureFinTournee = heureArrivee;
         }
-
-
     }
 
     public ArrayList<Livraison> getLivraisons() {return livraisons;}
