@@ -14,7 +14,7 @@ class CheminTest {
         // Création d'un ségment initial
         Intersection origin = new Intersection(1L, 40.0, -74.0);
         Intersection destination = new Intersection(2L, 41.0, -75.0);
-        Segment initialSegment = new Segment(origin, destination, 10.0);
+        Segment initialSegment = new Segment(origin, destination, 10.0, "Initial segment");
 
         // Création d'un chemin
         Chemin chemin = new Chemin();
@@ -27,7 +27,7 @@ class CheminTest {
 
         // Création d'une d'une nouvelle origine qu'on relie avec l'ancienne origine à partir d'un segment
         Intersection newOrigin = new Intersection(3L, 42.0, -76.0);
-        Segment newSegment = new Segment(newOrigin, origin, 5.0);
+        Segment newSegment = new Segment(newOrigin, origin, 5.0, "New segment");
         chemin.addSegmentInFirstPosition(newSegment);
 
         // Vérification de l'ajout du segment
@@ -43,7 +43,7 @@ class CheminTest {
         // Création d'un chemin à partir d'un segment partant d'une origine vers une destination
         Intersection origin = new Intersection(1L, 40.0, -74.0);
         Intersection destination = new Intersection(2L, 41.0, -75.0);
-        Segment segment = new Segment(origin, destination, 10.0);
+        Segment segment = new Segment(origin, destination, 10.0, "Initial segment");
 
         Chemin chemin = new Chemin();
         chemin.addSegmentInFirstPosition(segment);
@@ -57,7 +57,7 @@ class CheminTest {
         // Création d'un chemin à partir d'un segment partant d'une origine vers une destination
         Intersection origin = new Intersection(1L, 40.0, -74.0);
         Intersection destination = new Intersection(2L, 41.0, -75.0);
-        Segment segment = new Segment(origin, destination, 10.0);
+        Segment segment = new Segment(origin, destination, 10.0, "Initial segment");
 
         Chemin chemin = new Chemin();
         chemin.addSegmentInFirstPosition(segment);
