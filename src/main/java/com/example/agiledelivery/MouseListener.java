@@ -58,11 +58,15 @@ public class MouseListener implements EventHandler<ActionEvent> {
             }if(event.isSecondaryButtonDown()){
                 controller.unselectIntersection();
                 textualView.setHint("");
+                if (lastClickedCircle != null) {
+                    lastClickedCircle.setFill(Color.BLACK);
+                    lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);
+                }
             }
         });
 
         graphicalView.setOnMouseReleased(event -> {
-                isDragged = false;
+            isDragged = false;
         });
 
         graphicalView.setOnMouseDragged(event -> {
