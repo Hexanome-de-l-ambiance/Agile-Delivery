@@ -35,6 +35,8 @@ public class Window extends Application {
     protected static final String LOAD_TOUR = "chargerTourneeButton";
     protected static final String SAVE_TOUR = "sauvegarderTourneeButton";
     protected static final String RESET = "resetTourneeButton";
+    protected static final String GENERATE = "genererFeuilleDeRoute";
+
 
     protected static final String RESET_NB_COURIERS = "changeNumberCouriersButton";
     protected static final String REMOVE = "supprimerLivraisonButton";
@@ -44,7 +46,7 @@ public class Window extends Application {
     protected static final String REMOVE_AFTER_CALCULATED = "supprimerApresTourneeButton";
     protected static final String ID_COURIER = "Numero de coursier : ";
 
-    private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR, RESET};
+    private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR, RESET, GENERATE};
 
     private ArrayList<Button> buttons;
 
