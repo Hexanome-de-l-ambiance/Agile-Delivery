@@ -17,18 +17,13 @@ public class ListeDeCommandes {
         listeDeCommandes = new LinkedList<>();
     }
 
-    public boolean addCommande(Commande commande) {
+    public void addCommande(Commande commande) {
         for(int i = 1; i < listeDeCommandes.size()-index; i++){
             listeDeCommandes.remove(index+1);
         }
         index++;
         listeDeCommandes.add(index, commande);
-        if(commande.execute() == false){
-            listeDeCommandes.remove(index);
-            index--;
-            return false;
-        }
-        return true;
+        commande.execute();
     }
 
     public void undo(){
@@ -43,10 +38,11 @@ public class ListeDeCommandes {
             index++;
             listeDeCommandes.get(index).execute();
         }
+
     }
 
     public void reset(){
         index = -1;
-        listeDeCommandes.clear();
+        listeDeCommandes = new LinkedList<>();
     }
 }

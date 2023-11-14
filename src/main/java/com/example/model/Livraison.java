@@ -1,6 +1,5 @@
 package com.example.model;
 
-import java.time.format.FormatStyle;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 import java.time.Duration;
@@ -10,8 +9,6 @@ import java.time.Duration;
  */
 public class Livraison {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
     /**
      * La vitesse de déplacement du livreur en mètre/min
      */
@@ -20,7 +17,10 @@ public class Livraison {
     /**
      * L'heure de début des tournées
      */
-    public static final LocalTime DEBUT_TOURNEE = LocalTime.parse("08:00", formatter);
+    public static final LocalTime DEBUT_TOURNEE = LocalTime.of(8,0,0);
+
+    public static final LocalTime FIN_TOURNEE = LocalTime.of(12,0,0);
+
 
     /**
      * Durée de la réalisation d'une livraison
@@ -68,6 +68,9 @@ public class Livraison {
     private Intersection destination;
 
     public Intersection getDestination() {
+        if (destination == null) {
+            throw new IllegalStateException("Destination is not set for this delivery.");
+        }
         return destination;
     }
 
@@ -75,8 +78,14 @@ public class Livraison {
         return heureLivraison;
     }
 
+    public void setDestination(Intersection destination) {
+        this.destination = destination;
+    }
     public void setHeureLivraison(LocalTime heureLivraison) {
         this.heureLivraison = heureLivraison;
     }
 
+    public void setCrenauHoraire(LocalTime crenauHoraire) {
+        this.crenauHoraire = crenauHoraire;
+    }
 }

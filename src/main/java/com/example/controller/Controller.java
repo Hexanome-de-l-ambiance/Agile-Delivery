@@ -31,6 +31,7 @@ public class Controller {
     protected final EtatCarteChargee etatCarteChargee = new EtatCarteChargee();
     protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
+    protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();
     protected final EtatDemandeAjoutee etatDemandeAjoutee = new EtatDemandeAjoutee();
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
@@ -146,6 +147,15 @@ public class Controller {
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
     }
+
+
+
+
+    public Etat getEtatCourant() {
+        return etatCourant;
+    }
+
+
     public Controller(Carte carte, Stage stage) {
         listeDeCommandes = new ListeDeCommandes();
         etatCourant = etatInitial;
@@ -155,7 +165,7 @@ public class Controller {
     }
 
     public void addDestination(Intersection intersection) {
-        etatCourant.addIntersection(this, intersection);
+        etatCourant.addIntersection(this,intersection);
     }
 
 
@@ -166,14 +176,28 @@ public class Controller {
     public void deleteDelivery(int numeroCoursier, Livraison livraison) {
         etatCourant.deleteDelivery(listeDeCommandes, numeroCoursier, livraison, this, carte);
     }
-
-    public void calculateDelivery() {
-        etatCourant.calculerLivraisons(this, carte);
+    public void addDelivery(int numeroCoursier, int heure, int index) {
+        etatCourant.addDelivery(listeDeCommandes, LocalTime.of(heure,0,0), numeroCoursier, index, this, carte);
     }
-    public void modiferCoursiers(int nombre) {
-        etatCourant.modiferCoursiers(this, carte, nombre);
+
+    public void deleteDelivery(int numeroCoursier, Livraison livraison, int index) {
+        etatCourant.deleteDelivery(listeDeCommandes, numeroCoursier, livraison, index, this, carte);
+    }
+    public void calculateDelivery() {
+        etatCourant.calculerLivraisons(listeDeCommandes,this, carte);
+    }
+    public void modifierCoursiers(int nombre) {
+        etatCourant.modifierCoursiers(this, carte, nombre);
         listeDeCommandes.reset();
     }
+    public void loadTour() {
+        etatCourant.loadTour(this, carte, stage);
+    }
+
+    public void saveTour() {
+        etatCourant.saveTour(this, carte, stage);
+    }
+
     public void undo() {
         etatCourant.undo(listeDeCommandes);
     }
@@ -186,7 +210,9 @@ public class Controller {
         etatCourant.loadMap(this, carte, listeDeCommandes, stage);
     }
 
-    public void mouseMoved(Intersection intersection) {
-        etatCourant.mouseMoved(this, carte, intersection);
-    }
+    public void reset() { etatCourant.reset(this, carte);};
+
+    public void unselectIntersection() { etatCourant.unselectIntersection(this);}
+
+
 }

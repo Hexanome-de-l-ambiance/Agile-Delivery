@@ -13,20 +13,20 @@ import java.time.LocalTime;
 public interface Etat {
 
     public default void addDelivery(ListeDeCommandes l, LocalTime heure, int numeroCoursier, Controller c, Carte carte){};
-
+    public default void addDelivery(ListeDeCommandes l, LocalTime heure, int numeroCoursier, int index, Controller c, Carte carte){};
     public default void addIntersection(Controller c, Intersection intersection) {};
-
     public default void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){};
+    public default void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, int index, Controller c, Carte carte){};
+    public default void calculerLivraisons(ListeDeCommandes l, Controller c, Carte carte) {}
 
-    public default void calculerLivraisons(Controller c, Carte carte) {}
-    public default void modiferCoursiers(Controller c, Carte carte, int nombre) {}
+    public default void modifierCoursiers(Controller c, Carte carte, int nombre) {}
 
     public default void undo(ListeDeCommandes l){};
-
     public default void redo(ListeDeCommandes l){};
-
     public default void loadMap(Controller c, Carte carte, ListeDeCommandes l, Stage stage){};
-
-    public default void mouseMoved(Controller c, Carte carte, Intersection intersection){};
+    public default void reset(Controller c, Carte carte) {};
+    public default void loadTour(Controller c, Carte carte, Stage stage){};
+    public default void saveTour(Controller c, Carte carte, Stage stage){};
+    public default void unselectIntersection(Controller c){};
 
 }

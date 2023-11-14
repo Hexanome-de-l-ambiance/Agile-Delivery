@@ -5,6 +5,7 @@ import com.example.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -27,8 +28,11 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Text messageText;
     private Text numberCouriersText = new Text("Nombre de coursiers : 1" + "\n");
     private Text hint = new Text();
+    private Text textNumeroCoursier;
     private String content = "Welcome!";
     private HashMap<Long, Text> textHashMap = new HashMap<>();
+    HashMap<Integer, Tournee> listeTournees = new HashMap<>();
+    private ComboBox<String> comboBox;
     private ComboBox<String> comboBoxCouriers;
     private ComboBox<String> comboBoxIntervals;
     private ObservableList<String> couriers = FXCollections.observableArrayList(
@@ -41,18 +45,23 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             "11"
     );
 
-
+    private ArrayList<Integer> sizeTournee = new ArrayList<>();
     private TextArea textArea;
-
     private int numeroCoursier = -1;
     private Livraison livraison = null;
-    private Label selectedLabel = null;
-    private Rectangle border;
+    private Text selectedText = null;
+    private int selectedIndex = -1;
+    private boolean isCalculated = false;
+
 
     private Label longitudeLabel;
     private Label latitudeLabel;
     private Pane coordinatesPane;
-
+    private Button button_add;
+    private Button button_add_before;
+    private Button button_add_after;
+    private Button button_remove;
+    private Button button_remove_after;
     public TextualView(Carte carte) {
         this.carte = carte;
 
@@ -62,16 +71,16 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         numberCouriersText.setStyle("-fx-font-size: 12;");
         textFlow.setPrefWidth(this.getPrefWidth());
         textFlow.setLayoutX(0);
-        textFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 6*3);
+        textFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 5*3);
         textFlow.getChildren().add(messageText);
         info.setPrefWidth(this.getPrefWidth());
         info.setLayoutX(0);
-        info.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 6*4);
+        info.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 5*4);
 
 
         hintFlow.setPrefWidth(this.getPrefWidth());
         hintFlow.setLayoutX(0);
-        hintFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 6*5);
+        hintFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 12*11);
         hintFlow.getChildren().add(hint);
         this.getChildren().add(textFlow);
         this.getChildren().add(info);
@@ -94,6 +103,30 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     }
 
 
+    public void setButton_add(Button button_add) {
+        this.button_add = button_add;
+    }
+
+    public void setButton_add_before(Button button_add_before) {
+        this.button_add_before = button_add_before;
+    }
+
+    public void setButton_add_after(Button button_add_after) {
+        this.button_add_after = button_add_after;
+    }
+
+    public void setButton_remove(Button button_remove) {
+        this.button_remove = button_remove;
+    }
+
+    public void setButton_remove_after(Button button_remove_after) {
+        this.button_remove_after = button_remove_after;
+    }
+
+    public void setTextNumeroCoursier(Text textNumeroCoursier) {
+        this.textNumeroCoursier = textNumeroCoursier;
+    }
+
     public void setTextArea(TextArea textArea) {
         this.textArea = textArea;
         this.textArea.setText("Veuillez saisir un nombre entier positif");
@@ -101,6 +134,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public int getNumeroCoursier() {
         return numeroCoursier;
+    }
+
+    public int getSelectedIndex() {
+        return selectedIndex;
     }
 
     public Livraison getLivraison() {
@@ -113,6 +150,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public ComboBox<String> getComboBoxIntervals() {
         return comboBoxIntervals;
+    }
+
+    public boolean isCalculated() {
+        return isCalculated;
     }
 
     public TextArea getTextArea() {
@@ -147,16 +188,58 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             }
             case Carte.ERROR: showAlert((String) evt.getNewValue()); break;
             case Carte.ADD: {
-                HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
+                listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 displayListeTournees(listeTournees);
                 coordinatesPane.setVisible(false);
                 latitudeLabel.setText("");
                 longitudeLabel.setText("");
                 break;
             }
-            case Carte.UPDATE: latitudeLabel.setText(""); longitudeLabel.setText(""); break;
+            case Carte.UPDATE: {
+                hint.setText("");
+                if(carte.isTourEmpty()){
+                    button_add.setManaged(true);
+                    button_add.setDisable(false);
+                    button_add.setVisible(true);
+                    button_add_before.setManaged(false);
+                    button_add_before.setDisable(true);
+                    button_add_before.setVisible(false);
+                    button_add_after.setManaged(false);
+                    button_add_after.setDisable(true);
+                    button_add_after.setVisible(false);
+                    textNumeroCoursier.setManaged(true);
+                    textNumeroCoursier.setVisible(true);
+                    comboBox.setManaged(true);
+                    comboBox.setVisible(true);
+
+                } else {
+                    button_add.setManaged(false);
+                    button_add.setDisable(true);
+                    button_add.setVisible(false);
+                    button_add_before.setManaged(true);
+                    button_add_before.setDisable(false);
+                    button_add_before.setVisible(true);
+                    button_add_after.setManaged(true);
+                    button_add_after.setDisable(false);
+                    button_add_after.setVisible(true);
+                    textNumeroCoursier.setManaged(false);
+                    textNumeroCoursier.setVisible(false);
+                    comboBox.setManaged(false);
+                    comboBox.setVisible(false);
+
+
+                    button_remove.setManaged(false);
+                    button_remove.setDisable(true);
+                    button_remove.setVisible(false);
+                    button_remove_after.setManaged(true);
+                    button_remove_after.setDisable(false);
+                    button_remove_after.setVisible(true);
+                }
+                isCalculated = true;
+                break;
+            }
             case Carte.REMOVE: {
-                HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
+                listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 displayListeTournees(listeTournees);
                 break;
             }
@@ -169,7 +252,35 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 comboBoxCouriers.setItems(couriers);
                 numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
                 info.getChildren().clear();
-                textHashMap.clear();
+                break;
+            }
+            case Carte.RESET_TOURS:{
+                couriers.clear();
+                couriers.add("1");
+                comboBox.setItems(couriers);
+                numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
+                info.getChildren().clear();
+                button_add.setManaged(true);
+                button_add.setDisable(false);
+                button_add.setVisible(true);
+                button_add_before.setManaged(false);
+                button_add_before.setDisable(true);
+                button_add_before.setVisible(false);
+                button_add_after.setManaged(false);
+                button_add_after.setDisable(true);
+                button_add_after.setVisible(false);
+                textNumeroCoursier.setManaged(true);
+                textNumeroCoursier.setVisible(true);
+                comboBox.setManaged(true);
+                comboBox.setVisible(true);
+
+                button_remove.setManaged(true);
+                button_remove.setDisable(false);
+                button_remove.setVisible(true);
+                button_remove_after.setManaged(false);
+                button_remove_after.setDisable(true);
+                button_remove_after.setVisible(false);
+                isCalculated = false;
                 break;
             }
         }
@@ -188,6 +299,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 info.getChildren().add(segment);
                 display(entry.getKey(), tournee);
             }
+            sizeTournee.add(entry.getValue().getLivraisons().size());
         }
     }
 
@@ -212,9 +324,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             newLabel.setOnMouseClicked(event -> {
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
-                if(selectedLabel != null) selectedLabel.setStyle("-fx-fill: black;");
-                selectedLabel = newLabel;
-                selectedLabel.setStyle("-fx-fill: yellow;");
+                this.selectedIndex = list.indexOf(livraison);
+                if(selectedText != null) selectedText.setStyle("-fx-fill: black;");
+                selectedText = newLabel;
+                selectedText.setStyle("-fx-fill: yellow;");
             });
             info.getChildren().add(newLabel);
         }

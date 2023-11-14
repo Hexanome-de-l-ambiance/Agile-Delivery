@@ -7,11 +7,20 @@ import java.util.Iterator;
 public abstract class TemplateTSP implements TSP {
 	private Integer[] bestSol;
 	protected Graph g;
+	protected int startVertex;
 	private double bestSolCost;
 	private int timeLimit;
 	private long startTime;
 	private Boolean solutionFound = false;
-	
+
+	public TemplateTSP(){
+		startVertex = 0;
+	}
+
+	public TemplateTSP(int startVertex){
+		this.startVertex = startVertex;
+	}
+
 	public Boolean searchSolution(int timeLimit, Graph g){
 		if (timeLimit <= 0) return false;
 		startTime = System.currentTimeMillis();	
@@ -19,11 +28,14 @@ public abstract class TemplateTSP implements TSP {
 		this.g = g;
 		bestSol = new Integer[g.getNbVertices()];
 		Collection<Integer> unvisited = new ArrayList<Integer>(g.getNbVertices()-1);
-		for (int i=1; i<g.getNbVertices(); i++) unvisited.add(i);
+		for (int i=0; i<g.getNbVertices(); i++) {
+			if (i != startVertex)
+				unvisited.add(i);
+		}
 		Collection<Integer> visited = new ArrayList<Integer>(g.getNbVertices());
-		visited.add(0); // The first visited vertex is 0
+		visited.add(startVertex);
 		bestSolCost = Double.MAX_VALUE;
-		branchAndBound(0, unvisited, visited, 0);
+		branchAndBound(startVertex, unvisited, visited, 0);
 		return solutionFound;
 	}
 	
@@ -37,6 +49,14 @@ public abstract class TemplateTSP implements TSP {
 		if (g != null)
 			return bestSolCost;
 		return -1;
+	}
+
+	public ArrayList<Long> getSolutions() {
+		ArrayList<Long> solutions = new ArrayList<>(g.getNbVertices());
+		for (int i = 0; i < bestSol.length; i++) {
+			solutions.add(g.getId(bestSol[i]));
+		}
+		return solutions;
 	}
 	
 	/**
@@ -68,11 +88,11 @@ public abstract class TemplateTSP implements TSP {
 			Collection<Integer> visited, double currentCost){
 		if (System.currentTimeMillis() - startTime > timeLimit) return;
 	    if (unvisited.size() == 0){ 
-	    	if (g.isArc(currentVertex,0)){ 
-	    		if (currentCost+g.getCost(currentVertex,0) < bestSolCost){
+	    	if (g.isArc(currentVertex,startVertex)){
+	    		if (currentCost+g.getCost(currentVertex,startVertex) < bestSolCost){
 					solutionFound = true;
 	    			visited.toArray(bestSol);
-	    			bestSolCost = currentCost+g.getCost(currentVertex,0);
+	    			bestSolCost = currentCost+g.getCost(currentVertex,startVertex);
 	    		}
 	    	}
 	    } else if (currentCost+bound(currentVertex,unvisited) < bestSolCost){

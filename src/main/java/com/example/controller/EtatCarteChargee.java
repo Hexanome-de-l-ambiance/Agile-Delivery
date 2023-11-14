@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.Carte;
 import com.example.model.Intersection;
+import com.example.model.Livraison;
 import com.example.xml.CustomXMLParsingException;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;
@@ -17,7 +18,6 @@ public class EtatCarteChargee implements Etat {
     public EtatCarteChargee() {
     }
 
-    @Override
     public void loadMap(Controller c, Carte carte, ListeDeCommandes l, Stage stage) {
         try{
             XMLOpener.getInstance().readFile(stage, carte);
@@ -26,44 +26,52 @@ public class EtatCarteChargee implements Etat {
         }
     }
 
-    @Override
-    public void modiferCoursiers(Controller c, Carte carte, int nombre) {
-        carte.setNbCoursiers(nombre);
-    }
-
     public void addIntersection(Controller c, Intersection intersection){
         c.setEtatCourant(c.etatAjoutDestination);
         c.etatAjoutDestination.addIntersection(c, intersection);
     }
 
-    /**
-     * Charger des demandes.
-     * @param c Controller instance.
-     * // TODO: Add other necessary parameters if needed.
-     */
-    public void chargerDesDemandes(Controller c) {
-        // Implement the logic to load demands.
-        // If loading is successful, you may want to transition to a new state.
+    public void calculerLivraisons(ListeDeCommandes l, Controller c, Carte carte){
+        if(carte.calculerTournees()){
+            c.setEtatCourant(c.etatTourneeCalculee);
+            l.reset();
+        }
     }
 
-    /**
-     * Modifier le nombre de coursiers.
-     * @param c Controller instance.
-     * @param numberOfCouriers The new number of couriers.
-     */
-    public void modifierNombreDeCoursiers(Controller c, int numberOfCouriers) {
-        // Implement the logic to modify the number of couriers.
+    public void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){
+        l.addCommande(new CommandeSupprimerLivraison(livraison, numeroCoursier, carte));
+    };
+
+
+    public void modifierCoursiers(Controller c, Carte carte, int nombre) {
+        carte.setNbCoursiers(nombre);
     }
 
-    /**
-     * Créer une nouvelle demande.
-     * @param c Controller instance.
-     * // TODO: Add other necessary parameters if needed.
-     */
-    public void creerUneDemande(Controller c) {
-        // Implement the logic to create a new request.
-        // After creating a request, you may want to transition to the "Demande ajoutée" state.
+    public void loadTour(Controller c, Carte carte, Stage stage) {
+        try{
+            XMLOpener.getInstance().loadTour(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    // You can add other methods or transitions based on the logic you need.
+    public void saveTour(Controller c, Carte carte, Stage stage) {
+        try {
+            XMLOpener.getInstance().saveTour(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void undo(ListeDeCommandes l) {
+        l.undo();
+    }
+
+    public void redo(ListeDeCommandes l){
+        l.redo();
+    }
+
+    public void reset(Controller c, Carte carte){
+        carte.resetTournee();
+    }
 }

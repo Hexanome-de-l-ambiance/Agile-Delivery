@@ -15,8 +15,7 @@ public class Tournee{
     private ArrayList<Livraison> livraisons;
 
     private int coursier;
-
-
+    private LocalTime heureFinTournee;
     private double longueurTotale;
 
     /**
@@ -25,6 +24,7 @@ public class Tournee{
     public Tournee() {
         listeChemins = new LinkedList<>();
         livraisons = new ArrayList<>();
+        heureFinTournee = Livraison.DEBUT_TOURNEE;
     }
 
 
@@ -33,7 +33,113 @@ public class Tournee{
         livraisons.add(livraison);
     }
 
+    /**
+     * Ajoute une livraison à la tournée et met à jour les horaires de livraison suivants sans recalculer la tournée.
+     * @param carte sur laquelle se trouve la livraison.
+     * @param livraison a ajoutée à la tournée.
+     * @param index indice de la livraison dans la tournée. Si <code>index</code> vaut <code>livraisons.size()</code> alors la livraison est ajoutée à la fin de la tournée.
+     */
+    public boolean addLivraison(Carte carte, Livraison livraison, int index) {
+        if(listeChemins.isEmpty() || index < 0 || index > livraisons.size()) {
+            return false;
+        }
+        boolean success = true;
+
+        livraisons.add(index, livraison);
+        Chemin cheminPrecedent;
+        Chemin cheminSuivant;
+        LocalTime heureArrivee;
+
+        if(index == 0)
+        {
+            cheminPrecedent = Astar.calculChemin(carte, carte.getEntrepot(), livraison.getDestination());
+            heureArrivee = Livraison.DEBUT_TOURNEE.plusMinutes(cheminPrecedent.getDuree().toMinutes());
+        } else {
+            Livraison livraisonPrecedente = livraisons.get(index - 1);
+            cheminPrecedent = Astar.calculChemin(carte, livraisonPrecedente.getDestination(), livraison.getDestination());
+            heureArrivee = livraisonPrecedente.getHeureLivraison().plusMinutes(cheminPrecedent.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
+        }
+        listeChemins.remove(index);
+        listeChemins.add(index, cheminPrecedent);
+
+        if(index == livraisons.size()-1)
+        {
+            cheminSuivant = Astar.calculChemin(carte, livraison.getDestination(), carte.getEntrepot());
+            listeChemins.addLast(cheminSuivant);
+        } else {
+            cheminSuivant = Astar.calculChemin(carte, livraison.getDestination(), livraisons.get(index + 1).getDestination());
+            listeChemins.add(index + 1, cheminSuivant);
+        }
+
+        for(int i=index; i< livraisons.size(); i++) {
+            if(heureArrivee.isBefore(livraisons.get(i).getCrenauHoraire())) {
+                livraisons.get(i).setHeureLivraison(livraisons.get(i).getCrenauHoraire());
+            }else {
+                livraisons.get(i).setHeureLivraison(heureArrivee);
+            }
+            if(heureArrivee.isAfter(livraisons.get(i).getCrenauHoraire())) {
+                success = false;
+            }
+            cheminSuivant = listeChemins.get(i+1);
+            heureArrivee = livraisons.get(i).getHeureLivraison().plusMinutes(cheminSuivant.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
+        }
+        heureFinTournee = heureArrivee;
+        if(heureFinTournee.isAfter(Livraison.FIN_TOURNEE)) {
+            success = false;
+        }
+        return success;
+    }
+
     public void removeLivraison(Livraison livraison) {livraisons.remove(livraison);}
+
+    /**
+     * Supprime une livraison de la tournée et recalcule les horaires de livraison suivants sans recalculer la tournée.
+     * @param carte sur laquelle se trouve la livraison.
+     * @param index indice de la livraison dans la tournée à retirer.
+     */
+    public void removeLivraison(Carte carte, int index) {
+        if(listeChemins.isEmpty() || index < 0 || index >= livraisons.size()) {
+            return;
+        }
+
+        if(livraisons.size() == 1) {
+            livraisons.clear();
+            listeChemins.clear();
+            return;
+        }
+        Chemin nouveauChemin;
+        LocalTime heureArrivee;
+        if(index == livraisons.size() - 1) {
+            nouveauChemin = Astar.calculChemin(carte, livraisons.get(index - 1).getDestination(), carte.getEntrepot());
+            heureFinTournee = livraisons.get(index - 1).getHeureLivraison().plusMinutes(nouveauChemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
+            livraisons.remove(index);
+            listeChemins.removeLast();
+            listeChemins.set(listeChemins.size()-1, nouveauChemin);
+        } else {
+            if(index == 0) {
+                nouveauChemin = Astar.calculChemin(carte, carte.getEntrepot(), livraisons.get(1).getDestination());
+                heureArrivee = Livraison.DEBUT_TOURNEE.plusMinutes(nouveauChemin.getDuree().toMinutes());
+            }else {
+                nouveauChemin = Astar.calculChemin(carte, livraisons.get(index - 1).getDestination(), livraisons.get(index + 1).getDestination());
+                heureArrivee = livraisons.get(index - 1).getHeureLivraison().plusMinutes(nouveauChemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
+            }
+            livraisons.remove(index);
+            listeChemins.remove(index);
+            listeChemins.set(index, nouveauChemin);
+
+            Chemin cheminSuivant;
+            for(int i=index; i< livraisons.size(); i++) {
+                if(heureArrivee.isBefore(livraisons.get(i).getCrenauHoraire())) {
+                    livraisons.get(i).setHeureLivraison(livraisons.get(i).getCrenauHoraire());
+                }else {
+                    livraisons.get(i).setHeureLivraison(heureArrivee);
+                }
+                cheminSuivant = listeChemins.get(i+1);
+                heureArrivee = livraisons.get(i).getHeureLivraison().plusMinutes(cheminSuivant.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
+            }
+            heureFinTournee = heureArrivee;
+        }
+    }
 
     public ArrayList<Livraison> getLivraisons() {return livraisons;}
     public LinkedList<Chemin> getListeChemins() {
@@ -46,40 +152,40 @@ public class Tournee{
             return false;
         }
 
-        Livraison entrepot = new Livraison(carte.getEntrepot(), Livraison.DEBUT_TOURNEE);
-        if(livraisons.get(0).getDestination() != entrepot.getDestination()) livraisons.add(0, entrepot);
+        Graph graph = new CompleteGraph(carte, livraisons);
+        int nbVertices = graph.getNbVertices();
+        int startIndex = nbVertices - 1;
 
-        Graph g = new CompleteGraph(carte, livraisons);
-
-        TSP tsp = new TSP2();
-        if(!tsp.searchSolution(10000,g)) {
+        TSP tsp = new TSP2(startIndex);
+        if(!tsp.searchSolution(10000, graph)) {
             System.out.println("No solution found");
             return false;
         }
+        updateLivraisonsOrder(tsp.getSolutions());
 
-        Chemin chemin;
-        for(int i=0 ; i<livraisons.size()-1 ; i++)
-        {
-            chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(i)), carte.getIntersection(tsp.getSolution(i+1)));
-            LocalTime heureArrivee;
-            if(i == 0) {
-                heureArrivee = Livraison.DEBUT_TOURNEE.plusMinutes(chemin.getDuree().toMinutes());
-            }else {
-                heureArrivee = livraisons.get(i).getHeureLivraison().plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
-            }
+        Chemin chemin = Astar.calculChemin(carte, carte.getEntrepot(), livraisons.get(0).getDestination());
+        LocalTime heureArrivee = Livraison.DEBUT_TOURNEE.plusMinutes(chemin.getDuree().toMinutes());
+        if(heureArrivee.isBefore(livraisons.get(0).getCrenauHoraire())) {
+            livraisons.get(0).setHeureLivraison(livraisons.get(0).getCrenauHoraire());
+        }else {
+            livraisons.get(0).setHeureLivraison(heureArrivee);
+        }
+        listeChemins.add(chemin);
 
+        for(int i=0; i < livraisons.size() -1; i++){
+            chemin = Astar.calculChemin(carte, livraisons.get(i).getDestination(), livraisons.get(i+1).getDestination());
+            heureArrivee = livraisons.get(i).getHeureLivraison().plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
             if(heureArrivee.isBefore(livraisons.get(i+1).getCrenauHoraire())) {
                 livraisons.get(i+1).setHeureLivraison(livraisons.get(i+1).getCrenauHoraire());
             }else {
                 livraisons.get(i+1).setHeureLivraison(heureArrivee);
             }
             listeChemins.add(chemin);
-            longueurTotale += chemin.getLongueur();
         }
-        chemin = Astar.calculChemin(carte, carte.getIntersection(tsp.getSolution(livraisons.size()-1)), entrepot.getDestination());
-        entrepot.setHeureLivraison(livraisons.get(livraisons.size()-1).getHeureLivraison().plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()));
+        chemin = Astar.calculChemin(carte, livraisons.get(livraisons.size()-1).getDestination(), carte.getEntrepot());
+        heureArrivee = livraisons.get(livraisons.size()-1).getHeureLivraison().plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes());
+        this.heureFinTournee = heureArrivee;
         listeChemins.add(chemin);
-        longueurTotale += chemin.getLongueur();
 
         System.out.println("Solution found in  " + (System.currentTimeMillis() - start) + " ms");
         return true;
@@ -87,12 +193,30 @@ public class Tournee{
 
     public void printTournee()
     {
-        for(int i=0 ; i<listeChemins.size() ; i++)
+        for(int i=0 ; i< livraisons.size(); i++)
         {
             System.out.println("Chemin " + i + " : " + listeChemins.get(i).getOrigin().getId() + " -> " + listeChemins.get(i).getDestination().getId() + " (" + listeChemins.get(i).getDuree().toMinutes() + " min)");
-            System.out.println("Heure d'arrivée : " + livraisons.get((i+1)%listeChemins.size()).getHeureLivraison());
+            System.out.println("Heure d'arrivée : " + livraisons.get(i).getHeureLivraison());
             System.out.println();
         }
+        System.out.println("Chemin " + (listeChemins.size()-1) + " : " + listeChemins.get(listeChemins.size()-1).getOrigin().getId() + " -> " + listeChemins.get(listeChemins.size()-1).getDestination().getId() + " (" + listeChemins.get(listeChemins.size()-1).getDuree().toMinutes() + " min)");
+        System.out.println("Heure d'arrivée : " + heureFinTournee);
+    }
+
+    public void updateLivraisonsOrder(ArrayList<Long> livraisonsId) {
+    	ArrayList<Livraison> newLivraisons = new ArrayList<>(livraisons.size());
+    	for(int i=1; i < livraisonsId.size(); i++)
+        {
+            for(Livraison livraison : livraisons)
+            {
+                if(Objects.equals(livraison.getDestination().getId(), livraisonsId.get(i)))
+                {
+                    newLivraisons.add(livraison);
+                    break;
+                }
+            }
+        }
+    	livraisons = newLivraisons;
     }
 
     public double getLongueurTotale() {
@@ -100,4 +224,7 @@ public class Tournee{
     }
 
 
+    public LocalTime getHeureFinTournee() {
+        return heureFinTournee;
+    }
 }

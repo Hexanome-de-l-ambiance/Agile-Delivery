@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tournee coursier="1">
+    <livraisons>
+        <livraison>
+            <address id="1"/>
+            <creneauHoraire>08:00:00</creneauHoraire>
+        </livraison>
+        <livraison>
+            <address id="2"/>
+            <creneauHoraire>08:00:00</creneauHoraire>
+        </livraison>
+        <livraison>
+            <address id="4"/>
+            <creneauHoraire>09:00:00</creneauHoraire>
+        </livraison>
+    </livraisons>
+</tournee>
