@@ -165,7 +165,17 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
             double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
-            Circle circle = new Circle(adjustedX, adjustedY, 6, Color.RED);
+            Circle circle = new Circle(adjustedX, adjustedY, 6);
+
+            switch (livraison.getEtat()) {
+                case INDETERMINE -> circle.setFill(Color.BLUE);
+                case EN_AVANCE -> circle.setFill(Color.GREEN);
+                case A_L_HEURE -> circle.setFill(Color.YELLOW);
+                case EN_RETARD -> circle.setFill(Color.RED);
+            }
+
+
+
             circle.toFront();
             graph.getChildren().add(circle);
         }

@@ -13,6 +13,7 @@ public class Livraison {
      * Les états possibles d'une livraison : <code>EN_AVANCE</code>, <code>EN_RETARD</code>, <code>A_L_HEURE</code>
      */
     public enum Etat {
+        INDETERMINE,
         EN_AVANCE,
         EN_RETARD,
         A_L_HEURE
@@ -65,13 +66,14 @@ public class Livraison {
     private Etat etat;
 
     public Livraison() {
+        this.etat = Etat.INDETERMINE;
     }
 
     public Livraison(Intersection destination, LocalTime creneauHoraire) {
         this.destination = destination;
         this.crenauHoraire = creneauHoraire;
         this.heureLivraison = null;
-        this.etat = null;
+        this.etat = Etat.INDETERMINE;
     }
 
     public LocalTime getCrenauHoraire() {
