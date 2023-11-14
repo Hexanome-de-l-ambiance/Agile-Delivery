@@ -1,15 +1,19 @@
 package com.example.controller;
 
+import com.example.agiledelivery.ButtonListener;
+import com.example.agiledelivery.GraphicalView;
+import com.example.agiledelivery.MouseListener;
+import com.example.agiledelivery.TextualView;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
 import javafx.stage.Stage;
-
 import java.time.LocalTime;
 /**
  *
  */
 public class Controller {
+
 
     /**
      * Default constructor
@@ -23,6 +27,14 @@ public class Controller {
     protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
     protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();
+    private ButtonListener buttonListener;
+    private MouseListener mouseListener;
+    private GraphicalView graphicalView;
+
+    private TextualView textualView;
+
+    private void update(){}
+
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
     }
@@ -40,6 +52,7 @@ public class Controller {
         etatCourant = etatInitial;
         this.stage = stage;
         this.carte = carte;
+
     }
 
     public void addDestination(Intersection intersection) {

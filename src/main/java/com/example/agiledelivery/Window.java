@@ -1,19 +1,18 @@
 package com.example.agiledelivery;
 
 import com.example.controller.Controller;
+import com.example.agiledelivery.ViewController;
 import com.example.model.Carte;
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
+
+import static java.lang.Math.abs;
 
 
 public class Window extends Application {
@@ -28,24 +27,22 @@ public class Window extends Application {
     protected static final double textualViewScale = 0.2;
     protected static final double graphicalViewScale = 0.8;
     protected final int buttonHeight = 30;
-    protected static final String LOAD_PLAN = "Charger un plan";
-    protected static final String ADD_DESTINATION = "Ajouter une destination";
-    protected static final String CALCULATE_TOUR = "Calculer la tournée";
+    protected static final String LOAD_PLAN = "loadMapButton";
+    protected static final String ADD_DESTINATION = "ajouterLivraisonButton";
+    protected static final String CALCULATE_TOUR = "calculerTourneeButton";
+    protected static final String UNDO = "undoButton";
+    protected static final String REDO = "redoButton";
+    protected static final String LOAD_TOUR = "chargerTourneeButton";
+    protected static final String SAVE_TOUR = "sauvegarderTourneeButton";
+    protected static final String RESET = "resetTourneeButton";
 
-
-    protected static final String LOAD_TOUR = "Charger une tournée";
-    protected static final String SAVE_TOUR = "Sauvegarder la tournée";
-    protected static final String RESET = "Reset les tournées";
-
-    protected static final String UNDO = "Undo";
-    protected static final String REDO = "Redo";
-    protected static final String RESET_NB_COURIERS = "Modifier le nombre de coursiers";
-    protected static final String REMOVE = "Supprimer une livraison ajoutée";
-    protected static final String REMOVE_AFTER_CALCULATED = "Supprimer une livraison choisie";
+    protected static final String RESET_NB_COURIERS = "changeNumberCouriersButton";
+    protected static final String REMOVE = "supprimerLivraisonButton";
+    protected static final String NB_COURIERS = "Numero de coursier : ";
+    protected static final String ADD_DESTINATION_BEFORE = "ajouterAvantButton";
+    protected static final String ADD_DESTINATION_AFTER = "ajouterApresButton";
+    protected static final String REMOVE_AFTER_CALCULATED = "supprimerApresTourneeButton";
     protected static final String ID_COURIER = "Numero de coursier : ";
-    protected static final String INTERVAL = "Choisir une fenêtre temporelle : ";
-    protected static final String ADD_DESTINATION_BEFORE = "Ajouter une destination avant la livraison";
-    protected static final String ADD_DESTINATION_AFTER = "Ajouter une destination après la livraison";
 
     private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR, RESET};
 
@@ -55,6 +52,14 @@ public class Window extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Carte carte = new Carte(1);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view.fxml"));
+        ViewController controller = new ViewController(carte, new Controller(carte,primaryStage));
+        loader.setController(controller);
+        Scene scene = loader.load();
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        /*Carte carte = new Carte(1);
         Controller controller = new Controller(carte, primaryStage);
 
         textualView = new TextualView(carte);
@@ -67,11 +72,20 @@ public class Window extends Application {
         mouseListener = new MouseListener(textualView, graphicalView, controller);
         graphicalView.setMouseListener(mouseListener);
         HBox mainLayout = new HBox(graphicalView, textualView);
-        Scene scene = new Scene(mainLayout, PREFWIDTH, PREFHEIGHT);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+        **/
 
+        /*scene.widthProperty().addListener((observable, oldValue, newValue) -> {
+            textualView.setPrefWidth(textualView.getPrefWidth()+(newValue.intValue()-oldValue.intValue()));
+            graphicalView.setPrefWidth(graphicalView.getPrefWidth()+(newValue.intValue()-oldValue.intValue()));
+        });
+
+        scene.heightProperty().addListener((observable, oldValue, newValue) -> {
+            textualView.setPrefHeight(textualView.getPrefHeight()+(newValue.intValue()-oldValue.intValue()));
+            graphicalView.setPrefHeight(graphicalView.getPrefHeight()+(newValue.intValue()-oldValue.intValue()));
+
+        });*/
+    }
+/*
     public void initializeButtons(Controller controller) {
         buttonListener = new ButtonListener(controller);
         buttons = new ArrayList<Button>();
@@ -154,7 +168,7 @@ public class Window extends Application {
         vbButtons.getChildren().add(button_remove_after);
         textualView.setButton_remove_after(button_remove_after);
     }
-
+*/
 
 
     public static void main(String[] args) {

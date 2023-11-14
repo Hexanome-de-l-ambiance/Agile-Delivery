@@ -160,8 +160,7 @@ public class CarteTest {
         long tempsDebut = System.currentTimeMillis();
         //tournee.calculerTournee(testCarte, intersections);
         System.out.println("Temps pour calculer la tournée: " + (System.currentTimeMillis() - tempsDebut) + "ms");
-        tournee.printTournee();
-        System.out.println("Longueur totale " + tournee.getLongueurTotale());
+        //tournee.printTournee();
     }
 
     @Test

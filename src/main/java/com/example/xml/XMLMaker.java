@@ -55,7 +55,7 @@ public class XMLMaker {
                 tourElement.appendChild(livraisonsElement);
 
                 // Iterate through each Livraison and add to <livraisons>
-                List<Livraison> livraisonsList = tourneeEntry.getValue().getLivraisons(); // Assuming getLivraisons() exists and returns List<Livraison>
+                List<Livraison> livraisonsList = tourneeEntry.getValue().getListeLivraisons(); // Assuming getLivraisons() exists and returns List<Livraison>
                 Long entrepotId = carte.getEntrepot().getId();
                 for (Livraison livraison : livraisonsList) {
                     // Check if the Livraison is the entrepot; if so, skip it

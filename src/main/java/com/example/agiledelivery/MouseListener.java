@@ -57,16 +57,19 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 mouseY = event.getSceneY() - graph.getLayoutY();
             }if(event.isSecondaryButtonDown()){
                 controller.unselectIntersection();
-                textualView.setHint("");
                 if (lastClickedCircle != null) {
                     lastClickedCircle.setFill(Color.BLACK);
                     lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);
                 }
+                textualView.setCoordinatesPaneVisible(false);
+                textualView.setTextLatitudeLabel("");
+                textualView.setTextLongitudeLabel("");
+
             }
         });
 
         graphicalView.setOnMouseReleased(event -> {
-            isDragged = false;
+                isDragged = false;
         });
 
         graphicalView.setOnMouseDragged(event -> {
@@ -118,9 +121,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
         for (Map.Entry<Circle, Intersection> entry : circleMap.entrySet()) {
             Circle key = entry.getKey();
             key.setOnMouseReleased(mouseEvent -> {
-                if (mouseEvent.getButton() == javafx.scene.input.MouseButton.SECONDARY) {
-                    return;
-                }
                 if (isDragged) {
                     mouseEvent.consume();
                 } else {

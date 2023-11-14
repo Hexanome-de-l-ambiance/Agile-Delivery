@@ -5,6 +5,7 @@ import com.example.model.Livraison;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 
 
 public class ButtonListener implements EventHandler<ActionEvent> {
@@ -20,7 +21,13 @@ public class ButtonListener implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
-        String actionCommand = ((Button) event.getSource()).getText();
+        String actionCommand;
+        if(event.getSource().getClass().equals(MenuItem.class)){
+            actionCommand = ((MenuItem) event.getSource()).getId();
+        } else {
+            actionCommand = ((Button) event.getSource()).getId();
+        }
+        System.out.println(actionCommand);
 
         // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
@@ -34,9 +41,9 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 } else {
                     try {
                         if(textualView.isCalculated()){
-                            controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()), 0);
+                            controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()), 0);
                         } else {
-                            controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
+                            controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
                         }
                     } catch (NumberFormatException e){
                         textualView.showAlert("Veuillez choisir un numero de coursier et un fenêtre temporelle");
@@ -52,7 +59,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.REDO: controller.redo(); break;
             case Window.RESET_NB_COURIERS: {
                 try {
-                    controller.modifierCoursiers(Integer.parseInt(textualView.getTextArea().getText()));
+                    controller.modifierCoursiers(Integer.parseInt(textualView.getTextField().getText()));
                 } catch (NumberFormatException e){
                     textualView.showAlert("Veuillez saisir un entier positif");
                 }
@@ -61,7 +68,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.REMOVE:{
                 int numeroCoursier = textualView.getNumeroCoursier();
                 Livraison livraison = textualView.getLivraison();
-                if(numeroCoursier == -1 || livraison == null){
+                if (numeroCoursier == -1 || livraison == null) {
                     textualView.showAlert("Livraison à supprimer non choisie");
                 } else {
                     controller.deleteDelivery(numeroCoursier, livraison);
