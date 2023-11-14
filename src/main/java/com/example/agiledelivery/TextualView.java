@@ -213,6 +213,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     comboBoxCouriers.setVisible(true);
 
                 } else {
+                    listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
+                    displayListeTournees(listeTournees);
                     button_add.setManaged(false);
                     button_add.setVisible(false);
                     button_add_before.setManaged(true);
@@ -294,12 +296,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         selectedLabel = null;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             Tournee tournee = entry.getValue();
-            if(tournee.getLivraisons().size() > 1 || (tournee.getLivraisons().size() == 1 && tournee.getLivraisons().get(0).getDestination() != carte.getEntrepot())){
+            if(tournee.getListeLivraisons().size() > 1 || (tournee.getListeLivraisons().size() == 1 && tournee.getListeLivraisons().get(0).getDestination() != carte.getEntrepot())){
                 Text segment = new Text("Id Coursier: " + entry.getKey() + "\n");
                 info.getChildren().add(segment);
                 display(entry.getKey(), tournee);
             }
-            sizeTournee.add(entry.getValue().getLivraisons().size());
+            sizeTournee.add(entry.getValue().getListeLivraisons().size());
         }
     }
 
@@ -317,7 +319,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     @Override
     public void display(int numeroCoursier, Tournee tournee)
     {
+<<<<<<< HEAD
         ArrayList<Livraison> list = tournee.getLivraisons();
+=======
+        ArrayList<Livraison> list = tournee.getListeLivraisons();
+        if(list.size() > 0 && list.get(0).getDestination() == carte.getEntrepot()) list.remove(0);
+>>>>>>> 893c42cd840b046a156eba1d288e81d329f92e33
         for(Livraison livraison : list){
             Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
             newLabel.setOnMouseClicked(event -> {

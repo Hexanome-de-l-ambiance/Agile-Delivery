@@ -1,9 +1,7 @@
 package com.example.controller;
 
 import com.example.model.Carte;
-import com.example.model.Intersection;
 import com.example.model.Livraison;
-import com.example.model.Tournee;
 
 /**
  *
@@ -30,7 +28,7 @@ public class CommandeAjouterLivraison implements Commande{
 
     @Override
     public void undo() {
-        if (carte.getListeTournees().get(numeroCouriser).getLivraisons().size()>0) {
+        if (carte.getListeTournees().get(numeroCouriser).getListeLivraisons().size()>0) {
             carte.removeLivraison(numeroCouriser, livraison);
         }
     }

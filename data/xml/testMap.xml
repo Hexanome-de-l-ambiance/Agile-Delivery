@@ -7,6 +7,7 @@
     <intersection id="4" latitude="45.750214" longitude="4.8742905"/>
     <intersection id="5" latitude="45.749214" longitude="4.875591"/>
     <intersection id="6" latitude="45.74969" longitude="4.873468"/>
+    <intersection id="7" latitude="45.75100" longitude="4.87400"/>
 
     <segment destination="2" length="118.890465" name="Avenue Lacassagne" origin="1"/>
     <segment destination="1" length="118.890465" name="Avenue Lacassagne" origin="2"/>
