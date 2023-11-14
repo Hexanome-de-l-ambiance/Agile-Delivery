@@ -319,12 +319,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     @Override
     public void display(int numeroCoursier, Tournee tournee)
     {
-<<<<<<< HEAD
-        ArrayList<Livraison> list = tournee.getLivraisons();
-=======
+
         ArrayList<Livraison> list = tournee.getListeLivraisons();
-        if(list.size() > 0 && list.get(0).getDestination() == carte.getEntrepot()) list.remove(0);
->>>>>>> 893c42cd840b046a156eba1d288e81d329f92e33
+
         for(Livraison livraison : list){
             Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
             newLabel.setOnMouseClicked(event -> {
