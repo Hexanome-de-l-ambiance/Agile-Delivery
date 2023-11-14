@@ -1,4 +1,4 @@
-package test.java.com.example.xml;
+package com.example.xml;
 
 import com.example.model.Carte;
 import com.example.xml.XMLOpener;

@@ -1,4 +1,4 @@
-package test.java.com.example.utils;
+package com.example.utils;
 
 import com.example.model.Intersection;
 import com.example.utils.Distance;
