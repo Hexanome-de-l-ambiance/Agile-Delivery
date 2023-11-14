@@ -40,7 +40,7 @@ public class Controller {
 
 
     @FXML
-    private MenuItem loadMap;
+    private MenuItem loadMapButton;
 
     @FXML
     private Label latitudeLabel;
@@ -52,10 +52,9 @@ public class Controller {
     private Pane mapPane;
 
     @FXML
-    private Button ajouterLivraison;
-
+    private Button ajouterLivraisonButton;
     @FXML
-    private Pane test;
+    private Button supprimerLivraisonButton;
 
     @FXML
     private ComboBox<String> coursierComboBox;
@@ -67,7 +66,19 @@ public class Controller {
     private Pane coordinatesPane;
 
     @FXML
+    private Button calculerTourneeButton;
+
+    @FXML
+    private Button undoButton;
+
+    @FXML
+    private Button redoButton;
+
+
+    @FXML
     private TextFlow info;
+
+
 
     @FXML
     public void initialize() {
@@ -79,8 +90,14 @@ public class Controller {
         buttonListener.setTextualView(textualView);
         mapPane.getChildren().add(0,graphicalView);
 
-        loadMap.setOnAction(event -> buttonListener.handle(event));
-        ajouterLivraison.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        loadMapButton.setOnAction(event -> buttonListener.handle(event));
+        ajouterLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        calculerTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        undoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        redoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        supprimerLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+
+
         handleHeightChanged();
         handleWidthChanged();
 

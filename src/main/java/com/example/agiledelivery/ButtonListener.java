@@ -32,8 +32,8 @@ public class ButtonListener implements EventHandler<ActionEvent> {
 
         // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
-            case "loadMap" -> controller.load();
-            case "ajouterLivraison" -> {
+            case Window.LOAD_PLAN -> controller.load();
+            case Window.ADD_DESTINATION -> {
                 try {
                     controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
                 } catch (NumberFormatException e) {
