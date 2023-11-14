@@ -1,5 +1,6 @@
-package com.example.utils;
+package test.java.com.example.utils;
 
+import com.example.model.Intersection;
 import com.example.utils.Distance;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
