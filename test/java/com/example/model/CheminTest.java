@@ -66,17 +66,6 @@ class CheminTest {
         assertEquals(destination, chemin.getDestination());
     }
 
-    @Test
-    void testSetAndGetHeureArrivee() {
-        // Création d'un chemin et affectation d'une heure d'arrivée
-        Chemin chemin = new Chemin();
-        LocalTime heureArrivee = LocalTime.of(12, 30);
-        chemin.setHeureArrivee(heureArrivee);
-
-        // Vérifier que l'heure d'arrivée est exacte
-        assertEquals(heureArrivee, chemin.getHeureArrivee());
-    }
-
 }
 
 

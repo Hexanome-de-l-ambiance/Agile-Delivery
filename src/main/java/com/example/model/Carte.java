@@ -177,7 +177,7 @@ public class Carte {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
         boolean b = true;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().getLivraisons().size() != 0){
+            if(entry.getValue().getListeLivraisons().size() != 0){
                 b = false;
             }
         }
@@ -188,7 +188,7 @@ public class Carte {
         listeTournees.get(numeroCouriser).removeLivraison(this, index);
         boolean b = true;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().getLivraisons().size() != 0){
+            if(entry.getValue().getListeLivraisons().size() != 0){
                 b = false;
             }
         }
