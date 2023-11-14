@@ -41,9 +41,9 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 } else {
                     try {
                         if(textualView.isCalculated()){
-                            controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()), 0);
+                            controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()), 0);
                         } else {
-                            controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
+                            controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
                         }
                     } catch (NumberFormatException e){
                         textualView.showAlert("Veuillez choisir un numero de coursier et un fenêtre temporelle");
@@ -59,7 +59,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case Window.REDO: controller.redo(); break;
             case Window.RESET_NB_COURIERS: {
                 try {
-                    controller.modifierCoursiers(Integer.parseInt(textualView.getTextArea().getText()));
+                    controller.modifierCoursiers(Integer.parseInt(textualView.getTextField().getText()));
                 } catch (NumberFormatException e){
                     textualView.showAlert("Veuillez saisir un entier positif");
                 }

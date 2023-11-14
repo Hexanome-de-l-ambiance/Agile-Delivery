@@ -41,8 +41,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.TextFlow?>
@@ -55,22 +53,23 @@
                    <MenuItem fx:id="loadMapButton" mnemonicParsing="false" text="Charger un plan" />
                </Menu>
                <Menu mnemonicParsing="false" text="Tournées">
-                   <MenuItem mnemonicParsing="false" text="Sauvegarder une tournée" />
-                   <MenuItem mnemonicParsing="false" text="Charger une tournée" />
+                   <MenuItem fx:id="sauvegarderTourneeButton" mnemonicParsing="false" text="Sauvegarder une tournée" />
+                   <MenuItem fx:id="chargerTourneeButton" mnemonicParsing="false" text="Charger une tournée" />
                </Menu>
            </MenuBar>
           <SplitPane fx:id="windowPane" dividerPositions="1.0, 0.5">
               <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
                   <ComboBox fx:id="coursierComboBox" layoutX="67.0" layoutY="130.0" prefWidth="150.0" promptText="Nombre de coursier" />
                   <ComboBox fx:id="creneauComboBox" layoutX="67.0" layoutY="227.0" prefWidth="150.0" promptText="Créneau horaire" stylesheets="@../../../css/style.css" />
-               <Label layoutX="89.0" layoutY="103.0" text="Nombre de coursier :" />
+               <Label fx:id="textNumeroCoursier" layoutX="89.0" layoutY="103.0" text="Nombre de coursier :" />
                <Label layoutX="86.0" layoutY="200.0" text="Creneau selectionné  :" />
                <Pane layoutX="14.0" layoutY="340.0" prefHeight="69.0" prefWidth="237.0">
                   <children>
-                     <Button mnemonicParsing="false" text="Modifier le nombre de coursiers" />
-                     <TextField layoutX="185.0" prefHeight="27.0" prefWidth="49.0" />
+                     <Button fx:id="changeNumberCouriersButton" mnemonicParsing="false" text="Modifier le nombre de coursiers" />
+                     <TextField fx:id="courierNumberTextField" layoutX="185.0" prefHeight="27.0" prefWidth="49.0" />
                   </children>
                </Pane>
+               <Button fx:id="resetTourneeButton" layoutX="-2.0" layoutY="444.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Réinitialiser les tournées" />
               </Pane>
               <Pane fx:id="mapPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="784.0" style="-fx-background-color: lightblue;">
                <children>
@@ -83,29 +82,26 @@
                </children></Pane>
               <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
                <children>
-                     <Button fx:id="redoButton" layoutX="81.0" layoutY="466.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css">
+                     <Button fx:id="redoButton" layoutX="81.0" layoutY="466.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" style="-fx-background-color: #87CEFA;" text="redo">
                      <rotationAxis>
                         <Point3D y="1.0" />
                      </rotationAxis></Button>
-                     <Button fx:id="undoButton" layoutX="137.0" layoutY="466.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css">
+                     <Button fx:id="undoButton" layoutX="137.0" layoutY="466.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css" text="undo">
                      <rotationAxis>
                         <Point3D y="1.0" />
                      </rotationAxis></Button>
-                 <Button fx:id="calculerTourneeButton" layoutX="-3.0" layoutY="390.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="264.0" stylesheets="@../../../css/style.css" text="Calculer une tournée" />
+                 <Button fx:id="calculerTourneeButton" layoutX="-5.0" layoutY="339.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée" />
                   <Button fx:id="supprimerLivraisonButton" layoutX="-4.0" layoutY="124.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="268.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison" />
                  <Button fx:id="ajouterLivraisonButton" layoutX="-4.0" layoutY="36.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison" />
+                  <Button fx:id="ajouterApresButton" layoutX="97.0" layoutY="74.0" managed="false" mnemonicParsing="false" text="Ajouter apres la livraison choisi" visible="false" />
+                  <Button fx:id="ajouterAvantButton" layoutX="63.0" layoutY="24.0" managed="false" mnemonicParsing="false" text="Ajouter avant la livraison" visible="false" />
+                  <Button fx:id="supprimerApresTourneeButton" layoutX="-3.0" layoutY="200.0" managed="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="268.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false" />
                </children>
               </Pane>
           </SplitPane>
            <Pane fx:id="test" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
             <children>
                <TextFlow fx:id="info" layoutX="200.0" prefHeight="175.0" prefWidth="200.0" />
-               <TableView disable="true" layoutX="200.0" prefHeight="175.0" prefWidth="932.0" visible="false">
-                 <columns>
-                   <TableColumn prefWidth="75.0" text="Id Coursier" />
-                     <TableColumn prefWidth="75.0" text="Longitude" />
-                 </columns>
-               </TableView>
             </children></Pane>
       </items>
    </SplitPane>

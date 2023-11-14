@@ -7,12 +7,7 @@ import com.example.agiledelivery.TextualView;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-
 import java.time.LocalTime;
 /**
  *
@@ -32,116 +27,12 @@ public class Controller {
     protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
     protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();
-    protected final EtatDemandeAjoutee etatDemandeAjoutee = new EtatDemandeAjoutee();
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
     private GraphicalView graphicalView;
 
     private TextualView textualView;
 
-
-    @FXML
-    private MenuItem loadMapButton;
-
-    @FXML
-    private Label latitudeLabel;
-
-    @FXML
-    private Label longitudeLabel;
-
-    @FXML
-    private Pane mapPane;
-
-    @FXML
-    private Button ajouterLivraisonButton;
-    @FXML
-    private Button supprimerLivraisonButton;
-
-    @FXML
-    private ComboBox<String> coursierComboBox;
-
-    @FXML
-    private ComboBox<String> creneauComboBox;
-
-    @FXML
-    private Pane coordinatesPane;
-
-    @FXML
-    private Button calculerTourneeButton;
-
-    @FXML
-    private Button undoButton;
-
-    @FXML
-    private Button redoButton;
-
-
-    @FXML
-    private TextFlow info;
-
-
-
-    @FXML
-    public void initialize() {
-        graphicalView = new GraphicalView(carte, mapPane);
-        textualView = new TextualView(carte);
-        buttonListener = new ButtonListener(this);
-        mouseListener = new MouseListener(this, graphicalView, textualView);
-        graphicalView.setMouseListener(mouseListener);
-        buttonListener.setTextualView(textualView);
-        mapPane.getChildren().add(0,graphicalView);
-
-        loadMapButton.setOnAction(event -> buttonListener.handle(event));
-        ajouterLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        calculerTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        undoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        redoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        supprimerLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-
-
-        handleHeightChanged();
-        handleWidthChanged();
-
-
-
-        setupTextualView();
-        System.out.println(longitudeLabel.getText());
-    }
-
-    private void setupTextualView(){
-        textualView.setCouriersComboBox(coursierComboBox);
-        textualView.setCreneauComboBox(creneauComboBox);
-        textualView.setCoordinatesPane(coordinatesPane);
-        textualView.setLongitudeLabel(longitudeLabel);
-        textualView.setLatitudeLabel(latitudeLabel);
-        textualView.setInfo(info);
-    }
-
-    private void handleHeightChanged(){
-        mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double newHeight = (double) newValue;
-            double oldHeight = (double) oldValue;
-            if (oldHeight == 0.0) {
-                oldHeight = newHeight;
-            }
-            double scaleFactor = (newHeight/oldHeight);
-            graphicalView.getGraph().setScaleY(scaleFactor*graphicalView.getGraph().getScaleY());
-            graphicalView.getGraph().setTranslateY(10);
-        });
-    }
-
-    private void handleWidthChanged(){
-        mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double newWidth = (double) newValue;
-            double oldWidth = (double) oldValue;
-            if (oldWidth == 0.0) {
-                oldWidth = newWidth;
-            }
-            double scaleFactor = (newWidth/oldWidth);
-
-            graphicalView.getGraph().setScaleX(scaleFactor*graphicalView.getGraph().getScaleX());
-        });
-    }
     private void update(){}
 
     protected void setEtatCourant(Etat etat){

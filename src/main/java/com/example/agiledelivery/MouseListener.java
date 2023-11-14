@@ -4,7 +4,6 @@ import com.example.controller.Controller;
 import com.example.model.Intersection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -55,7 +54,10 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 mouseY = event.getSceneY() - graph.getLayoutY();
             }if(event.isSecondaryButtonDown()){
                 controller.unselectIntersection();
-                textualView.setHint("");
+                textualView.setCoordinatesPaneVisible(false);
+                textualView.setTextLatitudeLabel("");
+                textualView.setTextLongitudeLabel("");
+
             }
         });
 

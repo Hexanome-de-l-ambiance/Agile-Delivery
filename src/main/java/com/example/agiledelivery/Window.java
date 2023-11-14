@@ -1,21 +1,14 @@
 package com.example.agiledelivery;
 
 import com.example.controller.Controller;
+import com.example.agiledelivery.ViewController;
 import com.example.model.Carte;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
@@ -39,17 +32,16 @@ public class Window extends Application {
     protected static final String CALCULATE_TOUR = "calculerTourneeButton";
     protected static final String UNDO = "undoButton";
     protected static final String REDO = "redoButton";
-    protected static final String LOAD_TOUR = "Charger une tournée";
-    protected static final String SAVE_TOUR = "Sauvegarder la tournée";
-    protected static final String RESET = "Reset les tournées";
+    protected static final String LOAD_TOUR = "chargerTourneeButton";
+    protected static final String SAVE_TOUR = "sauvegarderTourneeButton";
+    protected static final String RESET = "resetTourneeButton";
 
-    protected static final String RESET_NB_COURIERS = "Modifier le nombre de coursiers";
+    protected static final String RESET_NB_COURIERS = "changeNumberCouriersButton";
     protected static final String REMOVE = "supprimerLivraisonButton";
     protected static final String NB_COURIERS = "Numero de coursier : ";
-    protected static final String INTERVAL = "Choisir une fenêtre temporelle : ";
-    protected static final String ADD_DESTINATION_BEFORE = "Ajouter une destination avant la livraison";
-    protected static final String ADD_DESTINATION_AFTER = "Ajouter une destination après la livraison";
-    protected static final String REMOVE_AFTER_CALCULATED = "Supprimer une livraison choisie";
+    protected static final String ADD_DESTINATION_BEFORE = "ajouterAvantButton";
+    protected static final String ADD_DESTINATION_AFTER = "ajouterApresButton";
+    protected static final String REMOVE_AFTER_CALCULATED = "supprimerApresTourneeButton";
     protected static final String ID_COURIER = "Numero de coursier : ";
 
     private final String[] buttonTexts = new String[]{LOAD_PLAN, UNDO, REDO, CALCULATE_TOUR, LOAD_TOUR, SAVE_TOUR, RESET};
@@ -61,7 +53,7 @@ public class Window extends Application {
     public void start(Stage primaryStage) throws Exception {
         Carte carte = new Carte(1);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view.fxml"));
-        Controller controller = new Controller(carte,primaryStage);
+        ViewController controller = new ViewController(carte, new Controller(carte,primaryStage));
         loader.setController(controller);
         Scene scene = loader.load();
         primaryStage.setScene(scene);
