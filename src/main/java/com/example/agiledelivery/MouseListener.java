@@ -4,6 +4,7 @@ import com.example.controller.Controller;
 import com.example.model.Intersection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -44,6 +45,8 @@ public class MouseListener implements EventHandler<ActionEvent> {
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();
         this.textualView = textualView;
+
+
         setOnEvent();
     }
 
@@ -54,6 +57,10 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 mouseY = event.getSceneY() - graph.getLayoutY();
             }if(event.isSecondaryButtonDown()){
                 controller.unselectIntersection();
+                if (lastClickedCircle != null) {
+                    lastClickedCircle.setFill(Color.BLACK);
+                    lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);
+                }
                 textualView.setCoordinatesPaneVisible(false);
                 textualView.setTextLatitudeLabel("");
                 textualView.setTextLongitudeLabel("");
@@ -119,9 +126,9 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 } else {
                     Intersection selectedIntersection = entry.getValue();
                     controller.addDestination(selectedIntersection);
-                    textualView.setCoordinatesPaneVisible(true);
-                    textualView.setTextLongitudeLabel(" longitude : " + entry.getValue().getLongitude());
-                    textualView.setTextLatitudeLabel(" latitude : " + entry.getValue().getLatitude());
+                    textualView.setHint("Intersection id: "+ entry.getValue().getId() +
+                            " longitude: " + entry.getValue().getLongitude()+
+                            " latitude: " + entry.getValue().getLatitude()+"\n");
                     for (Pair<Circle, Circle> circlePair : circlePairSet) {
                         if (circlePair.getKey().equals(key) && circlePair.getValue() != lastClickedCircle) {
                             Circle associatedCircle = circlePair.getValue();
@@ -139,6 +146,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 }
             });
         }
+
     }
     @Override
     public void handle(ActionEvent actionEvent) {
