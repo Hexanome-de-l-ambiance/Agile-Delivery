@@ -118,6 +118,9 @@ public class MouseListener implements EventHandler<ActionEvent> {
         for (Map.Entry<Circle, Intersection> entry : circleMap.entrySet()) {
             Circle key = entry.getKey();
             key.setOnMouseReleased(mouseEvent -> {
+                if (mouseEvent.getButton() == javafx.scene.input.MouseButton.SECONDARY) {
+                    return;
+                }
                 if (isDragged) {
                     mouseEvent.consume();
                 } else {
