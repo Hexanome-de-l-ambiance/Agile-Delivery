@@ -26,6 +26,7 @@ public class CommandeSupprimerLivraison implements Commande{
     public void execute() {
         if (carte.getListeTournees().get(numeroCouriser).getLivraisons().size()>0) {
             carte.removeLivraison(numeroCouriser, livraison);
+
         }
     }
 

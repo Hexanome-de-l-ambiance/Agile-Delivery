@@ -193,6 +193,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 break;
             }
             case Carte.UPDATE: {
+                listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
+                displayListeTournees(listeTournees);
                 coordinatesPane.setVisible(false);
                 latitudeLabel.setText("");
                 longitudeLabel.setText("");
@@ -316,7 +318,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void display(int numeroCoursier, Tournee tournee)
     {
         ArrayList<Livraison> list = tournee.getLivraisons();
-        if(list.size() > 0 && list.get(0).getDestination() == carte.getEntrepot()) list.remove(0);
         for(Livraison livraison : list){
             Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
             newLabel.setOnMouseClicked(event -> {
@@ -327,6 +328,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 if(selectedLabel!= null) selectedLabel.setStyle("-fx-fill: black;");
                 selectedLabel = newLabel;
                 selectedLabel.setStyle("-fx-fill: yellow;");
+                System.out.println(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
             });
             info.getChildren().add(newLabel);
         }
