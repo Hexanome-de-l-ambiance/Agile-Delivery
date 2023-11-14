@@ -1,5 +1,6 @@
-package com.example.model;
+package java.com.example.model;
 
+import com.example.model.*;
 import com.example.tsp.CompleteGraph;
 import com.example.tsp.Graph;
 import com.example.tsp.TSP;

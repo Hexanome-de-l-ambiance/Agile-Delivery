@@ -1,4 +1,4 @@
-package com.example.model;
+package java.com.example.utils;
 
 import com.example.utils.Distance;
 import org.junit.jupiter.api.Test;

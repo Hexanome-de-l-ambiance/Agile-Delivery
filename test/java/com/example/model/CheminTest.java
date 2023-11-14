@@ -1,5 +1,6 @@
-package com.example.model;
+package java.com.example.model;
 
+import com.example.model.*;
 import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalTime;

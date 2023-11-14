@@ -1,5 +1,5 @@
-package com.example.model;
-
+package java.com.example.model;
+import com.example.model.*;
 import org.junit.jupiter.api.Test;
 import java.time.LocalTime;
 import java.util.Objects;
