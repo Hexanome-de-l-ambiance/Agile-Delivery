@@ -159,7 +159,7 @@ public class Tournee{
         long start = System.currentTimeMillis();
         listeChemins.clear();
         if(listeLivraisons.size() == 0) {
-            return false;
+            return true;
         }
 
         Graph graph = new CompleteGraph(carte, listeLivraisons);
@@ -194,6 +194,7 @@ public class Tournee{
         listeChemins.add(chemin);
 
         System.out.println("Solution found in  " + (System.currentTimeMillis() - start) + " ms");
+        System.out.println("Heure de fin: " + heureFinTournee);
         return true;
     }
 

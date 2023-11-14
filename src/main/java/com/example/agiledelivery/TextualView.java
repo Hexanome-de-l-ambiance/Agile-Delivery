@@ -211,6 +211,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     comboBoxCouriers.setVisible(true);
 
                 } else {
+                    listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
+                    displayListeTournees(listeTournees);
                     button_add.setManaged(false);
                     button_add.setVisible(false);
                     button_add_before.setManaged(true);
