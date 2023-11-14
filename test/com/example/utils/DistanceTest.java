@@ -1,4 +1,4 @@
-package java.com.example.utils;
+package com.example.utils;
 
 import com.example.utils.Distance;
 import org.junit.jupiter.api.Test;
@@ -22,5 +22,7 @@ class DistanceTest {
         // Verification de l'égalité entre la distance attendue et la distance calculée à un mètre près
         assertEquals(distanceAttendue, distanceCalcule, 1.0);
     }
+
+    // Test failed
 
 }

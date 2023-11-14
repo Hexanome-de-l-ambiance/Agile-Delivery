@@ -1,4 +1,4 @@
-package java.com.example.model;
+package com.example.model;
 
 import com.example.model.*;
 import com.example.tsp.CompleteGraph;
@@ -147,6 +147,8 @@ public class CarteTest {
 
     }
 
+
+    // Test failed. To be verified.
     @Test
     public void creerTourneeTestCarte()
     {

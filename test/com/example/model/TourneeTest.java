@@ -1,4 +1,4 @@
-package java.com.example.model;
+package com.example.model;
 import com.example.model.*;
 import com.example.tsp.CompleteGraph;
 import com.example.tsp.Graph;

@@ -1,4 +1,4 @@
-package java.com.example.model;
+package com.example.model;
 import com.example.model.Intersection;
 import org.junit.jupiter.api.Test;
 
