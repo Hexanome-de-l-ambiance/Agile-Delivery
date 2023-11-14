@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.model.Carte;
-import com.example.model.Tournee;
 import com.example.xml.CustomXMLParsingException;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;
@@ -16,6 +15,7 @@ public class EtatInitial implements Etat {
         try{
             XMLOpener.getInstance().readFile(stage, carte);
             c.setEtatCourant(c.etatCarteChargee);
+            System.out.printf("map loaded");
         } catch (CustomXMLParsingException e) {
             throw new RuntimeException(e);
         }

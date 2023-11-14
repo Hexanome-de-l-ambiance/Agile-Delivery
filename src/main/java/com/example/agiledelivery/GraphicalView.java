@@ -31,21 +31,19 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private Intersection selectedIntersection = null;
     protected final double CIRCLE_RADIUS = 3.0;
 
-    public GraphicalView(Carte carte) {
-        this.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
-        this.setPrefHeight(Window.PREFHEIGHT);
-
+    public GraphicalView(Carte carte, Pane mapPane) {
+        this.setPrefWidth(mapPane.getPrefWidth());
+        this.setPrefHeight(mapPane.getPrefHeight());
         this.carte = carte;
         graph = new Pane();
-        graph.setPrefWidth(Window.graphicalViewScale * Window.PREFWIDTH);
-        graph.setPrefHeight(Window.PREFHEIGHT);
+        graph.setPrefWidth(mapPane.getPrefWidth()-10);
+        graph.setPrefHeight(mapPane.getPrefHeight()-10);
         graph.setLayoutX(0);
         graph.setLayoutY(0);
         graph.setStyle("-fx-background-color: lightblue;");
         this.getChildren().add(graph);
         this.setStyle("-fx-background-color: lightblue;");
         carte.addPropertyChangeListener(this);
-
         this.circleMap = new HashMap<>();
     }
     public Pane getGraph() {

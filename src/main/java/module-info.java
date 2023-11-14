@@ -7,4 +7,5 @@ module com.example.agiledelivery {
 
     opens com.example.agiledelivery to javafx.fxml;
     exports com.example.agiledelivery;
+    exports com.example.controller;
 }
