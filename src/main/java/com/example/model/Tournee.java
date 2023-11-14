@@ -5,6 +5,8 @@ import com.example.utils.Astar;
 
 import java.time.LocalTime;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * 
@@ -25,6 +27,10 @@ public class Tournee{
         listeChemins = new LinkedList<>();
         livraisons = new ArrayList<>();
         heureFinTournee = Livraison.DEBUT_TOURNEE;
+    }
+
+    public void setCoursier(int c){
+        coursier = c;
     }
 
 
@@ -226,5 +232,33 @@ public class Tournee{
 
     public LocalTime getHeureFinTournee() {
         return heureFinTournee;
+    }
+
+    public void genererFeuilleDeRoute() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        System.out.println("Feuille de route pour la tournée du coursier " + coursier);
+        System.out.println("Heure de fin de tournée : " + heureFinTournee.format(formatter));
+        System.out.println("Longueur totale parcourue : " + longueurTotale);
+
+        int indexChemin = 1;
+        for (Chemin chemin : listeChemins) {
+            System.out.println("\nLivraison " + indexChemin + ":");
+
+            int indexSegment = 1;
+            for (Segment segment : chemin.getListeSegments()) {
+                System.out.println("   Segment " + indexSegment + ":");
+                System.out.println("      Route : " + segment.getName());
+                indexSegment++;
+            }
+
+            if(indexChemin<listeChemins.size()) {
+                System.out.println("   Heure d'arrivée à la destination : " + livraisons.get(indexChemin-1).getHeureLivraison().format(formatter));
+            }else{
+                System.out.println("   Heure de retour à l'entrepot : " + getHeureFinTournee().format(formatter));
+                System.out.println();
+            }
+            indexChemin++;
+        }
     }
 }
