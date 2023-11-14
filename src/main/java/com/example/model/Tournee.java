@@ -6,6 +6,11 @@ import com.example.utils.Astar;
 import java.time.LocalTime;
 import java.util.*;
 import java.time.format.DateTimeFormatter;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import static java.lang.Math.round;
 
 
 /**
@@ -31,6 +36,10 @@ public class Tournee{
 
     public void setCoursier(int c){
         coursier = c;
+    }
+
+    public int getCoursier(){
+        return coursier;
     }
 
 
@@ -234,31 +243,72 @@ public class Tournee{
         return heureFinTournee;
     }
 
-    public void genererFeuilleDeRoute() {
+    public void genererFeuilleDeRouteHTML(String fileName) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        System.out.println("Feuille de route pour la tournée du coursier " + coursier);
-        System.out.println("Heure de fin de tournée : " + heureFinTournee.format(formatter));
-        System.out.println("Longueur totale parcourue : " + longueurTotale);
+        System.out.println(System.getProperty("user.dir"));
 
-        int indexChemin = 1;
-        for (Chemin chemin : listeChemins) {
-            System.out.println("\nLivraison " + indexChemin + ":");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/data/feuillesDeRoute/"+ fileName))) {
+            writer.write("<html>");
+            writer.write("<head>");
+            writer.write("<title>Feuille de route</title>");
+            writer.write("<style>");
+            writer.write("body { font-family: 'Arial', sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }");
+            writer.write("h1 { color: #007bff; }");
+            writer.write("h2 { color: #555; margin-top: 15px; }");
+            writer.write("p { color: #777; }");
+            writer.write(".segment { border: 1px solid #ddd; padding: 10px; margin: 5px; background-color: #fff; }");
+            writer.write(".arrival-time { font-weight: bold; color: #009688; }");
+            writer.write("</style>");
+            writer.write("</head>");
+            writer.write("<body>");
+            writer.write("<h1>Feuille de route pour la tournée du coursier " + coursier + "</h1>");
+            writer.write("<p>Heure de fin de tournée : " + heureFinTournee.format(formatter) + "</p>");
 
-            int indexSegment = 1;
-            for (Segment segment : chemin.getListeSegments()) {
-                System.out.println("   Segment " + indexSegment + ":");
-                System.out.println("      Route : " + segment.getName());
-                indexSegment++;
+            int indexChemin = 1;
+            for (Chemin chemin : listeChemins) {
+                writer.write("<div class='segment'>");
+                writer.write("<h2>Livraison " + indexChemin + "</h2>");
+
+                int indexSegment = 1;
+                String currentRoute = null;
+                double totalLength = 0;
+
+                for (Segment segment : chemin.getListeSegments()) {
+                    if (currentRoute == null || !currentRoute.equals(segment.getName())) {
+                        if (currentRoute != null) {
+                            writer.write("<p><strong>" + currentRoute + ":</strong> Longueur : " + round(totalLength) + " mètres </p>");
+                        }
+
+                        currentRoute = segment.getName();
+                        totalLength = 0;
+                    }
+
+                    totalLength += segment.getLength();
+
+                    if (indexSegment == chemin.getListeSegments().size()) {
+                        writer.write("<p><strong>" + currentRoute + ":</strong> Longueur : " + round(totalLength) + " mètres </p>");
+                    }
+
+                    indexSegment++;
+                }
+
+                if (indexChemin < listeChemins.size()) {
+                    writer.write("<p class='arrival-time'><strong>Heure d'arrivée à la destination :</strong> " + livraisons.get(indexChemin - 1).getHeureLivraison().format(formatter) + "</p>");
+                } else {
+                    writer.write("<p class='arrival-time'><strong>Heure de retour à l'entrepôt :</strong> " + getHeureFinTournee().format(formatter) + "</p>");
+                }
+                writer.write("</div>");
+                indexChemin++;
             }
 
-            if(indexChemin<listeChemins.size()) {
-                System.out.println("   Heure d'arrivée à la destination : " + livraisons.get(indexChemin-1).getHeureLivraison().format(formatter));
-            }else{
-                System.out.println("   Heure de retour à l'entrepot : " + getHeureFinTournee().format(formatter));
-                System.out.println();
-            }
-            indexChemin++;
+            writer.write("</body>");
+            writer.write("</html>");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+
+
 }

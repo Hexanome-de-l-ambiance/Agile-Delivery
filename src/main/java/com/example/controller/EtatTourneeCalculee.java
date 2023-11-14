@@ -50,7 +50,7 @@ public class EtatTourneeCalculee implements Etat {
     public void genererFeuilleRoute(Controller c, Carte carte){
         for (Tournee tournee : carte.getListeTournees().values())
         {
-           tournee.genererFeuilleDeRoute();
+           tournee.genererFeuilleDeRouteHTML("feuilleDeRoute" + tournee.getCoursier() + ".html");
         }
     }
 
