@@ -8,7 +8,6 @@ import com.example.utils.Astar;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class CompleteGraph implements Graph{
 	int nbVertices;
@@ -48,9 +47,9 @@ public class CompleteGraph implements Graph{
 					cost[i][j] = -1;
 					continue;
 				}
-				LocalTime debutCreneauHoraire1 = livraisons.get(i).getCrenauHoraire();
-				LocalTime finCreneauHoraire1 = livraisons.get(i).getCrenauHoraire().plus(Livraison.DUREE_CRENEAU_HORAIRE);
-				LocalTime debutCreneauHoraire2 = livraisons.get(j).getCrenauHoraire();
+				LocalTime debutCreneauHoraire1 = livraisons.get(i).getCreneauHoraire();
+				LocalTime finCreneauHoraire1 = livraisons.get(i).getCreneauHoraire().plus(Livraison.DUREE_CRENEAU_HORAIRE);
+				LocalTime debutCreneauHoraire2 = livraisons.get(j).getCreneauHoraire();
 				if(debutCreneauHoraire1 == debutCreneauHoraire2 || finCreneauHoraire1.isBefore(debutCreneauHoraire2) || finCreneauHoraire1.equals(debutCreneauHoraire2)) {
 					cost[i][j] = Astar.calculDistance(carte, livraisons.get(i).getDestination(), livraisons.get(j).getDestination());
 				}else{

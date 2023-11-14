@@ -1,6 +1,5 @@
 package com.example.model;
 
-import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 import java.time.Duration;
 
@@ -45,17 +44,17 @@ public class Livraison {
 
     public Livraison(Intersection destination, LocalTime creneauHoraire) {
         this.destination = destination;
-        this.crenauHoraire = creneauHoraire;
+        this.creneauHoraire = creneauHoraire;
     }
 
-    public LocalTime getCrenauHoraire() {
-        return crenauHoraire;
+    public LocalTime getCreneauHoraire() {
+        return creneauHoraire;
     }
 
     /**
      * L'heure du début du créneau horaire de livraison
      */
-    private LocalTime crenauHoraire;
+    private LocalTime creneauHoraire;
 
     /**
      * L'heure de livraison calculée
@@ -85,7 +84,7 @@ public class Livraison {
         this.heureLivraison = heureLivraison;
     }
 
-    public void setCrenauHoraire(LocalTime crenauHoraire) {
-        this.crenauHoraire = crenauHoraire;
+    public void setCreneauHoraire(LocalTime creneauHoraire) {
+        this.creneauHoraire = creneauHoraire;
     }
 }
