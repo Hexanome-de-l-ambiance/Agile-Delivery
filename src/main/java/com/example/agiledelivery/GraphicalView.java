@@ -162,7 +162,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         double scale = Math.min(scaleX, scaleY);
         Color color = colors.get((numeroCoursier-1) % colors.size());
 
-        for (Livraison livraison : tournee.getLivraisons()) {
+        for (Livraison livraison : tournee.getListeLivraisons()) {
             if(livraison.getDestination() == carte.getEntrepot()) continue;
             double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;
             double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;

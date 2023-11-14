@@ -287,12 +287,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         selectedText = null;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             Tournee tournee = entry.getValue();
-            if(tournee.getLivraisons().size() > 1 || (tournee.getLivraisons().size() == 1 && tournee.getLivraisons().get(0).getDestination() != carte.getEntrepot())){
+            if(tournee.getListeLivraisons().size() > 1 || (tournee.getListeLivraisons().size() == 1 && tournee.getListeLivraisons().get(0).getDestination() != carte.getEntrepot())){
                 Text segment = new Text("Id Coursier: " + entry.getKey() + "\n");
                 info.getChildren().add(segment);
                 display(entry.getKey(), tournee);
             }
-            sizeTournee.add(entry.getValue().getLivraisons().size());
+            sizeTournee.add(entry.getValue().getListeLivraisons().size());
         }
     }
 
@@ -310,7 +310,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     @Override
     public void display(int numeroCoursier, Tournee tournee)
     {
-        ArrayList<Livraison> list = tournee.getLivraisons();
+        ArrayList<Livraison> list = tournee.getListeLivraisons();
         if(list.size() > 0 && list.get(0).getDestination() == carte.getEntrepot()) list.remove(0);
         for(Livraison livraison : list){
             Text newtext = new Text("Id : " + livraison.getDestination().getId() + " longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
