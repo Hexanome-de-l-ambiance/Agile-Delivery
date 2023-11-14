@@ -23,7 +23,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private Pane graph;
     private double mouseX, mouseY;
     private boolean isDragged;
-    public MouseListener(Controller controller,GraphicalView graphicalView) {
+    public MouseListener(Controller controller, GraphicalView graphicalView, TextualView textualView) {
         this.controller = controller;
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();
@@ -70,7 +70,9 @@ public class MouseListener implements EventHandler<ActionEvent> {
             Circle key = entry.getKey();
             key.setOnMouseClicked(mouseEvent -> {
                 controller.addDestination(entry.getValue());
-                textualView.setHint("Intersection id: "+ entry.getValue().getId() + " longitude: " + entry.getValue().getLongitude()+ " latitude: " + entry.getValue().getLatitude()+"\n");
+                textualView.setCoordinatesPaneVisible(true);
+                textualView.setTextLongitudeLabel(" longitude : " + entry.getValue().getLongitude());
+                textualView.setTextLatitudeLabel(" latitude : " + entry.getValue().getLatitude());
             });
         }
     }

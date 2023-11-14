@@ -7,12 +7,10 @@ import com.example.agiledelivery.TextualView;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.time.LocalTime;
@@ -21,8 +19,7 @@ import java.time.LocalTime;
  */
 public class Controller {
 
-    @FXML
-    public MenuItem loadMap;
+
     /**
      * Default constructor
      */
@@ -41,6 +38,16 @@ public class Controller {
 
     private TextualView textualView;
 
+
+    @FXML
+    private MenuItem loadMap;
+
+    @FXML
+    private Label latitudeLabel;
+
+    @FXML
+    private Label longitudeLabel;
+
     @FXML
     private Pane mapPane;
 
@@ -48,28 +55,51 @@ public class Controller {
     private Button ajouterLivraison;
 
     @FXML
+    private Pane test;
+
+    @FXML
+    private ComboBox<String> coursierComboBox;
+
+    @FXML
+    private ComboBox<String> creneauComboBox;
+
+    @FXML
+    private Pane coordinatesPane;
+
+    @FXML
+    private TextFlow info;
+
+    @FXML
     public void initialize() {
         graphicalView = new GraphicalView(carte, mapPane);
         textualView = new TextualView(carte);
         buttonListener = new ButtonListener(this);
-        mouseListener = new MouseListener(this, graphicalView);
+        mouseListener = new MouseListener(this, graphicalView, textualView);
         graphicalView.setMouseListener(mouseListener);
         buttonListener.setTextualView(textualView);
+        mapPane.getChildren().add(0,graphicalView);
 
-        mapPane.getChildren().add(graphicalView);
         loadMap.setOnAction(event -> buttonListener.handle(event));
         ajouterLivraison.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        handleHeightChanged();
+        handleWidthChanged();
 
-        mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double newWidth = (double) newValue;
-            double oldWidth = (double) oldValue;
-            if (oldWidth == 0.0) {
-                oldWidth = newWidth;
-            }
-            double scaleFactor = (newWidth/oldWidth);
 
-            graphicalView.getGraph().setScaleX(scaleFactor*graphicalView.getGraph().getScaleX());
-        });
+
+        setupTextualView();
+        System.out.println(longitudeLabel.getText());
+    }
+
+    private void setupTextualView(){
+        textualView.setCouriersComboBox(coursierComboBox);
+        textualView.setCreneauComboBox(creneauComboBox);
+        textualView.setCoordinatesPane(coordinatesPane);
+        textualView.setLongitudeLabel(longitudeLabel);
+        textualView.setLatitudeLabel(latitudeLabel);
+        textualView.setInfo(info);
+    }
+
+    private void handleHeightChanged(){
         mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = (double) newValue;
             double oldHeight = (double) oldValue;
@@ -80,8 +110,21 @@ public class Controller {
             graphicalView.getGraph().setScaleY(scaleFactor*graphicalView.getGraph().getScaleY());
             graphicalView.getGraph().setTranslateY(10);
         });
-
     }
+
+    private void handleWidthChanged(){
+        mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double newWidth = (double) newValue;
+            double oldWidth = (double) oldValue;
+            if (oldWidth == 0.0) {
+                oldWidth = newWidth;
+            }
+            double scaleFactor = (newWidth/oldWidth);
+
+            graphicalView.getGraph().setScaleX(scaleFactor*graphicalView.getGraph().getScaleX());
+        });
+    }
+    private void update(){}
 
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
@@ -91,8 +134,6 @@ public class Controller {
         etatCourant = etatInitial;
         this.stage = stage;
         this.carte = carte;
-
-
 
     }
 

@@ -35,7 +35,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             case "loadMap" -> controller.load();
             case "ajouterLivraison" -> {
                 try {
-                    controller.addDelivery(Integer.parseInt(textualView.getComboBox().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
+                    controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));
                 } catch (NumberFormatException e) {
                     textualView.showAlert("Veuillez choisir un numero de coursier");
                 }

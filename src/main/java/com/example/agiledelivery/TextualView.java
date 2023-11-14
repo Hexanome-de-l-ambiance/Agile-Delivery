@@ -6,8 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -29,7 +29,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Text hint = new Text();
     private String content = "Welcome!";
     private HashMap<Long, Text> textHashMap = new HashMap<>();
-    private ComboBox<String> comboBox;
+    private ComboBox<String> comboBoxCouriers;
     private ComboBox<String> comboBoxIntervals;
     private ObservableList<String> couriers = FXCollections.observableArrayList(
             "1"
@@ -46,8 +46,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private int numeroCoursier = -1;
     private Livraison livraison = null;
-    private Text selectedText = null;
+    private Label selectedLabel = null;
     private Rectangle border;
+
+    private Label longitudeLabel;
+    private Label latitudeLabel;
+    private Pane coordinatesPane;
 
     public TextualView(Carte carte) {
         this.carte = carte;
@@ -75,19 +79,20 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         carte.addPropertyChangeListener(this);
     }
 
+
+    public void setCouriersComboBox(ComboBox<String> comboBox){
+        this.comboBoxCouriers = comboBox;
+        this.comboBoxCouriers.setItems(couriers);
+    }
+
+    public void setCreneauComboBox(ComboBox<String> comboBox){
+        this.comboBoxIntervals = comboBox;
+        this.comboBoxIntervals.setItems(intervals);
+    }
     public void setHint(String s){
         hint.setText(s);
     }
 
-    public void setComboBox(ComboBox<String> comboBox) {
-        this.comboBox = comboBox;
-        this.comboBox.setItems(couriers);
-    }
-
-    public void setComboBoxIntervals(ComboBox<String> comboBoxIntervals) {
-        this.comboBoxIntervals = comboBoxIntervals;
-        this.comboBoxIntervals.setItems(intervals);
-    }
 
     public void setTextArea(TextArea textArea) {
         this.textArea = textArea;
@@ -102,8 +107,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         return livraison;
     }
 
-    public ComboBox<String> getComboBox() {
-        return comboBox;
+    public ComboBox<String> getComboBoxCouriers() {
+        return comboBoxCouriers;
     }
 
     public ComboBox<String> getComboBoxIntervals() {
@@ -117,6 +122,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
+        System.out.println(event);
         switch (event) {
             case Carte.RESET:
             {
@@ -143,10 +149,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             case Carte.ADD: {
                 HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 displayListeTournees(listeTournees);
-                hint.setText("");
+                coordinatesPane.setVisible(false);
+                latitudeLabel.setText("");
+                longitudeLabel.setText("");
                 break;
             }
-            case Carte.UPDATE: hint.setText(""); break;
+            case Carte.UPDATE: latitudeLabel.setText(""); longitudeLabel.setText(""); break;
             case Carte.REMOVE: {
                 HashMap<Integer, Tournee> listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 displayListeTournees(listeTournees);
@@ -158,7 +166,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 for(int i = 1; i <= newNumber; i++){
                     couriers.add(String.valueOf(i));
                 }
-                comboBox.setItems(couriers);
+                comboBoxCouriers.setItems(couriers);
                 numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
                 info.getChildren().clear();
                 textHashMap.clear();
@@ -172,7 +180,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         info.getChildren().clear();
         numeroCoursier = -1;
         livraison = null;
-        selectedText = null;
+        selectedLabel = null;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             Tournee tournee = entry.getValue();
             if(tournee.getLivraisons().size() > 1 || (tournee.getLivraisons().size() == 1 && tournee.getLivraisons().get(0).getDestination() != carte.getEntrepot())){
@@ -185,14 +193,14 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     @Override
     public void display(Carte carte) {
-        Text segment = new Text("Nb segments: " + carte.getListeSegments().size() + "\n");
+    /*    Text segment = new Text("Nb segments: " + carte.getListeSegments().size() + "\n");
         segment.setStyle("-fx-font-size: 24;");
         textFlow.getChildren().add(segment);
         Text intersection = new Text("Nb segments: " + carte.getListeIntersections().size() + "\n");
         intersection.setStyle("-fx-font-size: 24;");
         textFlow.getChildren().add(intersection);
         textFlow.getChildren().add(numberCouriersText);
-    }
+    */}
 
     @Override
     public void display(int numeroCoursier, Tournee tournee)
@@ -200,15 +208,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         ArrayList<Livraison> list = tournee.getLivraisons();
         if(list.size() > 0 && list.get(0).getDestination() == carte.getEntrepot()) list.remove(0);
         for(Livraison livraison : list){
-            Text newtext = new Text("Id : " + livraison.getDestination().getId() + " longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
-            newtext.setOnMouseClicked(event -> {
+            Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
+            newLabel.setOnMouseClicked(event -> {
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
-                if(selectedText != null) selectedText.setStyle("-fx-fill: black;");
-                selectedText = newtext;
-                selectedText.setStyle("-fx-fill: yellow;");
+                if(selectedLabel != null) selectedLabel.setStyle("-fx-fill: black;");
+                selectedLabel = newLabel;
+                selectedLabel.setStyle("-fx-fill: yellow;");
             });
-            info.getChildren().add(newtext);
+            info.getChildren().add(newLabel);
         }
     }
 
@@ -218,5 +226,30 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         errorAlert.setHeaderText("An error occurred");
         errorAlert.setContentText(alert);
         errorAlert.showAndWait();
+    }
+
+    public void setLongitudeLabel(Label label){
+        this.longitudeLabel = label;
+    }
+    public void setTextLongitudeLabel(String s) {
+        longitudeLabel.setText(s);
+    }
+    public void setLatitudeLabel(Label label){
+        this.latitudeLabel = label;
+    }
+    public void setTextLatitudeLabel(String s) {
+        latitudeLabel.setText(s);
+    }
+
+    public void setInfo(TextFlow text){
+        this.info = text;
+    }
+
+    public void setCoordinatesPane(Pane coordinatesPane) {
+        this.coordinatesPane = coordinatesPane;
+    }
+
+    public void setCoordinatesPaneVisible(boolean b) {
+        this.coordinatesPane.setVisible(b);
     }
 }
