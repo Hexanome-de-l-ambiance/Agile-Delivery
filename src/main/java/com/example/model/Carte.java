@@ -40,7 +40,7 @@ public class Carte {
 
         this.nbCoursiers = nombreCoursier;
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
     }
 
@@ -48,7 +48,7 @@ public class Carte {
         this.nbCoursiers = nbCoursiers;
         this.listeTournees.clear();
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
         firePropertyChange(SET_NB_COURIERS, null, nbCoursiers);
     }
@@ -132,7 +132,7 @@ public class Carte {
         listeSegments.clear();
         nbCoursiers = 1;
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
         idProperty.set(1);
         firePropertyChange(RESET, null, null);
@@ -141,7 +141,7 @@ public class Carte {
     public void resetTournee(){
         listeTournees.clear();
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
         firePropertyChange(RESET_TOURS, null, nbCoursiers);
     }

@@ -115,6 +115,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 }
                 break;
             }
+            case Window.GENERATE: controller.genererFeuilleRoute(); break;
         }
     }
 }

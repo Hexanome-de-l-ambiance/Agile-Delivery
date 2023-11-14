@@ -93,9 +93,10 @@
                  <Button fx:id="calculerTourneeButton" layoutX="-5.0" layoutY="339.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée" />
                   <Button fx:id="supprimerLivraisonButton" layoutX="-4.0" layoutY="124.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="268.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison" />
                  <Button fx:id="ajouterLivraisonButton" layoutX="-4.0" layoutY="36.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison" />
-                  <Button fx:id="ajouterApresButton" layoutX="97.0" layoutY="74.0" managed="false" mnemonicParsing="false" text="Ajouter apres la livraison choisi" visible="false" />
+                  <Button fx:id="ajouterApresButton" layoutX="63.0" layoutY="74.0" managed="false" mnemonicParsing="false" text="Ajouter apres la livraison choisie" visible="false" />
                   <Button fx:id="ajouterAvantButton" layoutX="63.0" layoutY="24.0" managed="false" mnemonicParsing="false" text="Ajouter avant la livraison" visible="false" />
-                  <Button fx:id="supprimerApresTourneeButton" layoutX="-3.0" layoutY="200.0" managed="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="268.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false" />
+                   <Button fx:id="genererFeuilleDeRouteButton" layoutX="63.0" layoutY="134.0" managed="false" mnemonicParsing="false" text="Générer les feuilles de route" visible="false" />
+                   <Button fx:id="supprimerApresTourneeButton" layoutX="-3.0" layoutY="200.0" managed="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="268.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false" />
                </children>
               </Pane>
           </SplitPane>
