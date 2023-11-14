@@ -189,8 +189,8 @@ public class Tournee{
 
         Chemin chemin = Astar.calculChemin(carte, carte.getEntrepot(), listeLivraisons.get(0).getDestination());
         LocalTime heureArrivee = Livraison.DEBUT_TOURNEE.plusMinutes(chemin.getDuree().toMinutes());
-        if(heureArrivee.isBefore(listeLivraisons.get(0).getCrenauHoraire())) {
-            listeLivraisons.get(0).setHeureLivraison(listeLivraisons.get(0).getCrenauHoraire());
+        if(heureArrivee.isBefore(listeLivraisons.get(0).getCreneauHoraire())) {
+            listeLivraisons.get(0).setHeureLivraison(listeLivraisons.get(0).getCreneauHoraire());
             listeLivraisons.get(0).setEtat(Livraison.Etat.EN_AVANCE);
         }else {
             listeLivraisons.get(0).setHeureLivraison(heureArrivee);
@@ -265,16 +265,16 @@ public class Tournee{
 
             if(!listeChemins.isEmpty()){
 
-                if(livraisons.get(0).getCreneauHoraire().isAfter(heureActuelle)){
-                    writer.write("<p>Heure de début de tournée : " + livraisons.get(0).getCreneauHoraire().minusMinutes(listeChemins.get(0).getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()).format(formatter) + "</p>");
+                if(listeLivraisons.get(0).getCreneauHoraire().isAfter(heureActuelle)){
+                    writer.write("<p>Heure de début de tournée : " + listeLivraisons.get(0).getCreneauHoraire().minusMinutes(listeChemins.get(0).getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()).format(formatter) + "</p>");
                 }
                 writer.write("<p>Heure de fin de tournée : " + heureFinTournee.format(formatter) + "</p>");
             }
 
             int indexChemin = 1;
             for (Chemin chemin : listeChemins) {
-                if(indexChemin < listeChemins.size() && indexChemin > 1 && livraisons.get(indexChemin - 1).getCreneauHoraire().isAfter(heureActuelle)){
-                    Duration tempsAttente = Duration.between(heureActuelle.plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()), livraisons.get(indexChemin - 1).getHeureLivraison());
+                if(indexChemin < listeChemins.size() && indexChemin > 1 && listeLivraisons.get(indexChemin - 1).getCreneauHoraire().isAfter(heureActuelle)){
+                    Duration tempsAttente = Duration.between(heureActuelle.plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()), listeLivraisons.get(indexChemin - 1).getHeureLivraison());
                     writer.write("<p style='color: #850606;'>Temps d'attente : " + tempsAttente.toMinutes() + " min </p>");
                 }
                 writer.write("<div class='segment'>");
@@ -309,8 +309,8 @@ public class Tournee{
                 }
 
                 if (indexChemin < listeChemins.size()) {
-                    writer.write("<p class='arrival-time'><strong>Heure d'arrivée à la destination :</strong> " + livraisons.get(indexChemin - 1).getHeureLivraison().format(formatter) + "</p>");
-                    heureActuelle = livraisons.get(indexChemin - 1).getHeureLivraison();
+                    writer.write("<p class='arrival-time'><strong>Heure d'arrivée à la destination :</strong> " + listeLivraisons.get(indexChemin - 1).getHeureLivraison().format(formatter) + "</p>");
+                    heureActuelle = listeLivraisons.get(indexChemin - 1).getHeureLivraison();
                 } else {
                     writer.write("<p class='arrival-time'><strong>Heure de retour à l'entrepôt :</strong> " + getHeureFinTournee().format(formatter) + "</p>");
                 }

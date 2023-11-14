@@ -74,6 +74,10 @@ public class ViewController {
 
     @FXML
     private Button ajouterApresButton;
+
+    @FXML
+    private Button genererFeuilleDeRouteButton;
+
     @FXML
     private TextFlow info;
 
@@ -117,6 +121,8 @@ public class ViewController {
         supprimerApresTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
         ajouterApresButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
         ajouterAvantButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        genererFeuilleDeRouteButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+
 
 
         handleHeightChanged();
@@ -138,6 +144,7 @@ public class ViewController {
         textualView.setButton_add(ajouterLivraisonButton);
         textualView.setButton_add_before(ajouterAvantButton);
         textualView.setButton_add_after(ajouterApresButton);
+        textualView.setButton_generate(genererFeuilleDeRouteButton);
         textualView.setButton_remove(supprimerLivraisonButton);
         textualView.setButton_remove_after(supprimerApresTourneeButton);
         textualView.setTextField(courierNumberTextField);

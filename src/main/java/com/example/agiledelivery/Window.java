@@ -35,7 +35,7 @@ public class Window extends Application {
     protected static final String LOAD_TOUR = "chargerTourneeButton";
     protected static final String SAVE_TOUR = "sauvegarderTourneeButton";
     protected static final String RESET = "resetTourneeButton";
-    protected static final String GENERATE = "genererFeuilleDeRoute";
+    protected static final String GENERATE = "genererFeuilleDeRouteButton";
 
 
     protected static final String RESET_NB_COURIERS = "changeNumberCouriersButton";
