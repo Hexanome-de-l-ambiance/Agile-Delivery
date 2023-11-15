@@ -1,18 +1,11 @@
 package com.example.agiledelivery;
 
 import com.example.controller.Controller;
-import com.example.agiledelivery.ViewController;
 import com.example.model.Carte;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
-
-import java.util.ArrayList;
-
-import static java.lang.Math.abs;
 
 
 public class Window extends Application {
@@ -32,6 +25,7 @@ public class Window extends Application {
     protected static final String REMOVE_AFTER_CALCULATED = "supprimerApresTourneeButton";
 
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Carte carte = new Carte(1);
@@ -41,9 +35,7 @@ public class Window extends Application {
         Scene scene = loader.load();
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
-
 
     public static void main(String[] args) {
         launch(args);

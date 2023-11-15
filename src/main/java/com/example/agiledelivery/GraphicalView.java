@@ -4,9 +4,6 @@ import com.example.model.*;
 
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
@@ -34,7 +31,6 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.YELLOWGREEN, Color.PURPLE, Color.ORANGE, Color.PINK, Color.AQUA, Color.FUCHSIA, Color.SIENNA));
 
     protected final double DETECTION_RADIUS = 7.0;
-
     protected final double CIRCLE_RADIUS = 3.0;
 
     /**
