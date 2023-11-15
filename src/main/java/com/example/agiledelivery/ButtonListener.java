@@ -68,7 +68,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 int numeroCoursier = textualView.getNumeroCoursier();
                 Livraison livraison = textualView.getLivraison();
                 if (numeroCoursier == -1 || livraison == null) {
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 } else {
                     controller.deleteDelivery(numeroCoursier, livraison);
                 }
@@ -79,7 +79,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 } else {
                     controller.deleteDelivery(numeroCoursier, livraison, index);
                 }
@@ -91,7 +91,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 }
                 try {
                     controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);
@@ -105,7 +105,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 }
                 try {
                     controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index+1);
