@@ -27,7 +27,6 @@ public class ButtonListener implements EventHandler<ActionEvent> {
         } else {
             actionCommand = ((Button) event.getSource()).getId();
         }
-        System.out.println(actionCommand);
 
         // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
