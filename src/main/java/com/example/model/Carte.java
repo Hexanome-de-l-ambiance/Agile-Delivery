@@ -8,20 +8,61 @@ import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class Carte {
+
+    /**
+     * La latitude minimale de la carte.
+     */
     private double minLat;
+
+    /**
+     * La latitude maximale de la carte.
+     */
     private double maxLat;
+
+    /**
+     * La longitude minimale de la carte.
+     */
     private double minLon;
+
+    /**
+     * La longitude maximale de la carte.
+     */
     private double maxLon;
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    /**
+     * La liste des intersections sur la carte, indexée par leur identifiant.
+     */
     private HashMap<Long, Intersection> listeIntersection;
+
+    /**
+     * La liste des segments sur la carte, indexée par l'intersection de départ et d'arrivée.
+     */
     private HashMap<Pair<Long, Long>, Segment> listeSegments;
+
+    /**
+     * La liste d'adjacence représentant les relations entre les intersections,
+     * indexée par l'identifiant de l'intersection avec une liste de paires (identifiant, distance).
+     */
     private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence;
+
+    /**
+     * La liste des tournées sur la carte, indexée par le numéro du coursier/de la tournée.
+     */
     private HashMap<Integer, Tournee> listeTournees;
 
+    /**
+     * Le nombre de coursiers.
+     */
     private int nbCoursiers;
+
+    /**
+     * L'identifiant de l'entrepôt sur la carte.
+     */
     private Long entrepotId;
-    private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
-    private boolean isCalculated = false;
+
+    /**
+     * Indique si la tournée est vide.
+     */
     private boolean isTourEmpty = true;
     public static final String RESET = "reset";
     public static final String RESET_TOURS = "reset tours";
@@ -31,6 +72,10 @@ public class Carte {
     public static final String ADD = "add destination";
     public static final String REMOVE = "remove destination";
     public static final String SET_NB_COURIERS = "set number of couriers";
+
+    private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+
 
     public Carte(int nombreCoursier){
         listeIntersection = new HashMap<>();
