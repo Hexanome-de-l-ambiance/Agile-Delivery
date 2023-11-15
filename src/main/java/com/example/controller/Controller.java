@@ -163,7 +163,7 @@ public class Controller {
      * Charger la carte dans l'état courant du contrôleur.
      */
     public void load() {
-        etatCourant.loadMap(this, carte, listeDeCommandes, stage);
+        etatCourant.loadMap(this, carte, stage);
     }
 
     /**

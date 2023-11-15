@@ -246,15 +246,19 @@ public class Carte {
         firePropertyChange(UPDATE, null, listeTournees);
 
     }
-    public boolean calculerTournees() {
+    public void calculerTournees() {
+        boolean error = false;
+        String s = "Tournée invalide du numero ";
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             if(!entry.getValue().calculerTournee(this)){
-                firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
-                return false;
+                error = true;
+                s += entry.getKey() + " ";
             }
         }
+        if(error){
+            firePropertyChange(ERROR, null, s);
+        }
         firePropertyChange(UPDATE, null, listeTournees);
-        return true;
     }
 
     public HashMap<Integer, Tournee> getListeTournees() {

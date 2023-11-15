@@ -103,10 +103,9 @@ public interface Etat {
      *
      * @param c     Le contrôleur.
      * @param carte La carte à charger.
-     * @param l     La liste de commandes.
      * @param stage Le stage JavaFX.
      */
-    public default void loadMap(Controller c, Carte carte, ListeDeCommandes l, Stage stage){}
+    public default void loadMap(Controller c, Carte carte, Stage stage){}
 
     /**
      * Réinitialise la carte.
