@@ -62,6 +62,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private Button resetTourneeButton;
 
+    /**
+     * Initialiser le view
+     */
     public TextualView(Carte carte) {
         this.carte = carte;
 
@@ -163,6 +166,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         return textField;
     }
 
+    /**
+     * Gérer les changements dans les propriétés de l'événement de PropertyChange en effectuant différentes actions basées sur l'événement.
+     * @param evt L'événement de changement de propriété
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
@@ -304,6 +311,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     }
 
+    /**
+     * Afficher la liste des tournées sur le view en fonction des tournées fournies.
+     * @param listeTournees La liste des tournées à afficher
+     */
     private void displayListeTournees(HashMap<Integer, Tournee> listeTournees){
         info.getChildren().clear();
         numeroCoursier = -1;
@@ -324,6 +335,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void display(Carte carte) {
     }
 
+    /**
+     * Afficher une tournée spécifique pour un numéro de coursier donné.
+     *
+     * @param numeroCoursier Le numéro du coursier
+     * @param tournee        La tournée à afficher
+     */
     @Override
     public void display(int numeroCoursier, Tournee tournee)
     {
@@ -345,6 +362,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         }
     }
 
+    /**
+     * Affiche une alerte avec un message d'erreur spécifié.
+     * @param alert Le message d'erreur à afficher
+     */
     protected void showAlert(String alert){
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Error Dialog");

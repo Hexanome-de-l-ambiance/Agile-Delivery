@@ -9,16 +9,27 @@ import javafx.scene.control.MenuItem;
 
 
 public class ButtonListener implements EventHandler<ActionEvent> {
+
     private Controller controller;
+
     private TextualView textualView;
+
     public ButtonListener(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Mettre le textualView pour savoir les informations choisies par l'utilisateur
+     * @param textualView the textualView
+     */
     public void setTextualView(TextualView textualView) {
         this.textualView = textualView;
     }
 
+    /**
+     * Envoyer les commandes à la controleur en fonctions des événements créés par les buttoms ou les outils
+     * @param event l'événement écouté par le listener
+     */
     @Override
     public void handle(ActionEvent event) {
         String actionCommand;
