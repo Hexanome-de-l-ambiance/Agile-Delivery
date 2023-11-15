@@ -1,10 +1,15 @@
 package com.example.xml;
 
-import com.example.model.Carte;
+import com.example.controller.Controller;
+import com.example.controller.ListeDeCommandes;
+import com.example.model.*;
 import com.example.xml.XMLOpener;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.xml.sax.SAXParseException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,6 +35,39 @@ public class XMLOpenerTest {
         XMLOpener instance2 = XMLOpener.getInstance();
         assertSame(instance1, instance2, "Les instances du singleton doivent être les mêmes");
     }
+    @Test
+    public void testLoadMapWithNullFile() {
+        XMLOpener xmlOpener = new XMLOpener();
+        Carte carte = new Carte(1);
+
+        Platform.startup(() -> {
+            Stage stage = new Stage();
+            try {
+                xmlOpener.readFile(stage, carte);
+                fail("Expected an exception to be thrown");
+            } catch (RuntimeException | CustomXMLParsingException e) {
+                assertEquals("File null", e.getMessage());
+            }
+        });
+    }
+
+    @Test
+    public void testLoadMapWithInvalidFile() {
+        XMLOpener xmlOpener = new XMLOpener();
+        String path = "data/xml/testTourneeTestMap.xml";
+        Carte carte = new Carte(1);
+
+        try {
+            xmlOpener.readFile(carte, path);
+            fail("Expected an exception to be thrown");
+        } catch (RuntimeException | CustomXMLParsingException e) {
+            assertEquals("Invalid XML file", e.getMessage());
+        }
+    }
+
+
+
+
 
 //    @Test
 //    public void readValidFileTest() {

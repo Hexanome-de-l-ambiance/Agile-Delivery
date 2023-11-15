@@ -14,10 +14,16 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 public class XMLOpener{
 
-    private XMLOpener() {}
+    XMLOpener() {}
 
 
 
@@ -28,6 +34,7 @@ public class XMLOpener{
     public static XMLOpener getInstance() {
         return SingletonHelper.INSTANCE;
     }
+
 
     public void saveTour(Stage stage, Carte carte) throws CustomXMLParsingException {
         try {
@@ -65,9 +72,20 @@ public class XMLOpener{
 
     public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
+        String xsdPath = "data/xsd/map.xsd";
         if (file == null) {
             carte.sendException(new CustomXMLParsingException("File null"));
             throw new CustomXMLParsingException("File null");
+        }
+
+        if (!new File(xsdPath).exists()) {
+            carte.sendException(new CustomXMLParsingException("XSD file not found"));
+            throw new CustomXMLParsingException("XSD file not found");
+        }
+
+        if (!validateXML(xsdPath, file.getAbsolutePath())) {
+            carte.sendException(new CustomXMLParsingException("Invalid XML file"));
+            throw new CustomXMLParsingException("Invalid XML file");
         }
         carte.reset();
         try {
@@ -88,9 +106,19 @@ public class XMLOpener{
 
     public void readFile(Carte carte, String path) throws CustomXMLParsingException {
         File file = new File(path);
-
+        String xsdPath = "data/xsd/map.xsd";
         if (file.length() == 0) {
             throw new CustomXMLParsingException("Fichier vide");
+        }
+
+        if (!new File(xsdPath).exists()) {
+            carte.sendException(new CustomXMLParsingException("XSD file not found"));
+            throw new CustomXMLParsingException("XSD file not found");
+        }
+
+        if (!validateXML(xsdPath, file.getAbsolutePath())) {
+            carte.sendException(new CustomXMLParsingException("Invalid XML file"));
+            throw new CustomXMLParsingException("Invalid XML file");
         }
 
         try {
@@ -187,6 +215,21 @@ public class XMLOpener{
                 Long id = Long.valueOf(attributes.getValue("address"));
                 carte.setEntrepotId(id);
             }
+        }
+    }
+
+    public boolean validateXML(String xsdPath, String xmlPath) throws CustomXMLParsingException {
+        try {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Source schemaSource = new StreamSource(new File(xsdPath));
+            Schema schema = schemaFactory.newSchema(schemaSource);
+            Validator validator = schema.newValidator();
+            Source xmlSource = new StreamSource(new File(xmlPath));
+            validator.validate(xmlSource);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
