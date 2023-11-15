@@ -65,26 +65,23 @@ public class XMLOpenerTest {
         }
     }
 
+    @Test
+    public void testLoadMapWithValidFile() {
+        XMLOpener xmlOpener = new XMLOpener();
+        String path1 = "data/xml/testMap.xml";
+        String path2 = "data/xml/smallMap.xml";
+        String path3 = "data/xml/mediumMap.xml";
+        String path4 = "data/xml/largeMap.xml";
 
+        Carte carte = new Carte(1);
 
-
-
-//    @Test
-//    public void readValidFileTest() {
-//        File testFile = new File(tempDirectory, "test.xml");
-//        try (FileWriter writer = new FileWriter(testFile)) {
-//            writer.write("<?xml version=\"1.0\"?>\n<root>\n" +
-//                    "<intersection id=\"1\" latitude=\"10.0\" longitude=\"20.0\" />\n" +
-//                    "<segment destination=\"2\" length=\"100\" name=\"segment1\" origin=\"1\" />\n" +
-//                    "</root>");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        assertDoesNotThrow(() -> xmlOpener.readFile(carte, testFile.getAbsolutePath()), "Il ne doit pas lancer d'exception pour un XML valide");
-//    }
-//
-
-
-
+        try {
+            xmlOpener.readFile(carte, path1);
+            xmlOpener.readFile(carte, path2);
+            xmlOpener.readFile(carte, path3);
+            xmlOpener.readFile(carte, path4);
+        } catch (RuntimeException | CustomXMLParsingException e) {
+            fail("Expected no exception to be thrown");
+        }
+    }
 }
