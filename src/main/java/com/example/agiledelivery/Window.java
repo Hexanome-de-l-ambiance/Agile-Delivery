@@ -18,8 +18,6 @@ public class Window extends Application {
     protected static final String SAVE_TOUR = "sauvegarderTourneeButton";
     protected static final String RESET = "resetTourneeButton";
     protected static final String GENERATE = "genererFeuilleDeRouteButton";
-
-
     protected static final String RESET_NB_COURIERS = "changeNumberCouriersButton";
     protected static final String REMOVE = "supprimerLivraisonButton";
     protected static final String ADD_DESTINATION_BEFORE = "ajouterAvantButton";

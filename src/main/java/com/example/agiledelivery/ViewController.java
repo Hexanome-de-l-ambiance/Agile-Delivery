@@ -22,7 +22,6 @@ public class ViewController {
      * Default constructor
      */
     private Carte carte;
-    private Stage stage;
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
     private GraphicalView graphicalView;

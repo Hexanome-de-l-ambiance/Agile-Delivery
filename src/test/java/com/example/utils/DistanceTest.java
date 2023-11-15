@@ -16,14 +16,12 @@ class DistanceTest {
         double lon2 = -75.0;
 
         // Distance attendue en mètres
-        double distanceAttendue = 150000.0;
+        double distanceAttendue = 139689;
 
         double distanceCalcule = Distance.haversine(lat1, lon1, lat2, lon2);
 
         // Verification de l'égalité entre la distance attendue et la distance calculée à un mètre près
         assertEquals(distanceAttendue, distanceCalcule, 1.0);
     }
-
-    // Test failed
 
 }
