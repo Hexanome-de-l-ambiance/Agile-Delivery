@@ -213,7 +213,7 @@ public class Carte {
     }
 
     public void addLivraison(int numeroCouriser, Livraison livraison, int index){
-        if(listeTournees.get(numeroCouriser).addLivraison(this, livraison, index) == false){
+        if(!listeTournees.get(numeroCouriser).addLivraison(this, livraison, index)){
             firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
         }
         isTourEmpty = false;
@@ -224,8 +224,9 @@ public class Carte {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
         boolean b = true;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().getListeLivraisons().size() != 0){
+            if (!entry.getValue().getListeLivraisons().isEmpty()) {
                 b = false;
+                break;
             }
         }
         isTourEmpty = b;
@@ -235,8 +236,9 @@ public class Carte {
         listeTournees.get(numeroCouriser).removeLivraison(this, index);
         boolean b = true;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().getListeLivraisons().size() != 0){
+            if (!entry.getValue().getListeLivraisons().isEmpty()) {
                 b = false;
+                break;
             }
         }
         isTourEmpty = b;
@@ -246,7 +248,7 @@ public class Carte {
     }
     public boolean calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().calculerTournee(this) == false){
+            if(!entry.getValue().calculerTournee(this)){
                 firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
                 return false;
             }
@@ -267,9 +269,6 @@ public class Carte {
         support.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
     private void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         support.firePropertyChange(propertyName, oldValue, newValue);
     }
