@@ -56,6 +56,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Button button_add;
     private Button button_add_before;
     private Button button_add_after;
+    private Button button_generate;
     private Button button_remove;
     private Button button_remove_after;
 
@@ -112,6 +113,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public void setButton_add_after(Button button_add_after) {
         this.button_add_after = button_add_after;
+    }
+
+    public void setButton_generate(Button button_generate) {
+        this.button_generate = button_generate;
     }
 
     public void setButton_remove(Button button_remove) {
@@ -208,6 +213,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_add_after.setManaged(false);
                     button_add_after.setDisable(true);
                     button_add_after.setVisible(false);
+                    button_generate.setManaged(false);
+                    button_generate.setDisable(true);
+                    button_generate.setVisible(false);
                     textNumeroCoursier.setManaged(true);
                     textNumeroCoursier.setVisible(true);
                     comboBoxCouriers.setManaged(true);
@@ -224,6 +232,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_add_after.setManaged(true);
                     button_add_after.setDisable(false);
                     button_add_after.setVisible(true);
+                    button_generate.setManaged(true);
+                    button_generate.setDisable(false);
+                    button_generate.setVisible(true);
                     textNumeroCoursier.setManaged(false);
                     textNumeroCoursier.setVisible(false);
                     comboBoxCouriers.setManaged(false);
@@ -272,6 +283,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 button_add_after.setManaged(false);
                 button_add_after.setDisable(true);
                 button_add_after.setVisible(false);
+                button_generate.setManaged(false);
+                button_generate.setDisable(true);
+                button_generate.setVisible(false);
                 textNumeroCoursier.setManaged(true);
                 textNumeroCoursier.setVisible(true);
                 comboBoxCouriers.setManaged(true);
@@ -308,14 +322,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     @Override
     public void display(Carte carte) {
-    /*    Text segment = new Text("Nb segments: " + carte.getListeSegments().size() + "\n");
-        segment.setStyle("-fx-font-size: 24;");
-        textFlow.getChildren().add(segment);
-        Text intersection = new Text("Nb segments: " + carte.getListeIntersections().size() + "\n");
-        intersection.setStyle("-fx-font-size: 24;");
-        textFlow.getChildren().add(intersection);
-        textFlow.getChildren().add(numberCouriersText);
-    */}
+    }
 
     @Override
     public void display(int numeroCoursier, Tournee tournee)
@@ -324,16 +331,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         ArrayList<Livraison> list = tournee.getListeLivraisons();
 
         for(Livraison livraison : list){
-            Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + livraison.+"\n");
+            Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "Heure : " + livraison.getHeureLivraison()+ "\n");
             newLabel.setOnMouseClicked(event -> {
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
                 this.selectedIndex = list.indexOf(livraison);
                 System.out.println("test");
-                if(selectedLabel!= null) newLabel.setTextFill(Color.YELLOW);
+                if(selectedLabel!= null) selectedLabel.setTextFill(Color.BLACK);
                 selectedLabel = newLabel;
-                newLabel.setTextFill(Color.YELLOW);
-                System.out.println(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
+                selectedLabel.setTextFill(Color.YELLOW);
             });
             info.getChildren().add(newLabel);
         }

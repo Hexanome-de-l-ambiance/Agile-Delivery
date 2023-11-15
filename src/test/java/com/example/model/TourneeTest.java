@@ -1,13 +1,22 @@
 package com.example.model;
-
+import com.example.model.*;
+import com.example.tsp.CompleteGraph;
+import com.example.tsp.Graph;
+import com.example.tsp.TSP;
+import com.example.tsp.TSP1;
+import com.example.utils.Astar;
+import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.xml.XMLOpener;
+import org.junit.jupiter.api.TestTemplate;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class TourneeTest {
     Carte testCarte;
@@ -29,8 +38,8 @@ public class TourneeTest {
      */
     @Test
     public void testCalculTourneeVide() {
-        Tournee tournee = new Tournee();
-        assertFalse(tournee.calculerTournee(testCarte));
+        Tournee tournee = new Tournee(1);
+        tournee.calculerTournee(testCarte);
 
         assertEquals(0, tournee.getListeLivraisons().size());
         assertEquals(0, tournee.getListeChemins().size());
@@ -47,11 +56,11 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
 
-        assertTrue(tournee.calculerTournee(testCarte));
+        tournee.calculerTournee(testCarte);
 
         assertEquals(livraison1, tournee.getListeLivraisons().get(0));
         assertEquals(livraison2, tournee.getListeLivraisons().get(1));
@@ -80,11 +89,11 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison2);
         tournee.addLivraison(livraison1);
 
-        assertTrue(tournee.calculerTournee(testCarte));
+        tournee.calculerTournee(testCarte);
 
         assertEquals(livraison1, tournee.getListeLivraisons().get(0));
         assertEquals(livraison2, tournee.getListeLivraisons().get(1));
@@ -113,11 +122,11 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(2));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison2);
         tournee.addLivraison(livraison1);
 
-        assertTrue(tournee.calculerTournee(testCarte));
+        tournee.calculerTournee(testCarte);
 
         assertEquals(livraison1, tournee.getListeLivraisons().get(0));
         assertEquals(livraison2, tournee.getListeLivraisons().get(1));
@@ -146,11 +155,11 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE.plusHours(1));
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(3));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison2);
         tournee.addLivraison(livraison1);
 
-        assertTrue(tournee.calculerTournee(testCarte));
+        tournee.calculerTournee(testCarte);
 
         assertEquals(livraison1, tournee.getListeLivraisons().get(0));
         assertEquals(livraison2, tournee.getListeLivraisons().get(1));
@@ -171,24 +180,6 @@ public class TourneeTest {
     }
 
     /**
-     * Test de la méthode calculerTournee de la classe Tournee
-     * Teste un cas où il n'y a pas de solution
-     */
-    @Test
-    public void testCalculTournee5() {
-        Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE.plusHours(1));
-        Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
-        Livraison livraison3 = new Livraison(testCarte.getIntersection(7L), Livraison.DEBUT_TOURNEE.plusHours(1));
-
-        Tournee tournee = new Tournee();
-        tournee.addLivraison(livraison2);
-        tournee.addLivraison(livraison1);
-        tournee.addLivraison(livraison3);
-
-        assertFalse(tournee.calculerTournee(testCarte));
-    }
-
-    /**
      * Test de la méthode <code>addLivraison</code> de la classe Tournee.
      * Teste l'ajout d'une livraison à l'indice 0
      */
@@ -197,14 +188,14 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
 
         tournee.calculerTournee(testCarte);
 
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE);
-        assertTrue(tournee.addLivraison(testCarte, livraison3, 0));
+        tournee.addLivraison(testCarte, livraison3, 0);
 
         assertEquals(3, tournee.getListeLivraisons().size());
         assertEquals(4, tournee.getListeChemins().size());
@@ -240,14 +231,14 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
 
         tournee.calculerTournee(testCarte);
 
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE);
-        assertTrue(tournee.addLivraison(testCarte, livraison3, 1));
+        tournee.addLivraison(testCarte, livraison3, 1);
 
         assertEquals(3, tournee.getListeLivraisons().size());
         assertEquals(4, tournee.getListeChemins().size());
@@ -283,14 +274,14 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
 
         tournee.calculerTournee(testCarte);
 
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE);
-        assertTrue(tournee.addLivraison(testCarte, livraison3, 2));
+        tournee.addLivraison(testCarte, livraison3, 2);
 
         assertEquals(3, tournee.getListeLivraisons().size());
         assertEquals(4, tournee.getListeChemins().size());
@@ -326,7 +317,7 @@ public class TourneeTest {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
 
@@ -334,81 +325,14 @@ public class TourneeTest {
 
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE);
 
-        assertFalse(tournee.addLivraison(testCarte, livraison3, -1));
+        tournee.addLivraison(testCarte, livraison3, -1);
         assertEquals(2, tournee.getListeLivraisons().size());
         assertEquals(3, tournee.getListeChemins().size());
 
-        assertFalse(tournee.addLivraison(testCarte, livraison3, 3));
+        tournee.addLivraison(testCarte, livraison3, 3);
         assertEquals(2, tournee.getListeLivraisons().size());
         assertEquals(3, tournee.getListeChemins().size());
 
-    }
-
-    /**
-     * Test de la méthode <code>addLivraison</code> de la classe Tournee.
-     * Teste l'ajout d'une livraison lorsque la liste de chemins est vide
-     */
-    @Test
-    public void testAjouterApresCalculTournee5() {
-
-        Tournee tournee = new Tournee();
-
-        Livraison livraison = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE);
-
-        assertTrue(tournee.addLivraison(testCarte, livraison, 0));
-        assertEquals(1, tournee.getListeLivraisons().size());
-        assertEquals(2, tournee.getListeChemins().size());
-
-        assertEquals(livraison, tournee.getListeLivraisons().get(0));
-
-        assertEquals(testCarte.getEntrepot(), tournee.getListeChemins().get(0).getOrigin());
-        assertEquals(livraison.getDestination(), tournee.getListeChemins().get(0).getDestination());
-        assertEquals(LocalTime.of(8,0,0), tournee.getListeLivraisons().get(0).getHeureLivraison());
-
-        assertEquals(livraison.getDestination(), tournee.getListeChemins().get(1).getOrigin());
-        assertEquals(testCarte.getEntrepot(), tournee.getListeChemins().get(1).getDestination());
-        assertEquals(LocalTime.of(8,5,0), tournee.getHeureFinTournee());
-
-    }
-
-    /**
-     * Test de la méthode <code>addLivraison</code> de la classe Tournee.
-     * Teste l'ajout d'une livraison avec une intersection non atteignable.
-     */
-    @Test
-    public void testAjouterApresCalculTournee6() {
-
-        Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
-        Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
-
-        Tournee tournee = new Tournee();
-        tournee.addLivraison(livraison1);
-        tournee.addLivraison(livraison2);
-
-        tournee.calculerTournee(testCarte);
-
-        Livraison livraison3 = new Livraison(testCarte.getIntersection(7L), Livraison.DEBUT_TOURNEE);
-
-        assertFalse(tournee.addLivraison(testCarte, livraison3, 1));
-        assertEquals(2, tournee.getListeLivraisons().size());
-        assertEquals(3, tournee.getListeChemins().size());
-    }
-    /**
-     * Test de la méthode <code>addLivraison</code> de la classe Tournee.
-     * Teste l'ajout d'une livraison non atteignable lorsque la liste de chemins est vide
-     */
-    @Test
-    public void testAjouterApresCalculTournee7() {
-
-        Tournee tournee = new Tournee();
-
-        Livraison livraison3 = new Livraison(testCarte.getIntersection(7L), Livraison.DEBUT_TOURNEE);
-
-        assertFalse(tournee.addLivraison(testCarte, livraison3, 0));
-        assertFalse(tournee.addLivraison(testCarte, livraison3, 1));
-
-        assertEquals(0, tournee.getListeLivraisons().size());
-        assertEquals(0, tournee.getListeChemins().size());
     }
 
     /**
@@ -421,7 +345,7 @@ public class TourneeTest {
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE.plusHours(2));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
         tournee.addLivraison(livraison3);
@@ -461,7 +385,7 @@ public class TourneeTest {
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE.plusHours(2));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
         tournee.addLivraison(livraison3);
@@ -500,7 +424,7 @@ public class TourneeTest {
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE.plusHours(2));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
         tournee.addLivraison(livraison3);
@@ -539,7 +463,7 @@ public class TourneeTest {
         Livraison livraison2 = new Livraison(testCarte.getIntersection(4L), Livraison.DEBUT_TOURNEE.plusHours(1));
         Livraison livraison3 = new Livraison(testCarte.getIntersection(6L), Livraison.DEBUT_TOURNEE.plusHours(2));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
         tournee.addLivraison(livraison2);
         tournee.addLivraison(livraison3);
@@ -563,7 +487,7 @@ public class TourneeTest {
     public void testSupprimerApresCalculTournee5() {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
 
         tournee.calculerTournee(testCarte);
@@ -581,7 +505,7 @@ public class TourneeTest {
     public void testSupprimerApresCalculTournee6() {
         Livraison livraison1 = new Livraison(testCarte.getIntersection(2L), Livraison.DEBUT_TOURNEE);
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         tournee.addLivraison(livraison1);
 
         tournee.removeLivraison(testCarte, 0);

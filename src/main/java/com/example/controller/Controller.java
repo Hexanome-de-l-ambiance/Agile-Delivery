@@ -105,5 +105,7 @@ public class Controller {
 
     public void unselectIntersection() { etatCourant.unselectIntersection(this);}
 
+    public void genererFeuilleRoute(){ etatCourant.genererFeuilleRoute(this, carte);}
+
 
 }

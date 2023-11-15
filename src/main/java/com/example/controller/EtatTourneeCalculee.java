@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.Carte;
+import com.example.model.Tournee;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
 import com.example.xml.CustomXMLParsingException;
@@ -43,6 +44,13 @@ public class EtatTourneeCalculee implements Etat {
             XMLOpener.getInstance().saveTour(stage, carte);
         } catch (CustomXMLParsingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void genererFeuilleRoute(Controller c, Carte carte){
+        for (Tournee tournee : carte.getListeTournees().values())
+        {
+           tournee.genererFeuilleDeRouteHTML("feuilleDeRoute" + tournee.getCoursier() + ".html");
         }
     }
 

@@ -9,12 +9,23 @@ import java.util.Objects;
 public class Intersection {
 
     /**
-     * Default constructor
+     * L'id de l'intersection
      */
     private Long id;
+
+    /**
+     * La latitude de l'intersection
+     */
     private double latitude;
+
+    /**
+     * La longitude de l'intersection
+     */
     private double longitude;
 
+    /**
+     * Default constructor
+     */
     public Intersection() {
     }
 

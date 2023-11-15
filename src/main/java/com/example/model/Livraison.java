@@ -13,6 +13,7 @@ public class Livraison {
      * Les états possibles d'une livraison : <code>EN_AVANCE</code>, <code>EN_RETARD</code>, <code>A_L_HEURE</code>
      */
     public enum Etat {
+        INDETERMINE,
         EN_AVANCE,
         EN_RETARD,
         A_L_HEURE
@@ -45,9 +46,14 @@ public class Livraison {
     public static final Duration DUREE_CRENEAU_HORAIRE = Duration.ofHours(1);
 
     /**
+     * Le nomrbe de créneaux horaires
+     */
+    public static final Integer NOMBRE_CRENEAUX_HORAIRE = 4;
+
+    /**
      * L'heure du début du créneau horaire de livraison
      */
-    private LocalTime crenauHoraire;
+    private LocalTime creneauHoraire;
 
     /**
      * L'heure de livraison calculée
@@ -64,22 +70,26 @@ public class Livraison {
      */
     private Etat etat;
 
+    /**
+     * Default constructor
+     */
     public Livraison() {
+        this.etat = Etat.INDETERMINE;
     }
 
     public Livraison(Intersection destination, LocalTime creneauHoraire) {
         this.destination = destination;
-        this.crenauHoraire = creneauHoraire;
+        this.creneauHoraire = creneauHoraire;
         this.heureLivraison = null;
-        this.etat = null;
+        this.etat = Etat.INDETERMINE;
     }
 
-    public LocalTime getCrenauHoraire() {
-        return crenauHoraire;
+    public LocalTime getCreneauHoraire() {
+        return creneauHoraire;
     }
 
-    public void setCrenauHoraire(LocalTime crenauHoraire) {
-        this.crenauHoraire = crenauHoraire;
+    public void setCreneauHoraire(LocalTime crenauHoraire) {
+        this.creneauHoraire = crenauHoraire;
     }
 
     public Intersection getDestination() {
@@ -97,12 +107,12 @@ public class Livraison {
     }
 
     public void setHeureLivraison(LocalTime heureLivraison) {
-        if(heureLivraison.isBefore(crenauHoraire)){
+        if(heureLivraison.isBefore(creneauHoraire)){
             etat = Etat.EN_AVANCE;
-            this.heureLivraison = crenauHoraire;
+            this.heureLivraison = creneauHoraire;
         } else {
             this.heureLivraison = heureLivraison;
-            if(heureLivraison.isAfter(crenauHoraire.plus(DUREE_CRENEAU_HORAIRE))) {
+            if(heureLivraison.isAfter(creneauHoraire.plus(DUREE_CRENEAU_HORAIRE))) {
                 this.etat = Etat.EN_RETARD;
             } else {
                 this.etat = Etat.A_L_HEURE;

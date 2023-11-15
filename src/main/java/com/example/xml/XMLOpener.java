@@ -149,7 +149,7 @@ public class XMLOpener{
         public void endElement(String uri, String localName, String qName) {
             if ("creneauHoraire".equals(qName) && currentLivraison != null) {
                 LocalTime creneauHoraire = LocalTime.parse(charactersBuffer.toString().trim());
-                currentLivraison.setCrenauHoraire(creneauHoraire);
+                currentLivraison.setCreneauHoraire(creneauHoraire);
             } else if ("address".equals(qName) && currentLivraison != null) {
                 Intersection intersection = carte.getIntersection(currentAddressId);
                 currentLivraison.setDestination(intersection);

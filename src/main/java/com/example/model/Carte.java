@@ -8,20 +8,61 @@ import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class Carte {
+
+    /**
+     * La latitude minimale de la carte.
+     */
     private double minLat;
+
+    /**
+     * La latitude maximale de la carte.
+     */
     private double maxLat;
+
+    /**
+     * La longitude minimale de la carte.
+     */
     private double minLon;
+
+    /**
+     * La longitude maximale de la carte.
+     */
     private double maxLon;
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    /**
+     * La liste des intersections sur la carte, indexée par leur identifiant.
+     */
     private HashMap<Long, Intersection> listeIntersection;
+
+    /**
+     * La liste des segments sur la carte, indexée par l'intersection de départ et d'arrivée.
+     */
     private HashMap<Pair<Long, Long>, Segment> listeSegments;
+
+    /**
+     * La liste d'adjacence représentant les relations entre les intersections,
+     * indexée par l'identifiant de l'intersection avec une liste de paires (identifiant, distance).
+     */
     private HashMap<Long, ArrayList<Pair<Long, Double>>> listeAdjacence;
+
+    /**
+     * La liste des tournées sur la carte, indexée par le numéro du coursier/de la tournée.
+     */
     private HashMap<Integer, Tournee> listeTournees;
 
+    /**
+     * Le nombre de coursiers.
+     */
     private int nbCoursiers;
+
+    /**
+     * L'identifiant de l'entrepôt sur la carte.
+     */
     private Long entrepotId;
-    private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
-    private boolean isCalculated = false;
+
+    /**
+     * Indique si la tournée est vide.
+     */
     private boolean isTourEmpty = true;
     public static final String RESET = "reset";
     public static final String RESET_TOURS = "reset tours";
@@ -32,6 +73,10 @@ public class Carte {
     public static final String REMOVE = "remove destination";
     public static final String SET_NB_COURIERS = "set number of couriers";
 
+    private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+
     public Carte(int nombreCoursier){
         listeIntersection = new HashMap<>();
         listeSegments = new HashMap<>();
@@ -40,7 +85,7 @@ public class Carte {
 
         this.nbCoursiers = nombreCoursier;
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
     }
 
@@ -48,7 +93,7 @@ public class Carte {
         this.nbCoursiers = nbCoursiers;
         this.listeTournees.clear();
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
         firePropertyChange(SET_NB_COURIERS, null, nbCoursiers);
     }
@@ -132,7 +177,7 @@ public class Carte {
         listeSegments.clear();
         nbCoursiers = 1;
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
         idProperty.set(1);
         firePropertyChange(RESET, null, null);
@@ -141,7 +186,7 @@ public class Carte {
     public void resetTournee(){
         listeTournees.clear();
         for(int i = 1; i <= nbCoursiers; i++){
-            listeTournees.put(i, new Tournee());
+            listeTournees.put(i, new Tournee(i));
         }
         firePropertyChange(RESET_TOURS, null, nbCoursiers);
     }
@@ -168,7 +213,9 @@ public class Carte {
     }
 
     public void addLivraison(int numeroCouriser, Livraison livraison, int index){
-        listeTournees.get(numeroCouriser).addLivraison(this, livraison, index);
+        if(!listeTournees.get(numeroCouriser).addLivraison(this, livraison, index)){
+            firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
+        }
         isTourEmpty = false;
         firePropertyChange(ADD, numeroCouriser, listeTournees);
         firePropertyChange(UPDATE, null, listeTournees);
@@ -177,8 +224,9 @@ public class Carte {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
         boolean b = true;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().getListeLivraisons().size() != 0){
+            if (!entry.getValue().getListeLivraisons().isEmpty()) {
                 b = false;
+                break;
             }
         }
         isTourEmpty = b;
@@ -188,8 +236,9 @@ public class Carte {
         listeTournees.get(numeroCouriser).removeLivraison(this, index);
         boolean b = true;
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().getListeLivraisons().size() != 0){
+            if (!entry.getValue().getListeLivraisons().isEmpty()) {
                 b = false;
+                break;
             }
         }
         isTourEmpty = b;
@@ -199,7 +248,7 @@ public class Carte {
     }
     public boolean calculerTournees() {
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
-            if(entry.getValue().calculerTournee(this) == false){
+            if(!entry.getValue().calculerTournee(this)){
                 firePropertyChange(ERROR, null, "Tournée invalide du numero " + entry.getKey());
                 return false;
             }
@@ -220,9 +269,6 @@ public class Carte {
         support.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
     private void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         support.firePropertyChange(propertyName, oldValue, newValue);
     }

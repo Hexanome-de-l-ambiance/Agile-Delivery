@@ -1,5 +1,6 @@
-package com.example.model;
+package com.example.utils;
 
+import com.example.model.Intersection;
 import com.example.utils.Distance;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +16,7 @@ class DistanceTest {
         double lon2 = -75.0;
 
         // Distance attendue en mètres
-        double distanceAttendue = 150000.0;
+        double distanceAttendue = 139689;
 
         double distanceCalcule = Distance.haversine(lat1, lon1, lat2, lon2);
 

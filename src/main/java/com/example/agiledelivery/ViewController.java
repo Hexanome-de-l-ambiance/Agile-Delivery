@@ -8,6 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+
 /**
  *
  */
@@ -22,7 +24,6 @@ public class ViewController {
      * Default constructor
      */
     private Carte carte;
-    private Stage stage;
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
     private GraphicalView graphicalView;
@@ -74,6 +75,10 @@ public class ViewController {
 
     @FXML
     private Button ajouterApresButton;
+
+    @FXML
+    private Button genererFeuilleDeRouteButton;
+
     @FXML
     private TextFlow info;
 
@@ -104,19 +109,12 @@ public class ViewController {
         buttonListener.setTextualView(textualView);
         mapPane.getChildren().add(0,graphicalView);
 
-        loadMapButton.setOnAction(event -> buttonListener.handle(event));
-        ajouterLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        calculerTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        undoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        redoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        supprimerLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        resetTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        chargerTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        sauvegarderTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        changeNumberCouriersButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        supprimerApresTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        ajouterApresButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        ajouterAvantButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        for (Button button : Arrays.asList(ajouterLivraisonButton, calculerTourneeButton, undoButton, redoButton, supprimerLivraisonButton, resetTourneeButton, changeNumberCouriersButton, supprimerApresTourneeButton, ajouterApresButton, ajouterAvantButton, genererFeuilleDeRouteButton)) {
+            button.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        }
+        for (MenuItem menuItem : Arrays.asList(chargerTourneeButton, sauvegarderTourneeButton,loadMapButton)) {
+            menuItem.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        }
 
 
         handleHeightChanged();
@@ -138,6 +136,7 @@ public class ViewController {
         textualView.setButton_add(ajouterLivraisonButton);
         textualView.setButton_add_before(ajouterAvantButton);
         textualView.setButton_add_after(ajouterApresButton);
+        textualView.setButton_generate(genererFeuilleDeRouteButton);
         textualView.setButton_remove(supprimerLivraisonButton);
         textualView.setButton_remove_after(supprimerApresTourneeButton);
         textualView.setTextField(courierNumberTextField);

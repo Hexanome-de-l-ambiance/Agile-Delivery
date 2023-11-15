@@ -29,12 +29,10 @@ public class XMLMaker {
         return XMLMaker.SingletonHelper.INSTANCE;
     }
 
-
-
     public void saveTourneeToXML(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, false);
         if (file == null) {
-            // User cancelled the operation
+            // Utilisateur a annulé l'opération
             return;
         }
 
@@ -43,11 +41,11 @@ public class XMLMaker {
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
             Document document = documentBuilder.newDocument();
 
-            // Create the root <tournee> element
+            // Créer <tournees> element
             Element tourneeElement = document.createElement("tournees");
             document.appendChild(tourneeElement);
             tourneeElement.setAttribute("nbCoursiers", String.valueOf(carte.getListeTournees().size()));
-            // Assume each courier has a Tournee, and we save each Tournee in its own XML
+
             for (HashMap.Entry<Integer, Tournee> tourneeEntry : carte.getListeTournees().entrySet()) {
                 Element tourElement = document.createElement("tournee");
                 tourneeElement.appendChild(tourElement);
@@ -77,7 +75,7 @@ public class XMLMaker {
                     // Create and append <heureLivraison> element
                     Element heureLivraisonElement = document.createElement("creneauHoraire");
 
-                    heureLivraisonElement.setTextContent(livraison.getCrenauHoraire().toString()); // Assuming getHeureLivraison() exists and returns a Time object
+                    heureLivraisonElement.setTextContent(livraison.getCreneauHoraire().toString()); // Assuming getHeureLivraison() exists and returns a Time object
                     livraisonElement.appendChild(heureLivraisonElement);
                 }
             }

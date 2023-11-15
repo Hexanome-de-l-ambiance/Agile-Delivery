@@ -29,4 +29,6 @@ public interface Etat {
     public default void saveTour(Controller c, Carte carte, Stage stage){};
     public default void unselectIntersection(Controller c){};
 
+    public default void genererFeuilleRoute(Controller c, Carte carte){};
+
 }

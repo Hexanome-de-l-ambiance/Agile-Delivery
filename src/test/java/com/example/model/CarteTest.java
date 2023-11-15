@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.model.*;
 import com.example.tsp.CompleteGraph;
 import com.example.tsp.Graph;
 import com.example.tsp.TSP;
@@ -146,6 +147,8 @@ public class CarteTest {
 
     }
 
+
+    // Test failed. To be verified.
     @Test
     public void creerTourneeTestCarte()
     {
@@ -153,7 +156,7 @@ public class CarteTest {
         intersections.add(testCarte.getListeIntersections().get(2L));
         intersections.add(testCarte.getListeIntersections().get(4L));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         long tempsDebut = System.currentTimeMillis();
         //tournee.calculerTournee(testCarte, intersections);
         System.out.println("Temps pour calculer la tournée: " + (System.currentTimeMillis() - tempsDebut) + "ms");
@@ -178,7 +181,7 @@ public class CarteTest {
         intersections.add(grandeCarte.getListeIntersections().get(26086117L));
         intersections.add(grandeCarte.getListeIntersections().get(26731890L));
 
-        Tournee tournee = new Tournee();
+        Tournee tournee = new Tournee(1);
         long tempsDebut = System.currentTimeMillis();
         //tournee.calculerTournee(grandeCarte, intersections);
         System.out.println("Temps pour calculer la tournée: " + (System.currentTimeMillis() - tempsDebut) + "ms");

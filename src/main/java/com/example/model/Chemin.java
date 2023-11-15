@@ -9,8 +9,19 @@ import java.util.*;
  */
 public class Chemin {
 
+    /**
+     * La liste des segments que suit le chemin
+     */
     private LinkedList<Segment> listeSegments;
+
+    /**
+     * La longueur du chemin
+     */
     private double longueur;
+
+    /**
+     * La durée de parcours du chemin
+     */
     private Duration duree;
 
     /**
