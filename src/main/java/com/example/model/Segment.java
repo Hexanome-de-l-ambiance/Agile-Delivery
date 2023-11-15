@@ -1,7 +1,7 @@
 package com.example.model;
 
 /**
- * 
+ * Représente un segment reliant deux intersections avec la longueur.
  */
 public class Segment {
 
@@ -26,7 +26,12 @@ public class Segment {
     private String name;
 
     /**
-     * Default constructor
+     * Constructeur permettant d'instancier un segment avec les détails fournis.
+     *
+     * @param origin L'intersection d'origine du segment
+     * @param destination L'intersection de destination du segment
+     * @param length La longueur du segment
+     * @param name Le nom du segment
      */
     public Segment(Intersection origin, Intersection destination, double length, String name) {
         this.origin = origin;

@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.time.Duration;
 
 /**
- * 
+ * Représente une livraison.
  */
 public class Livraison {
 
@@ -71,12 +71,19 @@ public class Livraison {
     private Etat etat;
 
     /**
-     * Default constructor
+     * Constructeur par défaut
      */
     public Livraison() {
         this.etat = Etat.INDETERMINE;
     }
 
+
+    /**
+     * Constructeur pour initialiser une livraison avec une destination et un créneau horaire spécifiques.
+     *
+     * @param destination L'intersection de destination de la livraison
+     * @param creneauHoraire L'heure de début du créneau horaire de livraison
+     */
     public Livraison(Intersection destination, LocalTime creneauHoraire) {
         this.destination = destination;
         this.creneauHoraire = creneauHoraire;
@@ -106,6 +113,11 @@ public class Livraison {
         return heureLivraison;
     }
 
+    /**
+     * Définit l'heure de livraison et modifie l'état de livraison selon le créneau horaire.
+     *
+     * @param heureLivraison L'heure de livraison calculée
+     */
     public void setHeureLivraison(LocalTime heureLivraison) {
         if(heureLivraison.isBefore(creneauHoraire)){
             etat = Etat.EN_AVANCE;

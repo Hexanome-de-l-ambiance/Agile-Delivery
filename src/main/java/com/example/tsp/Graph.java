@@ -1,5 +1,8 @@
 package com.example.tsp;
 
+/**
+ * L'interface Graph définit les méthodes pour représenter un graphe.
+ */
 public interface Graph {
 	/**
 	 * @return the number of vertices in <code>this</code>

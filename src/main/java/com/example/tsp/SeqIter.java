@@ -3,6 +3,10 @@ package com.example.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * La classe SeqIter implémente un itérateur pour parcourir les sommets non visités
+ * dans le graphe qui sont les successeurs du sommet courant.
+ */
 public class SeqIter implements Iterator<Integer> {
 	private Integer[] candidates;
 	private int nbCandidates;

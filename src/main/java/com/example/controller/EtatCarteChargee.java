@@ -4,6 +4,7 @@ import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
 import com.example.xml.CustomXMLParsingException;
+import com.example.xml.XMLMaker;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;
 
@@ -97,7 +98,7 @@ public class EtatCarteChargee implements Etat {
      */
     public void saveTour(Carte carte, Stage stage) {
         try {
-            XMLOpener.getInstance().saveTour(stage, carte);
+            XMLMaker.getInstance().saveTourneeToXML(stage, carte);
         } catch (CustomXMLParsingException e) {
             throw new RuntimeException(e);
         }

@@ -2,6 +2,9 @@ package com.example.tsp;
 
 import java.util.ArrayList;
 
+/**
+ * L'interface TSP définit les méthodes pour résoudre le problème du voyageur de commerce (Traveling Salesman Problem).
+ */
 public interface TSP {
 	/**
 	 * Search for a shortest cost hamiltonian circuit in <code>g</code> within <code>timeLimit</code> milliseconds

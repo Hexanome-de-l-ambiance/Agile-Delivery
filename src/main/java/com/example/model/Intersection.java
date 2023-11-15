@@ -4,7 +4,7 @@ package com.example.model;
 import java.util.Objects;
 
 /**
- * 
+ * Représente une intersection sur la carte.
  */
 public class Intersection {
 
@@ -29,13 +29,25 @@ public class Intersection {
     public Intersection() {
     }
 
-
+    /**
+     * Constructeur avec les paramètres d'identification et de position.
+     *
+     * @param id        L'ID de l'intersection.
+     * @param latitude  La latitude de l'intersection.
+     * @param longitude La longitude de l'intersection.
+     */
     public Intersection(Long id, double latitude, double longitude) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
+    /**
+     * Vérifie l'égalité de cette intersection avec un autre objet.
+     *
+     * @param obj L'objet à comparer.
+     * @return True si les objets sont égaux, sinon false.
+     */
     @Override
     public boolean equals(Object obj) {
     	if (obj == null) return false;

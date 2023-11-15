@@ -17,6 +17,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Cette classe fournit des méthodes pour générer et sauvegarder des données de tournées au format XML.
+ */
 public class XMLMaker {
 
     private XMLMaker() {}
@@ -25,10 +28,22 @@ public class XMLMaker {
         private static final XMLMaker INSTANCE = new XMLMaker();
     }
 
+    /**
+     * Récupère l'instance unique de XMLMaker selon le modèle de conception Singleton.
+     *
+     * @return L'instance unique de XMLMaker.
+     */
     public static XMLMaker getInstance() {
         return XMLMaker.SingletonHelper.INSTANCE;
     }
 
+    /**
+     * Génère et sauvegarde les données de tournée au format XML.
+     *
+     * @param stage La fenêtre parente pour la boîte de dialogue de sauvegarde.
+     * @param carte L'objet Carte contenant les informations de tournée à sauvegarder.
+     * @throws CustomXMLParsingException En cas d'erreur lors de la génération ou de la sauvegarde du fichier XML.
+     */
     public void saveTourneeToXML(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, false);
         if (file == null) {
