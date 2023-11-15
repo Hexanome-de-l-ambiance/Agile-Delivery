@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * L'écouteur du souris
+ * Cette classe est responsable de la gestion des événements de souris, tels que les clics et les mouvements.
  */
 public class MouseListener implements EventHandler<ActionEvent> {
 
@@ -41,7 +41,11 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private Circle lastClickedCircle;
 
     /**
-     * Initialiser le listener
+     * Initialiser le listener de la souris.
+     *
+     * @param textualView    La vue textuelle associée
+     * @param graphicalView  La vue graphique associée
+     * @param controller     Le contrôleur associé
      */
     public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
         this.controller = controller;

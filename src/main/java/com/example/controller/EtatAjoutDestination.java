@@ -5,7 +5,9 @@ import com.example.model.Intersection;
 import com.example.model.Livraison;
 
 import java.time.LocalTime;
-
+/**
+ * La classe implémentant l'interface représente l'état pour l'ajout d'une destination avant le calcul des tournées.
+ */
 public class EtatAjoutDestination implements Etat{
     Intersection intersection;
 

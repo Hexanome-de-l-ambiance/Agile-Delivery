@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
 /**
- * L'écouteur des buttoms
+ * Cette classe est responsable de la gestion des événements de boutons et de l'envoi des actions correspondantes au contrôleur.
  */
 public class ButtonListener implements EventHandler<ActionEvent> {
 
@@ -16,21 +16,28 @@ public class ButtonListener implements EventHandler<ActionEvent> {
 
     private TextualView textualView;
 
+    /**
+     * Constructeur pour définir le contrôleur.
+     *
+     * @param controller Le contrôleur à définir
+     */
     public ButtonListener(Controller controller) {
         this.controller = controller;
     }
 
     /**
-     * Mettre le textualView pour savoir les informations choisies par l'utilisateur
-     * @param textualView the textualView
+     * Définir la vue textuelle pour suivre les informations choisies par l'utilisateur.
+     *
+     * @param textualView La vue textuelle à définir
      */
     public void setTextualView(TextualView textualView) {
         this.textualView = textualView;
     }
 
     /**
-     * Envoyer les commandes à la controleur en fonctions des événements créés par les buttoms ou les outils
-     * @param event l'événement écouté par le listener
+     * Gérer l'événement d'action généré par les boutons ou les outils.
+     *
+     * @param event L'événement écouté par le listener
      */
     @Override
     public void handle(ActionEvent event) {

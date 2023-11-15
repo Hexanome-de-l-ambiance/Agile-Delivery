@@ -38,6 +38,9 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
     /**
      * Initialiser le view
+     *
+     * @param carte     La carte à afficher
+     * @param mapPane   Le conteneur de la carte
      */
     public GraphicalView(Carte carte, Pane mapPane) {
         this.setPrefWidth(mapPane.getPrefWidth());
@@ -61,6 +64,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     public HashMap<Circle, Intersection> getCircleMap() {
         return circleMap;
     }
+
     public HashSet<Pair<Circle, Circle>> getCirclePairSet() {
         return circlePairSet;
     }

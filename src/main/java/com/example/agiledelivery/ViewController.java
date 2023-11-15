@@ -15,14 +15,18 @@ import java.util.Arrays;
  */
 public class ViewController {
 
+    /**
+     * Constructeur de ViewController.
+     *
+     * @param carte      La carte.
+     * @param controller Le contrôleur.
+     */
     public ViewController(Carte carte, Controller controller){
         this.carte = carte;
         this.controller = controller;
     }
 
-    /**
-     * Default constructor
-     */
+
     private Carte carte;
     private ButtonListener buttonListener;
     private MouseListener mouseListener;

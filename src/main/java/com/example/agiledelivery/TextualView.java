@@ -66,6 +66,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     /**
      * Initialiser le view
+     *
+     * @param carte     La carte à afficher
      */
     public TextualView(Carte carte) {
         this.carte = carte;
@@ -365,7 +367,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     }
 
     /**
-     * Affiche une alerte avec un message d'erreur spécifié.
+     * Afficher une alerte avec un message d'erreur spécifié.
      * @param alert Le message d'erreur à afficher
      */
     protected void showAlert(String alert){
