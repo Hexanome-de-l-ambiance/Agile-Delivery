@@ -253,6 +253,7 @@ public class Tournee{
         System.out.println(System.getProperty("user.dir"));
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/data/feuillesDeRoute/"+ fileName))) {
+            writer.write("<meta charset='UTF-8'>");
             writer.write("<html>");
             writer.write("<head>");
             writer.write("<title>Feuille de route</title>");
@@ -325,6 +326,7 @@ public class Tournee{
 
             writer.write("</body>");
             writer.write("</html>");
+            writer.write("</meta>");
         } catch (IOException e) {
             e.printStackTrace();
         }

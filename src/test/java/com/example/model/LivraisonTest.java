@@ -18,7 +18,7 @@ class LivraisonTest {
 
         // Test des getters destination et creneau horaire
         assertEquals(destination, livraison.getDestination());
-        assertEquals(creneauHoraire, livraison.getCrenauHoraire());
+        assertEquals(creneauHoraire, livraison.getCreneauHoraire());
         assertNull(livraison.getHeureLivraison());
 
         // Test des getters et setters d'heure de livraison
@@ -55,10 +55,10 @@ class LivraisonTest {
 
         // Ajout d'un créneau horaire
         LocalTime newCreneauHoraire = LocalTime.of(12, 0);
-        livraison.setCrenauHoraire(newCreneauHoraire);
+        livraison.setCreneauHoraire(newCreneauHoraire);
 
         // Vérification de la MAJ de la livraison avec le nouveau créneau horaire
-        assertEquals(newCreneauHoraire, livraison.getCrenauHoraire());
+        assertEquals(newCreneauHoraire, livraison.getCreneauHoraire());
     }
 
 }

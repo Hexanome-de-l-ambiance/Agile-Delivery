@@ -168,7 +168,9 @@ public class Carte {
     }
 
     public void addLivraison(int numeroCouriser, Livraison livraison, int index){
-        listeTournees.get(numeroCouriser).addLivraison(this, livraison, index);
+        if(listeTournees.get(numeroCouriser).addLivraison(this, livraison, index) == false){
+            firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
+        }
         isTourEmpty = false;
         firePropertyChange(ADD, numeroCouriser, listeTournees);
         firePropertyChange(UPDATE, null, listeTournees);
