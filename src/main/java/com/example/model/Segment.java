@@ -6,13 +6,28 @@ package com.example.model;
 public class Segment {
 
     /**
-     * Default constructor
+     * L'intersection d'origine du segment
      */
     private Intersection origin;
+
+    /**
+     * L'intersection de destination du segment
+     */
     private Intersection destination;
+
+    /**
+     * La longueur du segment
+     */
     private double length;
+
+    /**
+     * Le nom du segment
+     */
     private String name;
 
+    /**
+     * Default constructor
+     */
     public Segment(Intersection origin, Intersection destination, double length, String name) {
         this.origin = origin;
         this.destination = destination;

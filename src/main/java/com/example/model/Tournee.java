@@ -241,6 +241,11 @@ public class Tournee{
         return heureFinTournee;
     }
 
+    /**
+     * Génère une feuille de route au format HTML pour la tournée du coursier.
+     *
+     * @param fileName Le nom du fichier HTML à créer.
+     */
     public void genererFeuilleDeRouteHTML(String fileName) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalTime heureActuelle = LocalTime.of(8, 0, 0);
