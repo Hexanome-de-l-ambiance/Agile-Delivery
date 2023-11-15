@@ -31,6 +31,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     HashMap<Integer, Tournee> listeTournees = new HashMap<>();
     private ComboBox<String> comboBoxCouriers;
     private ComboBox<String> comboBoxIntervals;
+
     private ObservableList<String> couriers = FXCollections.observableArrayList(
             "1"
     );
@@ -59,6 +60,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Button button_generate;
     private Button button_remove;
     private Button button_remove_after;
+
+    private Button button_create_tournee;
 
     private Button resetTourneeButton;
 
@@ -98,10 +101,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         this.comboBoxIntervals = comboBox;
         this.comboBoxIntervals.setItems(intervals);
     }
+
     public void setHint(String s){
         hint.setText(s);
     }
-
 
     public void setButton_add(Button button_add) {
         this.button_add = button_add;
@@ -133,6 +136,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public void setTextField(TextField textField) {
         this.textField = textField;
+    }
+
+    public void setButton_create_tournee(Button button_create_tournee) {
+        this.button_create_tournee = button_create_tournee;
     }
 
     public int getNumeroCoursier() {
@@ -208,18 +215,17 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_add.setManaged(true);
                     button_add.setVisible(true);
                     button_add_before.setManaged(false);
-                    button_add_before.setDisable(true);
                     button_add_before.setVisible(false);
                     button_add_after.setManaged(false);
-                    button_add_after.setDisable(true);
                     button_add_after.setVisible(false);
                     button_generate.setManaged(false);
-                    button_generate.setDisable(true);
                     button_generate.setVisible(false);
                     textNumeroCoursier.setManaged(true);
                     textNumeroCoursier.setVisible(true);
                     comboBoxCouriers.setManaged(true);
                     comboBoxCouriers.setVisible(true);
+                    button_create_tournee.setManaged(true);
+                    button_create_tournee.setVisible(true);
 
                 } else {
                     listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
@@ -227,25 +233,20 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_add.setManaged(false);
                     button_add.setVisible(false);
                     button_add_before.setManaged(true);
-                    button_add_before.setDisable(false);
                     button_add_before.setVisible(true);
                     button_add_after.setManaged(true);
-                    button_add_after.setDisable(false);
                     button_add_after.setVisible(true);
                     button_generate.setManaged(true);
-                    button_generate.setDisable(false);
                     button_generate.setVisible(true);
                     textNumeroCoursier.setManaged(false);
                     textNumeroCoursier.setVisible(false);
                     comboBoxCouriers.setManaged(false);
                     comboBoxCouriers.setVisible(false);
-
-
+                    button_create_tournee.setManaged(false);
+                    button_create_tournee.setVisible(false);
                     button_remove.setManaged(false);
-                    button_remove.setDisable(true);
                     button_remove.setVisible(false);
                     button_remove_after.setManaged(true);
-                    button_remove_after.setDisable(false);
                     button_remove_after.setVisible(true);
                 }
                 isCalculated = true;
@@ -278,25 +279,21 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 button_add.setManaged(true);
                 button_add.setVisible(true);
                 button_add_before.setManaged(false);
-                button_add_before.setDisable(true);
                 button_add_before.setVisible(false);
                 button_add_after.setManaged(false);
-                button_add_after.setDisable(true);
                 button_add_after.setVisible(false);
                 button_generate.setManaged(false);
-                button_generate.setDisable(true);
                 button_generate.setVisible(false);
                 textNumeroCoursier.setManaged(true);
                 textNumeroCoursier.setVisible(true);
                 comboBoxCouriers.setManaged(true);
                 comboBoxCouriers.setVisible(true);
-
                 button_remove.setManaged(true);
-                button_remove.setDisable(false);
                 button_remove.setVisible(true);
                 button_remove_after.setManaged(false);
-                button_remove_after.setDisable(true);
                 button_remove_after.setVisible(false);
+                button_create_tournee.setManaged(true);
+                button_create_tournee.setVisible(true);
                 isCalculated = false;
                 break;
             }

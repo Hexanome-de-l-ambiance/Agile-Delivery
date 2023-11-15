@@ -39,13 +39,14 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.TextFlow?>
 
 <Scene xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <SplitPane dividerPositions="0.034722222222222224, 0.7569444444444444" orientation="VERTICAL">
+   <SplitPane fx:id="mainView" dividerPositions="0.034722222222222224, 0.7569444444444444" orientation="VERTICAL">
       <items>
            <MenuBar fx:id="menuBar">
                <Menu mnemonicParsing="false" text="Carte">
@@ -68,10 +69,13 @@
                      <TextField fx:id="courierNumberTextField" layoutX="185.0" prefHeight="27.0" prefWidth="49.0" />
                   </children>
                </Pane>
-               <Button fx:id="resetTourneeButton" layoutX="-2.0" layoutY="444.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Réinitialiser les tournées" />
-              <Button fx:id="calculerTourneeButton" layoutX="-1.0" layoutY="368.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée" />
                   <Button fx:id="undoButton" layoutX="90.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css" text="undo" />
                   <Button fx:id="redoButton" layoutX="144.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #87CEFA;" text="redo" />
+              <Button fx:id="ajouterLivraisonButton" layoutX="25.0" layoutY="253.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison" />
+               <Button fx:id="ajouterAvantButton" layoutX="25.0" layoutY="253.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" text="Ajouter avant la livraison" visible="false" />
+               <Button fx:id="ajouterApresButton" layoutX="25.0" layoutY="329.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" text="Ajouter apres la livraison choisi" visible="false" />
+               <Button fx:id="supprimerLivraisonButton" layoutX="25.0" layoutY="401.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison" />
+               <Button fx:id="supprimerApresTourneeButton" layoutX="25.0" layoutY="401.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false" />
               </Pane>
               <Pane fx:id="mapPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="784.0" style="-fx-background-color: lightblue;">
                <children>
@@ -84,17 +88,19 @@
                </children></Pane>
               <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
                <children>
-                  <TextFlow fx:id="info" prefHeight="402.0" prefWidth="261.0" />
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="522.0" prefWidth="263.0">
+                    <content>
+                        <TextFlow fx:id="info" nodeOrientation="RIGHT_TO_LEFT" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" />
+                    </content>
+                  </ScrollPane>
                </children>
               </Pane>
           </SplitPane>
            <Pane fx:id="test" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
             <children>
-               <Button fx:id="supprimerLivraisonButton" layoutX="709.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison" />
-              <Button fx:id="ajouterLivraisonButton" layoutX="413.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison" />
-               <Button fx:id="ajouterApresButton" layoutX="413.0" layoutY="68.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" text="Ajouter apres la livraison choisi" visible="false" />
-               <Button fx:id="ajouterAvantButton" layoutX="413.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" text="Ajouter avant la livraison" visible="false" />
-               <Button fx:id="supprimerApresTourneeButton" layoutX="709.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false" />
+              <Button fx:id="calculerTourneeButton" layoutX="330.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée" />
+                <Button fx:id="resetTourneeButton" layoutX="717.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Réinitialiser les tournées" />
+                <Button fx:id="genererFeuilleDeRouteButton" layoutX="330.0" managed="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" text="Générer les feuilles de route" visible="false" />
             </children></Pane>
       </items>
    </SplitPane>

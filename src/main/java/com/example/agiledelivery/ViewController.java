@@ -42,6 +42,9 @@ public class ViewController {
     private Label longitudeLabel;
 
     @FXML
+    private SplitPane mainView;
+
+    @FXML
     private Pane mapPane;
 
     @FXML
@@ -145,6 +148,14 @@ public class ViewController {
     }
 
     private void handleHeightChanged(){
+        mainView.heightProperty().addListener((observable, oldValue, newValue) -> {
+            double newHeight = (double) newValue;
+            double oldHeight = (double) oldValue;
+            if (oldHeight == 0.0){
+                oldHeight = newHeight;
+            }
+            
+        });
         mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = (double) newValue;
             double oldHeight = (double) oldValue;
