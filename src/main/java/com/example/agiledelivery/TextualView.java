@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -323,15 +324,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         ArrayList<Livraison> list = tournee.getListeLivraisons();
 
         for(Livraison livraison : list){
-            Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
+            Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + livraison.+"\n");
             newLabel.setOnMouseClicked(event -> {
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
                 this.selectedIndex = list.indexOf(livraison);
                 System.out.println("test");
-                if(selectedLabel!= null) selectedLabel.setStyle("-fx-fill: black;");
+                if(selectedLabel!= null) newLabel.setTextFill(Color.YELLOW);
                 selectedLabel = newLabel;
-                selectedLabel.setStyle("-fx-fill: yellow;");
+                newLabel.setTextFill(Color.YELLOW);
                 System.out.println(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n");
             });
             info.getChildren().add(newLabel);

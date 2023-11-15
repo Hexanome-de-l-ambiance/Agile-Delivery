@@ -8,9 +8,9 @@ import com.example.model.Livraison;
  */
 public class CommandeSupprimerLivraison implements Commande{
 
-    private Livraison livraison;
-    private int numeroCouriser;
-    private Carte carte;
+    private final Livraison livraison;
+    private final int numeroCouriser;
+    private final Carte carte;
 
     public CommandeSupprimerLivraison(Livraison livraison, int numeroCouriser, Carte carte) {
         this.livraison = livraison;
