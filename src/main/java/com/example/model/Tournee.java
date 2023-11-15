@@ -273,6 +273,8 @@ public class Tournee{
 
                 if(listeLivraisons.get(0).getCreneauHoraire().isAfter(heureActuelle)){
                     writer.write("<p>Heure de début de tournée : " + listeLivraisons.get(0).getCreneauHoraire().minusMinutes(listeChemins.get(0).getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()).format(formatter) + "</p>");
+                }else{
+                    writer.write("<p>Heure de début de tournée : " + heureActuelle.format(formatter) + "</p>");
                 }
                 writer.write("<p>Heure de fin de tournée : " + heureFinTournee.format(formatter) + "</p>");
             }
