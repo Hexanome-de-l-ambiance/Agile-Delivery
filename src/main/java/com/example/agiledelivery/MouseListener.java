@@ -40,6 +40,9 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private static final double SCALE_FACTOR = 5.0;
     private Circle lastClickedCircle;
 
+    /**
+     * Initialiser le listener
+     */
     public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
         this.controller = controller;
         this.graphicalView = graphicalView;
@@ -50,6 +53,12 @@ public class MouseListener implements EventHandler<ActionEvent> {
         setOnEvent();
     }
 
+    /**
+     * Configurer les gestionnaires d'événements pour les interactions de la vue
+     * Les événements configurés incluent le clic de la souris, le déplacement de la souris et le défilement de la souris.
+     * En fonction des événements, cette méthode effectue des actions telles que la gestion du clic de souris,
+     * le déplacement de la carte graphique et l'ajustement de l'échelle de la carte.
+     */
     protected void setOnEvent(){
         graphicalView.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown()) {
@@ -146,7 +155,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 }
             });
         }
-
     }
     @Override
     public void handle(ActionEvent actionEvent) {

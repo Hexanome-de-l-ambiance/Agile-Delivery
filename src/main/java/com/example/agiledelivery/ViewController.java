@@ -96,7 +96,9 @@ public class ViewController {
     @FXML
     private Label textNumeroCoursier;
 
-
+    /**
+     * Initialiser les views
+     */
     @FXML
     public void initialize() {
         graphicalView = new GraphicalView(carte, mapPane);
@@ -132,7 +134,9 @@ public class ViewController {
         setupTextualView();
         System.out.println(longitudeLabel.getText());
     }
-
+    /**
+     * Faire les setups pour les membres du textualView
+     */
     private void setupTextualView(){
         textualView.setCouriersComboBox(coursierComboBox);
         textualView.setCreneauComboBox(creneauComboBox);
@@ -150,7 +154,9 @@ public class ViewController {
         textualView.setInfo(info);
         textualView.setTextNumeroCoursier(textNumeroCoursier);
     }
-
+    /**
+     * Gérer les changements de la propriété de hauteur (height) de mapPane en ajustant la vue graphique en conséquence.
+     */
     private void handleHeightChanged(){
         mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = (double) newValue;
@@ -164,6 +170,9 @@ public class ViewController {
         });
     }
 
+    /**
+     * Gérer les changements de la propriété de largeur (width) de mapPane en ajustant la vue graphique en conséquence.
+     */
     private void handleWidthChanged(){
         mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             double newWidth = (double) newValue;

@@ -27,18 +27,9 @@ public class Controller {
     protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();
     protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();
     protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();
-    private ButtonListener buttonListener;
-    private MouseListener mouseListener;
-    private GraphicalView graphicalView;
-
-    private TextualView textualView;
-
-    private void update(){}
-
     protected void setEtatCourant(Etat etat){
         etatCourant = etat;
     }
-
 
 
 
