@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.util.Arrays;
 
 /**
- *
+ * Le controleur des views
  */
 public class ViewController {
 

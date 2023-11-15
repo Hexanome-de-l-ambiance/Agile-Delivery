@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * 
+ * L'écouteur du souris
  */
 public class MouseListener implements EventHandler<ActionEvent> {
 
@@ -48,8 +48,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();
         this.textualView = textualView;
-
-
         setOnEvent();
     }
 

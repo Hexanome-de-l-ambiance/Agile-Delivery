@@ -14,6 +14,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * La vue graphique
+ */
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
 
     private Carte carte;

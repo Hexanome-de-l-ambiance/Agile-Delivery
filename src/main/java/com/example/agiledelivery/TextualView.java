@@ -15,7 +15,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * La vue textuelle
+ */
 public class TextualView extends Pane implements PropertyChangeListener, Visitor {
 
     private Carte carte;

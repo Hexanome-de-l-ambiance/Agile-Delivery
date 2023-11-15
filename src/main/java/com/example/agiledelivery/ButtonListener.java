@@ -7,7 +7,9 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
-
+/**
+ * L'écouteur des buttoms
+ */
 public class ButtonListener implements EventHandler<ActionEvent> {
 
     private Controller controller;
