@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.*;
 
 /**
- * 
+ * Représente un chemin composé de segments reliant des intersections.
  */
 public class Chemin {
 

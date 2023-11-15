@@ -135,14 +135,14 @@ public class Controller {
      * Charger la tournée dans l'état courant du contrôleur.
      */
     public void loadTour() {
-        etatCourant.loadTour(this, carte, stage);
+        etatCourant.loadTour(carte, stage);
     }
 
     /**
      * Enregistrer la tournée dans l'état courant du contrôleur.
      */
     public void saveTour() {
-        etatCourant.saveTour(this, carte, stage);
+        etatCourant.saveTour( carte, stage);
     }
 
     /**

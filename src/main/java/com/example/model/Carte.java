@@ -7,6 +7,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 
+/**
+ * Représente une carte avec des intersections, des segments et des tournées.
+ */
 public class Carte {
 
     /**
@@ -76,7 +79,11 @@ public class Carte {
     private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-
+    /**
+     * Constructeur de la classe Carte.
+     *
+     * @param nombreCoursier Le nombre initial de coursiers.
+     */
     public Carte(int nombreCoursier){
         listeIntersection = new HashMap<>();
         listeSegments = new HashMap<>();
@@ -89,6 +96,11 @@ public class Carte {
         }
     }
 
+    /**
+     * Modifie le nombre de coursiers sur la carte.
+     *
+     * @param nbCoursiers Le nouveau nombre de coursiers.
+     */
     public void setNbCoursiers(int nbCoursiers) {
         this.nbCoursiers = nbCoursiers;
         this.listeTournees.clear();
@@ -98,6 +110,9 @@ public class Carte {
         firePropertyChange(SET_NB_COURIERS, null, nbCoursiers);
     }
 
+    /**
+     * Initialise la liste d'adjacence entre les intersections.
+     */
     public void initAdjacenceList() {
         listeAdjacence.clear();
         for (Map.Entry<Pair<Long, Long>, Segment> entry : listeSegments.entrySet()) {
@@ -114,11 +129,26 @@ public class Carte {
         }
     }
 
+    /**
+     * Ajoute une intersection à la carte.
+     *
+     * @param id       L'identifiant de l'intersection.
+     * @param latitude La latitude de l'intersection.
+     * @param longitude La longitude de l'intersection.
+     */
     public void addIntersection(Long id, double latitude, double longitude) {
         Intersection newIntersection = new Intersection(id, latitude, longitude);
         listeIntersection.put(id, newIntersection);
     }
 
+    /**
+     * Ajoute un segment reliant deux intersections sur la carte.
+     *
+     * @param ori    L'identifiant de l'intersection de départ du segment.
+     * @param dest   L'identifiant de l'intersection d'arrivée du segment.
+     * @param length La longueur du segment.
+     * @param name   Le nom du segment.
+     */
     public void addSegment(Long ori, Long dest, double length, String name) {
         Intersection origin = listeIntersection.get(ori);
         Intersection destination = listeIntersection.get(dest);
@@ -131,45 +161,38 @@ public class Carte {
         this.entrepotId = id;
     }
     public Intersection getEntrepot() { return listeIntersection.get(entrepotId); }
-
     public HashMap<Long, Intersection> getListeIntersections() {
         return listeIntersection;
     }
-
     public HashMap<Pair<Long, Long>, Segment> getListeSegments() {
         return listeSegments;
     }
-    public HashMap<Long, ArrayList<Pair<Long, Double>>> getListeAdjacence() { return listeAdjacence; }
-
     public Intersection getIntersection(Long id) {
         return listeIntersection.get(id);
     }
     public ArrayList<Pair<Long, Double>> getNeighbors(Long id) {
         return listeAdjacence.get(id);
     }
-
     public int getId() {
         return idProperty.get();
     }
-
     public double getMinLat() {
         return minLat;
     }
-
     public double getMaxLat() {
         return maxLat;
     }
-
     public double getMinLon() {
         return minLon;
     }
-
     public double getMaxLon() {
         return maxLon;
     }
-
     public boolean isTourEmpty() {
         return isTourEmpty;
+    }
+    public HashMap<Integer, Tournee> getListeTournees() {
+        return listeTournees;
     }
 
     public void reset() {
@@ -183,6 +206,9 @@ public class Carte {
         firePropertyChange(RESET, null, null);
     }
 
+    /**
+     * Réinitialise toutes les tournées.
+     */
     public void resetTournee(){
         listeTournees.clear();
         for(int i = 1; i <= nbCoursiers; i++){
@@ -191,6 +217,11 @@ public class Carte {
         firePropertyChange(RESET_TOURS, null, nbCoursiers);
     }
 
+    /**
+     * Analyse les intersections de la carte à la fin de la lecture, pour déterminer les valeurs de latitude et longitude minimales et maximales.
+     *
+     * @param path Le chemin du fichier.
+     */
     public void readEnd(String path){
         minLat = Double.MAX_VALUE;
         maxLat = Double.MIN_VALUE;
@@ -206,12 +237,26 @@ public class Carte {
 
         firePropertyChange(READ, null, path);
     }
+
+    /**
+     * Ajoute une livraison à une tournée avant le calcul des tournées.
+     *
+     * @param numeroCouriser Le numéro du coursier.
+     * @param livraison      La livraison à ajouter.
+     */
     public void addLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).addLivraison(livraison);
         isTourEmpty = false;
         firePropertyChange(ADD, numeroCouriser, listeTournees);
     }
 
+    /**
+     * Ajoute une livraison à une position spécifique dans une tournée, après le calcul des tournées.
+     *
+     * @param numeroCouriser Le numéro du coursier.
+     * @param livraison      La livraison à ajouter.
+     * @param index          L'indice où ajouter la livraison.
+     */
     public void addLivraison(int numeroCouriser, Livraison livraison, int index){
         if(!listeTournees.get(numeroCouriser).addLivraison(this, livraison, index)){
             firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
@@ -220,6 +265,13 @@ public class Carte {
         firePropertyChange(ADD, numeroCouriser, listeTournees);
         firePropertyChange(UPDATE, null, listeTournees);
     }
+
+    /**
+     * Supprime une livraison d'une tournée spécifique avant le calcul des tournées.
+     *
+     * @param numeroCouriser Le numéro du coursier.
+     * @param livraison      La livraison à supprimer.
+     */
     public void removeLivraison (int numeroCouriser, Livraison livraison) {
         listeTournees.get(numeroCouriser).removeLivraison(livraison);
         boolean b = true;
@@ -232,6 +284,13 @@ public class Carte {
         isTourEmpty = b;
         firePropertyChange(REMOVE, numeroCouriser, listeTournees);
     }
+
+    /**
+     * Supprime une livraison d'une position spécifique dans une tournée, après le calcul des tournées.
+     *
+     * @param numeroCouriser Le numéro du coursier/tournée.
+     * @param index          L'indice de la livraison à supprimer.
+     */
     public void removeLivraison (int numeroCouriser, int index) {
         listeTournees.get(numeroCouriser).removeLivraison(this, index);
         boolean b = true;
@@ -246,6 +305,10 @@ public class Carte {
         firePropertyChange(UPDATE, null, listeTournees);
 
     }
+
+    /**
+     * Calcule les tournées pour chaque coursier.
+     */
     public void calculerTournees() {
         boolean error = false;
         String s = "Tournée invalide du numero ";
@@ -261,18 +324,31 @@ public class Carte {
         firePropertyChange(UPDATE, null, listeTournees);
     }
 
-    public HashMap<Integer, Tournee> getListeTournees() {
-        return listeTournees;
-    }
-
+    /**
+     * Envoie une exception à tous les écouteurs en cas d'erreur.
+     *
+     * @param e L'exception à envoyer.
+     */
     public void sendException(Exception e){
         firePropertyChange(ERROR, null, e.getMessage());
     }
 
+    /**
+     * Ajoute un écouteur pour détecter les changements de propriété de la carte.
+     *
+     * @param listener L'écouteur à ajouter.
+     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
 
+    /**
+     * Notifie tous les écouteurs enregistrés d'un changement de propriété.
+     *
+     * @param propertyName Le nom de la propriété.
+     * @param oldValue     La valeur précédente.
+     * @param newValue     La nouvelle valeur.
+     */
     private void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         support.firePropertyChange(propertyName, oldValue, newValue);
     }

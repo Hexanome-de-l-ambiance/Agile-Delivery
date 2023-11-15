@@ -78,11 +78,10 @@ public class EtatCarteChargee implements Etat {
     /**
      * Charge les tournées à partir d'un fichier XML.
      *
-     * @param c     Le contrôleur.
      * @param carte La carte.
      * @param stage Le stage JavaFX.
      */
-    public void loadTour(Controller c, Carte carte, Stage stage) {
+    public void loadTour(Carte carte, Stage stage) {
         try{
             XMLOpener.getInstance().loadTour(stage, carte);
         } catch (CustomXMLParsingException e) {
@@ -93,11 +92,10 @@ public class EtatCarteChargee implements Etat {
     /**
      * Enregistre les tournées dans un fichier XML.
      *
-     * @param c     Le contrôleur.
      * @param carte La carte concernée.
      * @param stage Le stage JavaFX.
      */
-    public void saveTour(Controller c, Carte carte, Stage stage) {
+    public void saveTour(Carte carte, Stage stage) {
         try {
             XMLOpener.getInstance().saveTour(stage, carte);
         } catch (CustomXMLParsingException e) {

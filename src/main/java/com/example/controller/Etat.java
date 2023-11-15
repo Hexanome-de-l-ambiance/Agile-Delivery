@@ -118,20 +118,18 @@ public interface Etat {
     /**
      * Charge une tournée.
      *
-     * @param c     Le contrôleur.
      * @param carte La carte.
      * @param stage Le stage JavaFX.
      */
-    public default void loadTour(Controller c, Carte carte, Stage stage){}
+    public default void loadTour(Carte carte, Stage stage){}
 
     /**
      * Enregistre une tournée.
      *
-     * @param c     Le contrôleur.
      * @param carte La carte.
      * @param stage Le stage JavaFX.
      */
-    public default void saveTour(Controller c, Carte carte, Stage stage){}
+    public default void saveTour(Carte carte, Stage stage){}
 
     /**
      * Désélectionne une intersection pour l'ajout.
