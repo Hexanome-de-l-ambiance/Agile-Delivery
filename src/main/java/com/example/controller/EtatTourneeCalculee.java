@@ -79,7 +79,6 @@ public class EtatTourneeCalculee implements Etat {
         try {
             XMLMaker.getInstance().saveTourneeToXML(stage, carte);
         } catch (CustomXMLParsingException e) {
-            throw new RuntimeException(e);
         }
     }
 

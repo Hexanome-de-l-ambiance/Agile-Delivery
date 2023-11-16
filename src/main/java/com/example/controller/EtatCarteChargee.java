@@ -24,7 +24,6 @@ public class EtatCarteChargee implements Etat {
         try{
             XMLOpener.getInstance().readFile(stage, carte);
         } catch (CustomXMLParsingException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -86,7 +85,6 @@ public class EtatCarteChargee implements Etat {
         try{
             XMLOpener.getInstance().loadTour(stage, carte);
         } catch (CustomXMLParsingException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -100,7 +98,6 @@ public class EtatCarteChargee implements Etat {
         try {
             XMLMaker.getInstance().saveTourneeToXML(stage, carte);
         } catch (CustomXMLParsingException e) {
-            throw new RuntimeException(e);
         }
     }
 
