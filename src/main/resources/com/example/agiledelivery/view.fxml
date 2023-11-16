@@ -127,7 +127,6 @@
           </SplitPane>
            <Pane fx:id="test" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
             <children>
-               <Label fx:id="errorLabel" layoutX="5.0" layoutY="146.0" prefHeight="31.0" prefWidth="1309.0" text="Veuillez charger une carte." />
               <Button fx:id="calculerTourneeButton" disable="true" layoutX="330.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée">
                   <cursor>
                      <Cursor fx:constant="HAND" />
@@ -136,7 +135,7 @@
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-                <Button fx:id="genererFeuilleDeRouteButton" layoutX="330.0" managed="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Générer les feuilles de route" visible="false">
+                <Button fx:id="genererFeuilleDeRouteButton" layoutX="330.0" layoutY="10.0" managed="false" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Générer les feuilles de route" visible="false">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
@@ -144,6 +143,7 @@
          <Pane fx:id="info_pane" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="200.0">
             <children>
                <TextFlow fx:id="aide" maxHeight="20.0" minWidth="20.0" prefHeight="20.0" />
+               <Label fx:id="errorLabel" prefHeight="31.0" prefWidth="1309.0" text="Welcome!" />
             </children>
          </Pane>
       </items>
