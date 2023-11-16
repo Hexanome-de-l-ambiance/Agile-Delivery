@@ -327,10 +327,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_create_tournee.setVisible(true);
                     button_nombre_coursier.setManaged(true);
                     button_nombre_coursier.setVisible(true);
-                    textCreneau.setManaged(true);
-                    textCreneau.setVisible(true);
-                    comboBoxIntervals.setManaged(true);
-                    comboBoxIntervals.setVisible(true);
                     textField.setManaged(true);
                     textField.setVisible(true);
                 } else {
@@ -357,10 +353,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_remove.setVisible(false);
                     button_remove_after.setManaged(true);
                     button_remove_after.setVisible(true);
-                    textCreneau.setVisible(false);
-                    textCreneau.setManaged(false);
-                    comboBoxIntervals.setManaged(false);
-                    comboBoxIntervals.setVisible(false);
                     textField.setManaged(false);
                     textField.setVisible(false);
                 }
@@ -412,10 +404,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 button_create_tournee.setVisible(true);
                 button_nombre_coursier.setManaged(true);
                 button_nombre_coursier.setVisible(true);
-                textCreneau.setManaged(true);
-                textCreneau.setVisible(true);
-                comboBoxIntervals.setManaged(true);
-                comboBoxIntervals.setVisible(true);
                 textField.setManaged(true);
                 textField.setVisible(true);
                 showAlert("Tournées réinitialisées. Vous pouvez refaire l'ajout et le calcul des tournées.");
