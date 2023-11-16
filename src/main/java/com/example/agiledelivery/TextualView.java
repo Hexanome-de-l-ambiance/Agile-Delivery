@@ -309,28 +309,31 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 coordinatesPane.setVisible(false);
                 latitudeLabel.setText("");
                 longitudeLabel.setText("");
+                isCalculated = true;
+
+                button_nombre_coursier.setManaged(false);
+                button_nombre_coursier.setVisible(false);
+                textField.setManaged(false);
+                textField.setVisible(false);
+                button_create_tournee.setManaged(false);
+                button_create_tournee.setVisible(false);
+                button_generate.setManaged(true);
+                button_generate.setVisible(true);
+
                 if(carte.isTourEmpty()){
-                    isCalculated = false;
                     button_add.setManaged(true);
                     button_add.setVisible(true);
                     button_add_before.setManaged(false);
                     button_add_before.setVisible(false);
                     button_add_after.setManaged(false);
                     button_add_after.setVisible(false);
-                    button_generate.setManaged(false);
-                    button_generate.setVisible(false);
+
                     textNumeroCoursier.setManaged(true);
                     textNumeroCoursier.setVisible(true);
                     comboBoxCouriers.setManaged(true);
                     comboBoxCouriers.setVisible(true);
-                    button_create_tournee.setManaged(true);
-                    button_create_tournee.setVisible(true);
-                    button_nombre_coursier.setManaged(true);
-                    button_nombre_coursier.setVisible(true);
-                    textField.setManaged(true);
-                    textField.setVisible(true);
+
                 } else {
-                    isCalculated = true;
                     listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                     displayListeTournees(listeTournees);
                     button_add.setManaged(false);
@@ -339,22 +342,16 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_add_before.setVisible(true);
                     button_add_after.setManaged(true);
                     button_add_after.setVisible(true);
-                    button_generate.setManaged(true);
-                    button_generate.setVisible(true);
+
                     textNumeroCoursier.setManaged(false);
                     textNumeroCoursier.setVisible(false);
                     comboBoxCouriers.setManaged(false);
                     comboBoxCouriers.setVisible(false);
-                    button_create_tournee.setManaged(false);
-                    button_create_tournee.setVisible(false);
-                    button_nombre_coursier.setManaged(false);
-                    button_nombre_coursier.setVisible(false);
                     button_remove.setManaged(false);
                     button_remove.setVisible(false);
                     button_remove_after.setManaged(true);
                     button_remove_after.setVisible(true);
-                    textField.setManaged(false);
-                    textField.setVisible(false);
+
                 }
                 showAlert("Nouvelle tournée calculée. Vous pouvez choisir une livraison pour ajouter une nouvelle livraison avant ou après cette livaison, ou supprimer une livraison.");
                 break;
