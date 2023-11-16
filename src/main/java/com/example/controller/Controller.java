@@ -174,7 +174,7 @@ public class Controller {
     /**
      * Généner la feuille de route des chemins dans l'état courant du contrôleur.
      */
-    public void genererFeuilleRoute(){ etatCourant.genererFeuilleRoute(this, carte);}
+    public void genererFeuilleRoute(){ etatCourant.genererFeuilleRoute(this, carte, stage);}
 
 
 }
