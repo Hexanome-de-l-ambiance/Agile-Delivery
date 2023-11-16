@@ -12,6 +12,7 @@ import javafx.scene.text.TextFlow;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,8 +45,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Livraison livraison = null;
     private Label selectedLabel = null;
     private int selectedIndex = -1;
-    private boolean isCalculated = false;
-
 
     private Label longitudeLabel;
     private Label latitudeLabel;
@@ -236,7 +235,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
      * @return Le bouton pour ajouter une livraison
      */
     public boolean isCalculated() {
-        return isCalculated;
+        return carte.isTourneeCalculee();
     }
 
     /**
@@ -310,7 +309,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 latitudeLabel.setText("");
                 longitudeLabel.setText("");
                 if(carte.isTourEmpty()){
-                    isCalculated = false;
                     button_add.setManaged(true);
                     button_add.setVisible(true);
                     button_add_before.setManaged(false);
@@ -330,7 +328,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     textField.setManaged(true);
                     textField.setVisible(true);
                 } else {
-                    isCalculated = true;
                     listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                     displayListeTournees(listeTournees);
                     button_add.setManaged(false);
@@ -378,7 +375,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 break;
             }
             case Carte.RESET_TOURS:{
-                isCalculated = false;
                 couriers.clear();
                 couriers.add("1");
                 comboBoxCouriers.setItems(couriers);
@@ -450,13 +446,13 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     {
 
         ArrayList<Livraison> list = tournee.getListeLivraisons();
-
+        int i = 1;
         for(Livraison livraison : list){
             Label newLabel = new Label();
-            if(isCalculated()){
-                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + "Heure :" + livraison.getHeureLivraison() + "\n");
+            if(!isCalculated()){
+                newLabel.setText(" " + i++  + " : Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Créneau :" + livraison.getCreneauHoraire() + "\n\n");
             } else {
-                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + "Heure :" + livraison.getCreneauHoraire() + "\n");
+                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Heure :" + livraison.getHeureLivraison() + "\n\n");
             }
             switch (livraison.getEtat()){
                 case EN_RETARD:
@@ -476,6 +472,16 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 selectedLabel.setTextFill(Color.YELLOW);
             });
             info.getChildren().add(newLabel);
+        }
+        if(isCalculated()) {
+            Label heureFinTournee = new Label();
+            heureFinTournee.setText(" Retour à l'entrepot :" + tournee.getHeureFinTournee());
+            if (tournee.getHeureFinTournee().isAfter(LocalTime.of(12, 0, 0))) {
+                heureFinTournee.setTextFill(Color.RED);
+            } else {
+                heureFinTournee.setTextFill(Color.BLACK);
+            }
+            info.getChildren().add(heureFinTournee);
         }
     }
 

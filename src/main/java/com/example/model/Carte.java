@@ -67,6 +67,7 @@ public class Carte {
      * Indique si la tournée est vide.
      */
     private boolean isTourEmpty = true;
+    private boolean isTourneeCalculee = false;
     public static final String RESET = "reset";
     public static final String RESET_TOURS = "reset tours";
     public static final String READ = "read";
@@ -107,6 +108,7 @@ public class Carte {
         for(int i = 1; i <= nbCoursiers; i++){
             listeTournees.put(i, new Tournee(i));
         }
+        this.isTourneeCalculee = false;
         firePropertyChange(SET_NB_COURIERS, null, nbCoursiers);
     }
 
@@ -191,6 +193,9 @@ public class Carte {
     public boolean isTourEmpty() {
         return isTourEmpty;
     }
+    public boolean isTourneeCalculee() {
+        return isTourneeCalculee;
+    }
     public HashMap<Integer, Tournee> getListeTournees() {
         return listeTournees;
     }
@@ -210,6 +215,7 @@ public class Carte {
      * Réinitialise toutes les tournées.
      */
     public void resetTournee(){
+        isTourneeCalculee = false;
         listeTournees.clear();
         for(int i = 1; i <= nbCoursiers; i++){
             listeTournees.put(i, new Tournee(i));
@@ -320,6 +326,7 @@ public class Carte {
                 s += entry.getKey() + " ";
             }
         }
+        isTourneeCalculee = true;
         firePropertyChange(UPDATE, null, listeTournees);
         if(error){
             firePropertyChange(ERROR, null, s);
