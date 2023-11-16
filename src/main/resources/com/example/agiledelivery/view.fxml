@@ -140,6 +140,11 @@
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
             </children></Pane>
+         <Pane fx:id="info_pane" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="200.0">
+            <children>
+               <TextFlow fx:id="aide" maxHeight="20.0" minWidth="20.0" prefHeight="20.0" />
+            </children>
+         </Pane>
       </items>
    </SplitPane>
 </Scene>

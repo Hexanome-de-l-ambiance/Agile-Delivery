@@ -104,6 +104,9 @@ public class ViewController {
     private Label textNumeroCoursier;
 
     @FXML
+    private TextFlow aide;
+
+    @FXML
     private Label textCreneau;
 
     @FXML
@@ -152,6 +155,7 @@ public class ViewController {
         textualView.setButton_remove_after(supprimerApresTourneeButton);
         textualView.setTextField(courierNumberTextField);
         textualView.setInfo(info);
+        textualView.setAide(aide);
         textualView.setTextNumeroCoursier(textNumeroCoursier);
         textualView.setButton_create_tournee(calculerTourneeButton);
         textualView.setButton_Nombre_coursier(changeNumberCouriersButton);

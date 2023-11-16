@@ -20,6 +20,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private final Carte carte;
     private TextFlow info;
+
+    private TextFlow aide;
     private final Text numberCouriersText = new Text("Nombre de coursiers : 1" + "\n");
     private Label textNumeroCoursier;
     HashMap<Integer, Tournee> listeTournees = new HashMap<>();
@@ -323,10 +325,23 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     protected void showAlert(String alert){
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setTitle("Error Dialog");
-        errorAlert.setHeaderText("An error occurred");
+        errorAlert.setTitle("Erreur");
+        errorAlert.setHeaderText("Une erreur est survenue");
         errorAlert.setContentText(alert);
         errorAlert.showAndWait();
+    }
+
+    protected void showWarning(String warning) {
+        aide.getChildren().clear();
+        Text text_warning = new Text(warning);
+        text_warning.setFill(Color.RED);
+        aide.getChildren().add(text_warning);
+    }
+
+    protected void showInfo(String info) {
+        aide.getChildren().clear();
+        Text text_info = new Text(info);
+        aide.getChildren().add(text_info);
     }
 
     public void setTextCreneau(Label textCreneau) {
@@ -347,6 +362,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public void setInfo(TextFlow text){
         this.info = text;
+    }
+
+    public void setAide(TextFlow text){
+        this.aide = text;
     }
 
     public void setCoordinatesPane(Pane coordinatesPane) {
