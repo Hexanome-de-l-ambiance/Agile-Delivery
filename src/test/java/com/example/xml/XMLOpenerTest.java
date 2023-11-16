@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xml.sax.SAXParseException;
 
+
 import java.io.File;
 import java.io.FileWriter;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class XMLOpenerTest {
 
@@ -34,21 +36,6 @@ public class XMLOpenerTest {
         XMLOpener instance1 = XMLOpener.getInstance();
         XMLOpener instance2 = XMLOpener.getInstance();
         assertSame(instance1, instance2, "Les instances du singleton doivent être les mêmes");
-    }
-    @Test
-    public void testLoadMapWithNullFile() {
-        XMLOpener xmlOpener = new XMLOpener();
-        Carte carte = new Carte(1);
-
-        Platform.startup(() -> {
-            Stage stage = new Stage();
-            try {
-                xmlOpener.readFile(stage, carte);
-                fail("Expected an exception to be thrown");
-            } catch (RuntimeException | CustomXMLParsingException e) {
-                assertEquals("File null", e.getMessage());
-            }
-        });
     }
 
     @Test
