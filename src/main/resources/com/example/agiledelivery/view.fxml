@@ -55,19 +55,19 @@
                    <MenuItem fx:id="loadMapButton" mnemonicParsing="false" text="Charger un plan" />
                </Menu>
                <Menu mnemonicParsing="false" text="Tournées">
-                   <MenuItem fx:id="sauvegarderTourneeButton" mnemonicParsing="false" text="Sauvegarder une tournée" />
-                   <MenuItem fx:id="chargerTourneeButton" mnemonicParsing="false" text="Charger une tournée" />
+                   <MenuItem fx:id="sauvegarderTourneeButton" disable="true" mnemonicParsing="false" text="Sauvegarder une tournée" />
+                   <MenuItem fx:id="chargerTourneeButton" disable="true" mnemonicParsing="false" text="Charger une tournée" />
                </Menu>
            </MenuBar>
           <SplitPane fx:id="windowPane" dividerPositions="0.5, 0.5" prefWidth="1318.0" stylesheets="@../../../css/style.css">
               <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
-                  <ComboBox fx:id="coursierComboBox" disable="true" layoutX="55.0" layoutY="88.0" prefWidth="150.0" promptText="Numero de coursier" />
-                  <ComboBox fx:id="creneauComboBox" disable="true" layoutX="55.0" layoutY="151.0" prefWidth="150.0" promptText="Créneau horaire" stylesheets="@../../../css/style.css" />
-               <Label fx:id="textNumeroCoursier" layoutX="73.0" layoutY="66.0" text="Numero de coursier :" />
-               <Label fx:id="textCreneau" layoutX="73.0" layoutY="131.0" text="Creneau selectionné  :" />
+                  <ComboBox fx:id="coursierComboBox" disable="true" layoutX="44.0" layoutY="89.0" prefHeight="24.0" promptText="Numero de coursier" />
+                  <ComboBox fx:id="creneauComboBox" disable="true" layoutX="49.0" layoutY="152.0" prefHeight="24.0" promptText="Créneau horaire" stylesheets="@../../../css/style.css" />
+               <Label fx:id="textNumeroCoursier" layoutX="64.0" layoutY="64.0" text="Numero de coursier" />
+               <Label fx:id="textCreneau" layoutX="59.0" layoutY="130.0" text="Creneau selectionné" />
                <Pane fx:id="numberCoursierPane" layoutX="25.0" layoutY="200.0" prefHeight="37.0" prefWidth="207.0">
                   <children>
-                     <Button fx:id="changeNumberCouriersButton" disable="true" layoutX="11.0" layoutY="2.0" mnemonicParsing="false" stylesheets="@../../../css/style.css" text="Modifier le nombre de coursiers">
+                     <Button fx:id="changeNumberCouriersButton" disable="true" layoutX="-9.0" layoutY="2.0" mnemonicParsing="false" stylesheets="@../../../css/style.css" text="Modifier le nombre de coursiers">
                         <cursor>
                            <Cursor fx:constant="HAND" />
                         </cursor></Button>
@@ -143,7 +143,7 @@
          <Pane fx:id="info_pane" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="200.0">
             <children>
                <TextFlow fx:id="aide" maxHeight="20.0" minWidth="20.0" prefHeight="20.0" />
-               <Label fx:id="errorLabel" prefHeight="31.0" prefWidth="1309.0" text="Welcome!" />
+               <Label fx:id="errorLabel" layoutX="5.0" prefHeight="20.0" prefWidth="1309.0" text="Bienvenue ! Veuillez sélectionner une carte." />
             </children>
          </Pane>
       </items>

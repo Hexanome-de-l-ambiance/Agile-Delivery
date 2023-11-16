@@ -22,8 +22,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private final Carte carte;
     private TextFlow info;
-
-    private TextFlow aide;
     private final Text numberCouriersText = new Text("Nombre de coursiers : 1" + "\n");
     private Label textNumeroCoursier;
     HashMap<Integer, Tournee> listeTournees = new HashMap<>();
@@ -73,6 +71,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Button redoButton;
 
     private Label errorLabel;
+
+    private MenuItem sauvegarderTourneeButton;
+
+    private MenuItem chargerTourneeButton;
 
     /**
      * Initialiser le view
@@ -178,6 +180,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public void setButton_create_tournee(Button button_create_tournee) { this.button_create_tournee = button_create_tournee; }
 
+    public void setButton_sauvegarder_tournee(MenuItem sauvegarderTourneeButton) { this.sauvegarderTourneeButton = sauvegarderTourneeButton; }
+
+    public void setButton_charger_tournee(MenuItem chargerTourneeButton) { this.chargerTourneeButton = chargerTourneeButton; }
+
     /**
      * Récupérer le numéro de coursier sélectionné.
      *
@@ -255,18 +261,36 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 break;
             }
             case Carte.READ: {
-                display(carte);
-                button_add.setDisable(false);
-                button_remove.setDisable(false);
-                button_create_tournee.setDisable(false);
-                button_nombre_coursier.setDisable(false);
-                textField.setDisable(false);
-                comboBoxIntervals.setDisable(false);
-                comboBoxCouriers.setDisable(false);
-                removeTournee.setDisable(false);
-                undoButton.setDisable(false);
-                redoButton.setDisable(false);
-                showAlert("Vous pouvez ajouter une livraison en cliquant sur une destination, supprimer une livraison en cliquant sur la liste, charger ou sauvegarder les tournées.");
+                if(carte.getEntrepot() != null){
+                    display(carte);
+                    button_add.setDisable(false);
+                    button_remove.setDisable(false);
+                    button_create_tournee.setDisable(false);
+                    button_nombre_coursier.setDisable(false);
+                    textField.setDisable(false);
+                    comboBoxIntervals.setDisable(false);
+                    comboBoxCouriers.setDisable(false);
+                    removeTournee.setDisable(false);
+                    undoButton.setDisable(false);
+                    redoButton.setDisable(false);
+                    sauvegarderTourneeButton.setDisable(false);
+                    chargerTourneeButton.setDisable(false);
+                    showAlert("Vous pouvez ajouter une livraison en cliquant sur une destination, supprimer une livraison en cliquant sur la liste, charger ou sauvegarder les tournées.");
+                } else {
+                    button_add.setDisable(true);
+                    button_remove.setDisable(true);
+                    button_create_tournee.setDisable(true);
+                    button_nombre_coursier.setDisable(true);
+                    textField.setDisable(true);
+                    comboBoxIntervals.setDisable(true);
+                    comboBoxCouriers.setDisable(true);
+                    removeTournee.setDisable(true);
+                    undoButton.setDisable(true);
+                    redoButton.setDisable(true);
+                    sauvegarderTourneeButton.setDisable(true);
+                    chargerTourneeButton.setDisable(true);
+                    showError("Erreur lors du chargement de la carte. Veuillez charger une carte valide.");
+                }
                 break;
             }
             case Carte.ERROR: showAlert((String) evt.getNewValue()); break;
@@ -286,6 +310,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 latitudeLabel.setText("");
                 longitudeLabel.setText("");
                 if(carte.isTourEmpty()){
+                    isCalculated = false;
                     button_add.setManaged(true);
                     button_add.setVisible(true);
                     button_add_before.setManaged(false);
@@ -304,8 +329,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_nombre_coursier.setVisible(true);
                     textField.setManaged(true);
                     textField.setVisible(true);
-
                 } else {
+                    isCalculated = true;
                     listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                     displayListeTournees(listeTournees);
                     button_add.setManaged(false);
@@ -330,9 +355,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_remove_after.setVisible(true);
                     textField.setManaged(false);
                     textField.setVisible(false);
-
                 }
-                isCalculated = true;
                 showAlert("Nouvelle tournée calculée. Vous pouvez choisir une livraison pour ajouter une nouvelle livraison avant ou après cette livaison, ou supprimer une livraison.");
                 break;
             }
@@ -351,10 +374,11 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 comboBoxCouriers.setItems(couriers);
                 numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
                 info.getChildren().clear();
-                showAlert("Nombre de coursiers est modifié. Nouveau nombre : " + newNumber);
+                showAlert("Nombre de coursiers modifié : " + newNumber);
                 break;
             }
             case Carte.RESET_TOURS:{
+                isCalculated = false;
                 couriers.clear();
                 couriers.add("1");
                 comboBoxCouriers.setItems(couriers);
@@ -382,7 +406,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 button_nombre_coursier.setVisible(true);
                 textField.setManaged(true);
                 textField.setVisible(true);
-                isCalculated = false;
                 showAlert("Tournées réinitialisées. Vous pouvez refaire l'ajout et le calcul des tournées.");
                 break;
             }
@@ -429,7 +452,20 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         ArrayList<Livraison> list = tournee.getListeLivraisons();
 
         for(Livraison livraison : list){
-            Label newLabel = new Label(" Longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n Heure : " + livraison.getCreneauHoraire()+ "\n");
+            Label newLabel = new Label();
+            if(isCalculated()){
+                newLabel.setText(" Longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n" + "Heure :" + livraison.getHeureLivraison() + "\n");
+            } else {
+                newLabel.setText(" Longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n" + "Heure :" + livraison.getCreneauHoraire() + "\n");
+            }
+            switch (livraison.getEtat()){
+                case EN_RETARD:
+                    newLabel.setTextFill(Color.ORANGE);
+                    break;
+                default:
+                    newLabel.setTextFill(Color.BLACK);
+                    break;
+            }
             newLabel.setOnMouseClicked(event -> {
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
@@ -449,8 +485,13 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
      */
     protected void showAlert(String alert){
         errorLabel.setText(alert);
+        errorLabel.setTextFill(Color.BLACK);
     }
 
+    protected void showError(String error) {
+        errorLabel.setText(error);
+        errorLabel.setTextFill(Color.RED);
+    }
     public void setTextCreneau(Label textCreneau) {
         this.textCreneau = textCreneau;
     }
@@ -470,11 +511,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void setInfo(TextFlow text){
         this.info = text;
     }
-
-    public void setAide(TextFlow text){
-        this.aide = text;
-    }
-
     public void setCoordinatesPane(Pane coordinatesPane) {
         this.coordinatesPane = coordinatesPane;
     }

@@ -114,6 +114,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
      */
     @Override
     public void display(Carte carte) {
+        if(carte.getEntrepot() == null) { return; }
         double minLat = carte.getMinLat();
         double maxLat = carte.getMaxLat();
         double minLon = carte.getMinLon();
