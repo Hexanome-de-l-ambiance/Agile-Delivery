@@ -262,9 +262,11 @@ public class Carte {
      * @param livraison      La livraison à ajouter.
      */
     public void addLivraison (int numeroCouriser, Livraison livraison) {
-        listeTournees.get(numeroCouriser).addLivraison(livraison);
-        isTourEmpty = false;
-        firePropertyChange(ADD, numeroCouriser, listeTournees);
+        if(livraison.getDestination() != null && livraison.getCreneauHoraire() != null) {
+            listeTournees.get(numeroCouriser).addLivraison(livraison);
+            isTourEmpty = false;
+            firePropertyChange(ADD, numeroCouriser, listeTournees);
+        }
     }
 
     /**
