@@ -320,10 +320,10 @@ public class Carte {
                 s += entry.getKey() + " ";
             }
         }
+        firePropertyChange(UPDATE, null, listeTournees);
         if(error){
             firePropertyChange(ERROR, null, s);
         }
-        firePropertyChange(UPDATE, null, listeTournees);
     }
 
     /**

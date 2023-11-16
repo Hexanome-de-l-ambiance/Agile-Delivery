@@ -77,6 +77,7 @@ public class Tournee{
         Chemin cheminPrecedent;
         Chemin cheminSuivant;
         LocalTime heureArrivee;
+        if(listeChemins.isEmpty() && listeLivraisons.size() > 0) return false;
 
         if(index == 0)
         {
