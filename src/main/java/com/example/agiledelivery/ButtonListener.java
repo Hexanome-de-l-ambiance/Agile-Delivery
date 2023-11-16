@@ -48,14 +48,12 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             actionCommand = ((Button) event.getSource()).getId();
         }
 
-        // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
             case Window.LOAD_PLAN: controller.load(); break;
             case Window.ADD_DESTINATION:{
                 if (controller.getEtatCourant() instanceof EtatInitial){
                     textualView.showAlert("Aucune carte n'est chargée. Veuillez charger une carte avant d'ajouter des destinations.");
                 } else if (!(controller.getEtatCourant() instanceof EtatAjoutDestination || controller.getEtatCourant() instanceof EtatAjoutDestination2)) {
-                    System.out.println(controller.getEtatCourant());
                     textualView.showAlert("Veuillez sélectionner un point de livraison à ajouter.");
                 } else {
                     try {

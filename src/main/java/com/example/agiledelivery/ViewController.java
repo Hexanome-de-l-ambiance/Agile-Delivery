@@ -142,7 +142,6 @@ public class ViewController {
         handleHeightChanged();
         handleWidthChanged();
         setupTextualView();
-        System.out.println(longitudeLabel.getText());
     }
     /**
      * Faire les setups pour les membres du textualView

@@ -108,7 +108,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
             double newScaleX = graph.getScaleX();
             double newScaleY = graph.getScaleY();
 
-            // System.out.println("deltaY: " + deltaY);
             if (deltaY < 0) {
                 newScaleX /= scaleFactor;
                 newScaleY /= scaleFactor;
