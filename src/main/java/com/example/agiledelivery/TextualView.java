@@ -454,9 +454,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         for(Livraison livraison : list){
             Label newLabel = new Label();
             if(isCalculated()){
-                newLabel.setText(" Longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n" + "Heure :" + livraison.getHeureLivraison() + "\n");
+                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + "Heure :" + livraison.getHeureLivraison() + "\n");
             } else {
-                newLabel.setText(" Longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n" + "Heure :" + livraison.getCreneauHoraire() + "\n");
+                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + "Heure :" + livraison.getCreneauHoraire() + "\n");
             }
             switch (livraison.getEtat()){
                 case EN_RETARD:

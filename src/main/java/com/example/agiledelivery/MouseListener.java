@@ -137,8 +137,8 @@ public class MouseListener implements EventHandler<ActionEvent> {
                     Intersection selectedIntersection = entry.getValue();
                     controller.addDestination(selectedIntersection);
                     textualView.setCoordinatesPaneVisible(true);
-                    textualView.setTextLongitudeLabel(" longitude : " +entry.getValue().getLongitude());
-                    textualView.setTextLatitudeLabel(" latitude : " +entry.getValue().getLatitude());
+                    textualView.setTextLongitudeLabel(" longitude : " + Math.round(entry.getValue().getLongitude() * 1000.0) / 1000.0);
+                    textualView.setTextLatitudeLabel(" latitude : " + Math.round(entry.getValue().getLatitude() * 1000.0) / 1000.0);
                     textualView.showAlert("Veuillez choisir les options à gauche, et cliquez sur le bouton Ajouter une livraison.");
                     for (Pair<Circle, Circle> circlePair : circlePairSet) {
                         if (circlePair.getKey().equals(key) && circlePair.getValue() != lastClickedCircle) {
