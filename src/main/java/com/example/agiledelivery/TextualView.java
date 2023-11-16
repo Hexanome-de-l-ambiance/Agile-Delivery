@@ -61,8 +61,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Button button_generate;
     private Button button_remove;
     private Button button_remove_after;
-
     private Button resetTourneeButton;
+
+    private Label errorLabel;
 
     /**
      * Initialiser le view
@@ -267,7 +268,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
-        System.out.println(event);
+        errorLabel.setText("");
         switch (event) {
             case Carte.RESET:
             {
@@ -461,11 +462,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
      * @param alert Le message d'erreur à afficher
      */
     protected void showAlert(String alert){
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setTitle("Error Dialog");
-        errorAlert.setHeaderText("An error occurred");
-        errorAlert.setContentText(alert);
-        errorAlert.showAndWait();
+        errorLabel.setText(alert);
     }
 
     public void setLongitudeLabel(Label label){
@@ -495,5 +492,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public void setCoordinatesPaneVisible(boolean b) {
         this.coordinatesPane.setVisible(b);
+    }
+
+    public void setErrorLabel(Label errorLabel) {
+        this.errorLabel = errorLabel;
     }
 }

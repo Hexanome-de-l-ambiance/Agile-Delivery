@@ -98,10 +98,10 @@ public class ViewController {
     private TextField courierNumberTextField;
     @FXML
     private Button supprimerApresTourneeButton;
-
     @FXML
     private Label textNumeroCoursier;
-
+    @FXML
+    private Label errorLabel;
     /**
      * Initialiser les views
      */
@@ -150,6 +150,7 @@ public class ViewController {
         textualView.setTextField(courierNumberTextField);
         textualView.setInfo(info);
         textualView.setTextNumeroCoursier(textNumeroCoursier);
+        textualView.setErrorLabel(errorLabel);
     }
     /**
      * Gérer les changements de la propriété de hauteur (height) de mapPane en ajustant la vue graphique en conséquence.
