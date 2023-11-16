@@ -2,6 +2,7 @@ package com.example.agiledelivery;
 
 import com.example.controller.Controller;
 import com.example.model.Carte;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -24,12 +25,12 @@ public class ViewController {
     /**
      * Default constructor
      */
-    private Carte carte;
+    private final Carte carte;
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
     private GraphicalView graphicalView;
 
-    private Controller controller;
+    private final Controller controller;
     private TextualView textualView;
 
 
@@ -105,6 +106,11 @@ public class ViewController {
     @FXML
     private Label textCreneau;
 
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private Pane rightPaneText;
 
     @FXML
     public void initialize() {
@@ -122,16 +128,12 @@ public class ViewController {
         for (MenuItem menuItem : Arrays.asList(chargerTourneeButton, sauvegarderTourneeButton,loadMapButton)) {
             menuItem.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
         }
-        graphicalView.prefWidthProperty().bind(mapPane.widthProperty());
         graphicalView.prefHeightProperty().bind(mapPane.heightProperty());
-        graphicalView.setStyle("-fx-background-color: RED");
-
-
-        //handleHeightChanged();
-        //handleWidthChanged();
-
-
-
+        graphicalView.getGraph().prefHeightProperty().bind(graphicalView.heightProperty().add(-10));
+        graphicalView.prefWidthProperty().bind(mapPane.widthProperty());
+        graphicalView.getGraph().prefWidthProperty().bind(graphicalView.widthProperty().add(-10));
+        handleHeightChanged();
+        handleWidthChanged();
         setupTextualView();
         System.out.println(longitudeLabel.getText());
     }
@@ -156,37 +158,24 @@ public class ViewController {
         textualView.setTextCreneau(textCreneau);
     }
 
-    private void handleHeightChanged(){
+    private void handleHeightChanged() {
         mainView.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double newHeight = (double) newValue;
-            double oldHeight = (double) oldValue;
-
-        });
-        mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double newHeight = (double) newValue;
-            double oldHeight = (double) oldValue;
-            if (oldHeight == 0.0) {
-                oldHeight = newHeight;
-            }
-            double scaleFactor = (newHeight/oldHeight);
-            graphicalView.getGraph().setScaleY(scaleFactor*graphicalView.getGraph().getScaleY());
-            double offsetY = abs((1 - scaleFactor)) * mapPane.getHeight() / 2.0;
-            graphicalView.getGraph().setTranslateY(graphicalView.getGraph().getTranslateY() + offsetY);
-
+            Platform.runLater(() -> {
+                if (oldValue.longValue() != 0.0) scrollPane.setPrefHeight(mapPane.getHeight());
+            });
         });
     }
 
     private void handleWidthChanged(){
-        mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double newWidth = (double) newValue;
-            double oldWidth = (double) oldValue;
-            if (oldWidth == 0.0) {
-                oldWidth = newWidth;
-            }
-            double scaleFactor = (newWidth/oldWidth);
-
-            graphicalView.getGraph().setScaleX(scaleFactor*graphicalView.getGraph().getScaleX());
-
+        mainView.widthProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if (oldValue.longValue() != 0.0) {
+                    coordinatesPane.setLayoutX(mapPane.getWidth() / 2 - coordinatesPane.getWidth() / 2);
+                    calculerTourneeButton.setLayoutX(mainView.getWidth() / 3 - calculerTourneeButton.getWidth() / 2);
+                    resetTourneeButton.setLayoutX(2 * mainView.getWidth() / 3 - resetTourneeButton.getWidth() / 2);
+                    genererFeuilleDeRouteButton.setLayoutX(mainView.getWidth() / 3 - calculerTourneeButton.getWidth() / 2);
+                }
+            });
         });
     }
 

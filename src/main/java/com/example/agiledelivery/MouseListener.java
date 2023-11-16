@@ -61,7 +61,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
                     lastClickedCircle.setFill(Color.BLACK);
                     lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);
                 }
-                textualView.setCoordinatesPaneVisible(true);
+                textualView.setCoordinatesPaneVisible(false);
                 textualView.setTextLatitudeLabel("");
                 textualView.setTextLongitudeLabel("");
 

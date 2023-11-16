@@ -20,7 +20,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private final Carte carte;
     private TextFlow info;
-    private Text messageText;
     private final Text numberCouriersText = new Text("Nombre de coursiers : 1" + "\n");
     private Label textNumeroCoursier;
     HashMap<Integer, Tournee> listeTournees = new HashMap<>();
@@ -108,9 +107,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         this.textField = textField;
     }
 
-    public void setButton_create_tournee(Button button_create_tournee) {
-        this.button_create_tournee = button_create_tournee;
-    }
+    public void setButton_create_tournee(Button button_create_tournee) { this.button_create_tournee = button_create_tournee; }
 
     public int getNumeroCoursier() {
         return numeroCoursier;
@@ -292,6 +289,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             Tournee tournee = entry.getValue();
             if(tournee.getListeLivraisons().size() > 1 || (tournee.getListeLivraisons().size() == 1 && tournee.getListeLivraisons().get(0).getDestination() != carte.getEntrepot())){
                 Text segment = new Text("\n"+" Coursier : " + entry.getKey() +"\n");
+                segment.setStyle("-fx-font-size: 20px");
                 info.getChildren().add(segment);
                 display(entry.getKey(), tournee);
             }
@@ -315,7 +313,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
                 this.selectedIndex = list.indexOf(livraison);
-                System.out.println("test");
                 if(selectedLabel!= null) selectedLabel.setTextFill(Color.BLACK);
                 selectedLabel = newLabel;
                 selectedLabel.setTextFill(Color.YELLOW);

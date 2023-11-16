@@ -3,7 +3,9 @@ package com.example.agiledelivery;
 import com.example.model.*;
 
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -24,25 +26,33 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
     private MouseListener mouseListener;
     private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.YELLOWGREEN, Color.PURPLE, Color.ORANGE, Color.PINK, Color.AQUA, Color.FUCHSIA, Color.SIENNA));
-
     private final double DETECTION_RADIUS = 7.0;
     protected final double CIRCLE_RADIUS = 3.0;
+
 
     public GraphicalView(Carte carte, Pane mapPane) {
         this.setPrefWidth(mapPane.getPrefWidth());
         this.setPrefHeight(mapPane.getPrefHeight());
         this.carte = carte;
         graph = new Pane();
-        graph.setLayoutX(0);
-        graph.setLayoutY(0);
-        graph.setPrefWidth(mapPane.getPrefWidth());
-        graph.setPrefHeight(mapPane.getPrefHeight());
+        graph.setLayoutX(5);
+        graph.setLayoutY(5);
+        graph.setPrefWidth(this.getPrefWidth());
+        graph.setPrefHeight(this.getPrefHeight());
         graph.setStyle("-fx-background-color: lightblue;");
         this.getChildren().add(graph);
         this.setStyle("-fx-background-color: lightblue;");
         carte.addPropertyChangeListener(this);
         this.circleMap = new HashMap<>();
+        for (ReadOnlyDoubleProperty readOnlyDoubleProperty : Arrays.asList(widthProperty(), heightProperty())) {
+            readOnlyDoubleProperty.addListener((obs, oldVal, newVal) -> {
+                if (oldVal.longValue() != 0.0 && !graph.getChildren().isEmpty()){
+                   handleResize();
+                }
+            });
+        }
     }
+
     public Pane getGraph() {
         return graph;
     }
@@ -50,10 +60,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     public HashMap<Circle, Intersection> getCircleMap() {
         return circleMap;
     }
+
     public HashSet<Pair<Circle, Circle>> getCirclePairSet() {
         return circlePairSet;
     }
-
     public void setMouseListener(MouseListener mouseListener) {
         this.mouseListener = mouseListener;
     }
@@ -74,8 +84,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 }
                 break;
             }
-            case Carte.SET_NB_COURIERS: graph.getChildren().clear();display(carte);break;
-            case Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;
+            case Carte.SET_NB_COURIERS, Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;
         }
 
     }
@@ -163,7 +172,6 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;
 
             Circle circle = new Circle(adjustedX, adjustedY, 6);
-
             switch (livraison.getEtat()) {
                 case INDETERMINE -> circle.setFill(Color.BLUE);
                 case EN_AVANCE -> circle.setFill(Color.GREEN);
@@ -225,4 +233,17 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
             }
         }
     }
+
+    private void handleResize() {
+        Platform.runLater(() -> {
+            graph.getChildren().clear();
+            hashSet.clear();
+            display(carte);
+            HashMap<Integer, Tournee> listeTournees = carte.getListeTournees();
+            for (Map.Entry<Integer, Tournee> entry : listeTournees.entrySet()) {
+                display(entry.getKey(), entry.getValue());
+            }
+        });
+    }
+
 }
