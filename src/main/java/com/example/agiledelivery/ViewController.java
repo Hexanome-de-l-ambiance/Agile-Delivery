@@ -160,7 +160,6 @@ public class ViewController {
         textualView.setButton_remove_after(supprimerApresTourneeButton);
         textualView.setTextField(courierNumberTextField);
         textualView.setInfo(info);
-        textualView.setAide(aide);
         textualView.setTextNumeroCoursier(textNumeroCoursier);
         textualView.setErrorLabel(errorLabel);
         textualView.setButton_create_tournee(calculerTourneeButton);
@@ -169,6 +168,8 @@ public class ViewController {
         textualView.setRemoveTournee(resetTourneeButton);
         textualView.setRedoButton(redoButton);
         textualView.setUndoButton(undoButton);
+        textualView.setButton_sauvegarder_tournee(sauvegarderTourneeButton);
+        textualView.setButton_charger_tournee(chargerTourneeButton);
     }
     /**
      * Gérer les changements de la propriété de hauteur (height) de mainView en ajustant la vue graphique en conséquence.
