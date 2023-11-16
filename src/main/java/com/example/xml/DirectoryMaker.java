@@ -25,7 +25,7 @@ public class DirectoryMaker {
         File selectedDirectory = directoryChooser.showDialog(stage);
 
         if (selectedDirectory == null) {
-            throw new CustomXMLParsingException("Pas de fichier sélectionné");
+            throw new CustomXMLParsingException("Pas de répertoire sélectionné");
         }
         return selectedDirectory;
     }

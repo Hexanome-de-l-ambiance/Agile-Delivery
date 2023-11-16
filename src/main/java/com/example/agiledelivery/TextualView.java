@@ -230,18 +230,18 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     }
 
     /**
-     * Récupérer le bouton pour ajouter une livraison.
+     * Vérifie si les tournées de la carte ont été calculées.
      *
-     * @return Le bouton pour ajouter une livraison
+     * @return Vrai si les tournées de la carte ont été calculées, sinon faux.
      */
     public boolean isCalculated() {
         return carte.isTourneeCalculee();
     }
 
     /**
-     * Récupérer le bouton pour ajouter une livraison.
+     * Récupère le champ de texte associé au nombre des coursiers.
      *
-     * @return Le bouton pour ajouter une livraison
+     * @return Le champ de texte associé au nombre des coursiers.
      */
     public TextField getTextField() {
         return textField;
