@@ -67,7 +67,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     /**
      * Initialiser le view
      *
-     * @param carte     La carte à afficher
+     * @param carte La carte à afficher
      */
     public TextualView(Carte carte) {
         this.carte = carte;
@@ -95,77 +95,167 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         carte.addPropertyChangeListener(this);
     }
 
-
+    /**
+     * Définir la comboBox pour les coursiers.
+     *
+     * @param comboBox La comboBox à définir
+     */
     public void setCouriersComboBox(ComboBox<String> comboBox){
         this.comboBoxCouriers = comboBox;
         this.comboBoxCouriers.setItems(couriers);
     }
 
+    /**
+     * Définir la comboBox pour les fenêtres temporelles.
+     *
+     * @param comboBox La comboBox à définir
+     */
     public void setCreneauComboBox(ComboBox<String> comboBox){
         this.comboBoxIntervals = comboBox;
         this.comboBoxIntervals.setItems(intervals);
     }
+
+    /**
+     * Définir l'information des intersections.
+     *
+     * @param s Le texte à définir
+     */
     public void setHint(String s){
         hint.setText(s);
     }
 
-
+    /**
+     * Définir le bouton pour ajouter une livraison.
+     *
+     * @param button_add Le bouton à définir
+     */
     public void setButton_add(Button button_add) {
         this.button_add = button_add;
     }
 
+    /**
+     * Définir le bouton pour ajouter une livraison avant une livraison sélectionnée.
+     *
+     * @param button_add_before Le bouton à définir
+     */
     public void setButton_add_before(Button button_add_before) {
         this.button_add_before = button_add_before;
     }
 
+    /**
+     * Définir le bouton pour ajouter une livraison après une livraison sélectionnée.
+     *
+     * @param button_add_after Le bouton à définir
+     */
     public void setButton_add_after(Button button_add_after) {
         this.button_add_after = button_add_after;
     }
 
+    /**
+     * Définir le bouton pour générer les tournées.
+     *
+     * @param button_generate Le bouton à définir
+     */
     public void setButton_generate(Button button_generate) {
         this.button_generate = button_generate;
     }
 
+    /**
+     * Définir le bouton pour supprimer une livraison.
+     *
+     * @param button_remove Le bouton à définir
+     */
     public void setButton_remove(Button button_remove) {
         this.button_remove = button_remove;
     }
 
+    /**
+     * Définir le bouton pour supprimer une livraison après une livraison sélectionnée.
+     *
+     * @param button_remove_after Le bouton à définir
+     */
     public void setButton_remove_after(Button button_remove_after) {
         this.button_remove_after = button_remove_after;
     }
 
+    /**
+     * Définir le texte pour le numéro de coursier.
+     *
+     * @param textNumeroCoursier Le texte à définir
+     */
     public void setTextNumeroCoursier(Label textNumeroCoursier) {
         this.textNumeroCoursier = textNumeroCoursier;
     }
 
+    /**
+     * Définir le textField pour le numéro de coursier.
+     *
+     * @param textField Le textField à définir
+     */
     public void setTextField(TextField textField) {
         this.textField = textField;
     }
 
+    /**
+     * Récupérer le numéro de coursier sélectionné.
+     *
+     * @return Le numéro de coursier sélectionné
+     */
     public int getNumeroCoursier() {
         return numeroCoursier;
     }
 
+    /**
+     * Récupérer l'index de livraison sélectionné.
+     *
+     * @return L'index de la livraison sélectionnée
+     */
     public int getSelectedIndex() {
         return selectedIndex;
     }
 
+
+    /**
+     * Récupérer la livraison sélectionnée.
+     *
+     * @return La livraison sélectionnée
+     */
     public Livraison getLivraison() {
         return livraison;
     }
 
+    /**
+     * Récupérer la liste des coursiers.
+     *
+     * @return La liste des coursiers
+     */
     public ComboBox<String> getComboBoxCouriers() {
         return comboBoxCouriers;
     }
 
+    /**
+     * Récupérer la liste des fenêtres temporelles.
+     *
+     * @return La liste des fenêtres temporelles
+     */
     public ComboBox<String> getComboBoxIntervals() {
         return comboBoxIntervals;
     }
 
+    /**
+     * Récupérer le bouton pour ajouter une livraison.
+     *
+     * @return Le bouton pour ajouter une livraison
+     */
     public boolean isCalculated() {
         return isCalculated;
     }
 
+    /**
+     * Récupérer le bouton pour ajouter une livraison.
+     *
+     * @return Le bouton pour ajouter une livraison
+     */
     public TextField getTextField() {
         return textField;
     }
