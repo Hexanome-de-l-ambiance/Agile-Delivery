@@ -257,13 +257,15 @@ public class Carte {
      * @param livraison      La livraison à ajouter.
      * @param index          L'indice où ajouter la livraison.
      */
-    public void addLivraison(int numeroCouriser, Livraison livraison, int index){
-        if(!listeTournees.get(numeroCouriser).addLivraison(this, livraison, index)){
-            firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
-        }
+    public boolean addLivraison(int numeroCouriser, Livraison livraison, int index){
+        boolean b = listeTournees.get(numeroCouriser).addLivraison(this, livraison, index);
         isTourEmpty = false;
         firePropertyChange(ADD, numeroCouriser, listeTournees);
         firePropertyChange(UPDATE, null, listeTournees);
+        if(!b){
+            firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
+        }
+        return b;
     }
 
     /**

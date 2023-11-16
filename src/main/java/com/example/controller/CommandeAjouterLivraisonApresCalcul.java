@@ -11,6 +11,7 @@ public class CommandeAjouterLivraisonApresCalcul implements Commande{
     private int index;
     private int numeroCouriser;
     private Carte carte;
+    private boolean val = true;
 
     /**
      * Constructeur de la commande d'ajout de livraison après le calcul.
@@ -32,7 +33,7 @@ public class CommandeAjouterLivraisonApresCalcul implements Commande{
      */
     @Override
     public void execute() {
-        carte.addLivraison(numeroCouriser, livraison, index);
+        val = carte.addLivraison(numeroCouriser, livraison, index);
     }
 
     /**
@@ -40,7 +41,7 @@ public class CommandeAjouterLivraisonApresCalcul implements Commande{
      */
     @Override
     public void undo() {
-        if (carte.getListeTournees().get(numeroCouriser).getListeLivraisons().size()>index) {
+        if (val && carte.getListeTournees().get(numeroCouriser).getListeLivraisons().size()>index) {
             carte.removeLivraison(numeroCouriser, index);
         }
     }
