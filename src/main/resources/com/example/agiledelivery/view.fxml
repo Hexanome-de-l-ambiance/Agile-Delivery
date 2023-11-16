@@ -48,7 +48,7 @@
 <?import javafx.scene.text.TextFlow?>
 
 <Scene xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <SplitPane fx:id="mainView" dividerPositions="0.034722222222222224, 0.7569444444444444" orientation="VERTICAL" stylesheets="@../../../css/style.css">
+   <SplitPane fx:id="mainView" dividerPositions="0.034722222222222224, 0.7569444444444444, 0.5" orientation="VERTICAL" stylesheets="@../../../css/style.css">
       <items>
            <MenuBar fx:id="menuBar">
                <Menu mnemonicParsing="false" text="Carte">
@@ -71,7 +71,7 @@
                         <cursor>
                            <Cursor fx:constant="HAND" />
                         </cursor></Button>
-                     <TextField fx:id="courierNumberTextField" layoutX="185.0" prefHeight="27.0" prefWidth="49.0" />
+                     <TextField fx:id="courierNumberTextField" layoutX="88.0" layoutY="30.0" prefHeight="27.0" prefWidth="49.0" />
                   </children>
                </Pane>
                   <Button fx:id="redoButton" layoutX="129.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css">
@@ -81,7 +81,7 @@
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-              <Button fx:id="ajouterLivraisonButton" layoutX="25.0" layoutY="253.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison">
+              <Button fx:id="ajouterLivraisonButton" layoutX="25.0" layoutY="270.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
@@ -93,7 +93,7 @@
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="supprimerLivraisonButton" alignment="CENTER" layoutX="25.0" layoutY="319.0" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison">
+               <Button fx:id="supprimerLivraisonButton" alignment="CENTER" layoutX="25.0" layoutY="340.0" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
@@ -127,11 +127,11 @@
           </SplitPane>
            <Pane fx:id="test" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
             <children>
-              <Button fx:id="calculerTourneeButton" layoutX="330.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée">
+              <Button fx:id="calculerTourneeButton" layoutX="330.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-                <Button fx:id="resetTourneeButton" layoutX="717.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Réinitialiser les tournées">
+                <Button fx:id="resetTourneeButton" layoutX="717.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Réinitialiser les tournées">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
