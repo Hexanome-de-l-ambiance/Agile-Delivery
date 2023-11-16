@@ -61,50 +61,50 @@
            </MenuBar>
           <SplitPane fx:id="windowPane" dividerPositions="0.5, 0.5" prefWidth="1318.0" stylesheets="@../../../css/style.css">
               <Pane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="261.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
-                  <ComboBox fx:id="coursierComboBox" layoutX="55.0" layoutY="88.0" prefWidth="150.0" promptText="Numero de coursier" />
-                  <ComboBox fx:id="creneauComboBox" layoutX="55.0" layoutY="151.0" prefWidth="150.0" promptText="Créneau horaire" stylesheets="@../../../css/style.css" />
+                  <ComboBox fx:id="coursierComboBox" disable="true" layoutX="55.0" layoutY="88.0" prefWidth="150.0" promptText="Numero de coursier" />
+                  <ComboBox fx:id="creneauComboBox" disable="true" layoutX="55.0" layoutY="151.0" prefWidth="150.0" promptText="Créneau horaire" stylesheets="@../../../css/style.css" />
                <Label fx:id="textNumeroCoursier" layoutX="73.0" layoutY="66.0" text="Numero de coursier :" />
                <Label fx:id="textCreneau" layoutX="73.0" layoutY="131.0" text="Creneau selectionné  :" />
-               <Pane fx:id="numberCoursierPane" layoutX="15.0" layoutY="200.0" prefHeight="37.0" prefWidth="237.0">
+               <Pane fx:id="numberCoursierPane" layoutX="25.0" layoutY="200.0" prefHeight="37.0" prefWidth="207.0">
                   <children>
-                     <Button fx:id="changeNumberCouriersButton" mnemonicParsing="false" stylesheets="@../../../css/style.css" text="Modifier le nombre de coursiers">
+                     <Button fx:id="changeNumberCouriersButton" disable="true" layoutX="11.0" layoutY="2.0" mnemonicParsing="false" stylesheets="@../../../css/style.css" text="Modifier le nombre de coursiers">
                         <cursor>
                            <Cursor fx:constant="HAND" />
                         </cursor></Button>
-                     <TextField fx:id="courierNumberTextField" layoutX="88.0" layoutY="30.0" prefHeight="27.0" prefWidth="49.0" />
                   </children>
                </Pane>
-                  <Button fx:id="redoButton" layoutX="129.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css">
+                  <Button fx:id="redoButton" disable="true" layoutX="129.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css">
                   <rotationAxis>
                      <Point3D y="1.0" />
                   </rotationAxis>
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-              <Button fx:id="ajouterLivraisonButton" layoutX="25.0" layoutY="270.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison">
+              <Button fx:id="ajouterLivraisonButton" disable="true" layoutX="25.0" layoutY="270.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter une Livraison">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="ajouterAvantButton" layoutX="25.0" layoutY="253.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter avant la livraison" visible="false">
+               <Button fx:id="ajouterAvantButton" layoutX="25.0" layoutY="72.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter avant la livraison" visible="false">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="ajouterApresButton" layoutX="25.0" layoutY="329.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter apres la livraison choisi" visible="false">
+               <Button fx:id="ajouterApresButton" layoutX="25.0" layoutY="138.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter apres la livraison choisi" visible="false">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="supprimerLivraisonButton" alignment="CENTER" layoutX="25.0" layoutY="340.0" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison">
+               <Button fx:id="supprimerLivraisonButton" alignment="CENTER" disable="true" layoutX="25.0" layoutY="340.0" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="supprimerApresTourneeButton" layoutX="25.0" layoutY="401.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false">
+               <Button fx:id="supprimerApresTourneeButton" layoutX="25.0" layoutY="204.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="undoButton" layoutX="80.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css">
+               <Button fx:id="undoButton" disable="true" layoutX="80.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #87CEFA;" stylesheets="@../../../css/undo_redo.css">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
+               <TextField fx:id="courierNumberTextField" disable="true" layoutX="107.0" layoutY="233.0" prefHeight="27.0" prefWidth="49.0" />
               </Pane>
               <Pane fx:id="mapPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="784.0" style="-fx-background-color: lightblue;">
                <children>
@@ -127,11 +127,11 @@
           </SplitPane>
            <Pane fx:id="test" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
             <children>
-              <Button fx:id="calculerTourneeButton" layoutX="330.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée">
+              <Button fx:id="calculerTourneeButton" disable="true" layoutX="330.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-                <Button fx:id="resetTourneeButton" layoutX="717.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Réinitialiser les tournées">
+                <Button fx:id="resetTourneeButton" disable="true" layoutX="717.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="269.0" stylesheets="@../../../css/style.css" text="Réinitialiser les tournées">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>

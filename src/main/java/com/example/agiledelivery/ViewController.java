@@ -113,9 +113,6 @@ public class ViewController {
     private ScrollPane scrollPane;
 
     @FXML
-    private Pane rightPaneText;
-
-    @FXML
     public void initialize() {
         graphicalView = new GraphicalView(carte, mapPane);
         textualView = new TextualView(carte);
@@ -160,6 +157,9 @@ public class ViewController {
         textualView.setButton_create_tournee(calculerTourneeButton);
         textualView.setButton_Nombre_coursier(changeNumberCouriersButton);
         textualView.setTextCreneau(textCreneau);
+        textualView.setRemoveTournee(resetTourneeButton);
+        textualView.setRedoButton(redoButton);
+        textualView.setUndoButton(undoButton);
     }
 
     private void handleHeightChanged() {

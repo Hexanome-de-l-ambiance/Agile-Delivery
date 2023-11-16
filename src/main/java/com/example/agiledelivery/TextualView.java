@@ -61,6 +61,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private Label textCreneau;
 
+    private Button undoButton;
+
+    private Button removeTournee;
+
+    private Button redoButton;
+
     public TextualView(Carte carte) {
         this.carte = carte;
         carte.addPropertyChangeListener(this);
@@ -150,6 +156,16 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             }
             case Carte.READ: {
                 display(carte);
+                button_add.setDisable(false);
+                button_remove.setDisable(false);
+                button_create_tournee.setDisable(false);
+                button_nombre_coursier.setDisable(false);
+                textField.setDisable(false);
+                comboBoxIntervals.setDisable(false);
+                comboBoxCouriers.setDisable(false);
+                removeTournee.setDisable(false);
+                undoButton.setDisable(false);
+                redoButton.setDisable(false);
                 break;
             }
             case Carte.ERROR: showAlert((String) evt.getNewValue()); break;
@@ -347,6 +363,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void setTextCreneau(Label textCreneau) {
         this.textCreneau = textCreneau;
     }
+
     public void setLongitudeLabel(Label label){
         this.longitudeLabel = label;
     }
@@ -359,7 +376,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void setTextLatitudeLabel(String s) {
         latitudeLabel.setText(s);
     }
-
     public void setInfo(TextFlow text){
         this.info = text;
     }
@@ -378,5 +394,17 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public void setButton_Nombre_coursier(Button changeNumberCouriersButton) {
         this.button_nombre_coursier = changeNumberCouriersButton;
+    }
+
+    public void setUndoButton(Button undoButton) {
+        this.undoButton = undoButton;
+    }
+
+    public void setRemoveTournee(Button removeTournnee) {
+        this.removeTournee = removeTournnee;
+    }
+
+    public void setRedoButton(Button redoButton) {
+        this.redoButton = redoButton;
     }
 }
