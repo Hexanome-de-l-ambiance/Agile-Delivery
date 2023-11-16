@@ -168,6 +168,7 @@ public class ViewController {
         textualView.setRemoveTournee(resetTourneeButton);
         textualView.setRedoButton(redoButton);
         textualView.setUndoButton(undoButton);
+        textualView.setButton_Charger_carte(loadMapButton);
         textualView.setButton_sauvegarder_tournee(sauvegarderTourneeButton);
         textualView.setButton_charger_tournee(chargerTourneeButton);
     }

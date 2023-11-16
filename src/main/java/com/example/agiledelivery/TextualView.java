@@ -75,6 +75,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     private MenuItem chargerTourneeButton;
 
+    private MenuItem buttonChargerCarte;
+
     /**
      * Initialiser le view
      *
@@ -177,11 +179,29 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         this.textField = textField;
     }
 
+    /**
+     * Définir le bouton pour créer les tournées.
+     * @param button_create_tournee Le bouton à définir
+     */
     public void setButton_create_tournee(Button button_create_tournee) { this.button_create_tournee = button_create_tournee; }
 
+    /**
+     * Définir le bouton pour sauvegarder les tournées.
+     * @param sauvegarderTourneeButton Le bouton à définir
+     */
     public void setButton_sauvegarder_tournee(MenuItem sauvegarderTourneeButton) { this.sauvegarderTourneeButton = sauvegarderTourneeButton; }
 
+    /**
+     * Définir le bouton pour charger les tournées.
+     * @param chargerTourneeButton Le bouton à définir
+     */
     public void setButton_charger_tournee(MenuItem chargerTourneeButton) { this.chargerTourneeButton = chargerTourneeButton; }
+
+    /**
+     * Définir le bouton pour charger la carte.
+     * @param chargerCarteButton
+     */
+    public void setButton_Charger_carte(MenuItem chargerCarteButton) { this.buttonChargerCarte = chargerCarteButton; }
 
     /**
      * Récupérer le numéro de coursier sélectionné.
@@ -303,6 +323,10 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 break;
             }
             case Carte.UPDATE: {
+                if(isCalculated()){
+                    buttonChargerCarte.setDisable(true);
+                    chargerTourneeButton.setDisable(true);
+                }
                 listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 displayListeTournees(listeTournees);
                 coordinatesPane.setVisible(false);
@@ -373,6 +397,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 break;
             }
             case Carte.RESET_TOURS:{
+                buttonChargerCarte.setDisable(false);
+                chargerTourneeButton.setDisable(false);
                 couriers.clear();
                 couriers.add("1");
                 comboBoxCouriers.setItems(couriers);
@@ -450,11 +476,11 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             if(!isCalculated()){
                 newLabel.setText(" " + i++  + " : Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Créneau :" + livraison.getCreneauHoraire() + "\n\n");
             } else {
-                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Heure :" + livraison.getHeureLivraison() + "\n\n");
+                newLabel.setText(" " + i++  + " Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Heure :" + livraison.getHeureLivraison() + "\n\n");
             }
             switch (livraison.getEtat()){
                 case EN_RETARD:
-                    newLabel.setTextFill(Color.ORANGE);
+                    newLabel.setTextFill(Color.RED);
                     break;
                 default:
                     newLabel.setTextFill(Color.BLACK);
