@@ -109,12 +109,13 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison non choisie");
-                }
-                try {
-                    controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);
-                } catch (NumberFormatException e){
-                    textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    textualView.showAlert("Veuillez choisir une livraison et une destination");
+                } else {
+                    try {
+                        controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);
+                    } catch (NumberFormatException e) {
+                        textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    }
                 }
                 break;
             }
@@ -123,12 +124,13 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison non choisie");
-                }
-                try {
-                    controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index+1);
-                } catch (NumberFormatException e){
-                    textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    textualView.showAlert("Veuillez choisir une livraison et une destination");
+                } else {
+                    try {
+                        controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index + 1);
+                    } catch (NumberFormatException e) {
+                        textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    }
                 }
                 break;
             }
