@@ -136,9 +136,10 @@ public class XMLOpener{
             this.carte = carte;
         }
 
+
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-            charactersBuffer.setLength(0); // Clear the characters buffer
+            charactersBuffer.setLength(0);
 
             if ("tournees".equals(qName)) {
                 String nbCoursiersValue = attributes.getValue("nbCoursiers");
@@ -171,12 +172,12 @@ public class XMLOpener{
             } else if ("address".equals(qName) && currentLivraison != null) {
                 Intersection intersection = carte.getIntersection(currentAddressId);
                 currentLivraison.setDestination(intersection);
-                currentAddressId = null; // Reset the currentAddressId
+                currentAddressId = null;
             } else if ("livraison".equals(qName) && currentLivraison != null) {
                 carte.addLivraison(numeroCoursier, currentLivraison);
                 currentLivraison = null;
             }
-            charactersBuffer.setLength(0); // Clear the buffer after handling the element's content
+            charactersBuffer.setLength(0);
         }
     }
 

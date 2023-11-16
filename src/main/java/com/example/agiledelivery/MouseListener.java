@@ -158,6 +158,12 @@ public class MouseListener implements EventHandler<ActionEvent> {
             });
         }
     }
+
+    /**
+     * Gérer les événements de souris.
+     *
+     * @param actionEvent L'événement de souris à gérer
+     */
     @Override
     public void handle(ActionEvent actionEvent) {
 
