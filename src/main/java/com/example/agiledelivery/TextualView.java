@@ -20,30 +20,27 @@ import java.util.Map;
  */
 public class TextualView extends Pane implements PropertyChangeListener, Visitor {
 
-    private Carte carte;
-    private TextFlow textFlow = new TextFlow();
-    private TextFlow info = new TextFlow();
-    private TextFlow hintFlow = new TextFlow();
-    private Text messageText;
-    private Text numberCouriersText = new Text("Nombre de coursiers : 1" + "\n");
-    private Text hint = new Text();
+    private final Carte carte;
+    private TextFlow info;
+
+    private TextFlow aide;
+    private final Text numberCouriersText = new Text("Nombre de coursiers : 1" + "\n");
     private Label textNumeroCoursier;
-    private String content = "Welcome!";
-    private HashMap<Long, Text> textHashMap = new HashMap<>();
     HashMap<Integer, Tournee> listeTournees = new HashMap<>();
     private ComboBox<String> comboBoxCouriers;
     private ComboBox<String> comboBoxIntervals;
-    private ObservableList<String> couriers = FXCollections.observableArrayList(
+
+    private final ObservableList<String> couriers = FXCollections.observableArrayList(
             "1"
     );
-    private ObservableList<String> intervals = FXCollections.observableArrayList(
+    private final ObservableList<String> intervals = FXCollections.observableArrayList(
             "8",
             "9",
             "10",
             "11"
     );
 
-    private ArrayList<Integer> sizeTournee = new ArrayList<>();
+    private final ArrayList<Integer> sizeTournee = new ArrayList<>();
     private TextField textField;
     private int numeroCoursier = -1;
     private Livraison livraison = null;
@@ -63,6 +60,18 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private Button button_remove_after;
     private Button resetTourneeButton;
 
+    private Button button_create_tournee;
+
+    private Button button_nombre_coursier;
+
+    private Label textCreneau;
+
+    private Button undoButton;
+
+    private Button removeTournee;
+
+    private Button redoButton;
+
     private Label errorLabel;
 
     /**
@@ -72,27 +81,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
      */
     public TextualView(Carte carte) {
         this.carte = carte;
-
-        this.setStyle("-fx-background-color: red;");
-        messageText = new Text(content);
-        messageText.setStyle("-fx-font-size: 12;");
-        numberCouriersText.setStyle("-fx-font-size: 12;");
-        textFlow.setPrefWidth(this.getPrefWidth());
-        textFlow.setLayoutX(0);
-        textFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 5*3);
-        textFlow.getChildren().add(messageText);
-        info.setPrefWidth(this.getPrefWidth());
-        info.setLayoutX(0);
-        info.setLayoutY((this.getPrefHeight() - info.prefHeight(-1)) / 5*4);
-
-
-        hintFlow.setPrefWidth(this.getPrefWidth());
-        hintFlow.setLayoutX(0);
-        hintFlow.setLayoutY((this.getPrefHeight() - textFlow.prefHeight(-1)) / 12*11);
-        hintFlow.getChildren().add(hint);
-        this.getChildren().add(textFlow);
-        this.getChildren().add(info);
-        this.getChildren().add(hintFlow);
         carte.addPropertyChangeListener(this);
     }
 
@@ -114,15 +102,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void setCreneauComboBox(ComboBox<String> comboBox){
         this.comboBoxIntervals = comboBox;
         this.comboBoxIntervals.setItems(intervals);
-    }
-
-    /**
-     * Définir l'information des intersections.
-     *
-     * @param s Le texte à définir
-     */
-    public void setHint(String s){
-        hint.setText(s);
     }
 
     /**
@@ -196,6 +175,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void setTextField(TextField textField) {
         this.textField = textField;
     }
+
+    public void setButton_create_tournee(Button button_create_tournee) { this.button_create_tournee = button_create_tournee; }
 
     /**
      * Récupérer le numéro de coursier sélectionné.
@@ -272,23 +253,20 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         switch (event) {
             case Carte.RESET:
             {
-                textFlow.getChildren().clear();
-                content = "Reset";
-                messageText = new Text(content);
-                messageText.setStyle("-fx-font-size: 12;");
-                textFlow.getChildren().add(messageText);
                 break;
             }
             case Carte.READ: {
-                textFlow.getChildren().clear();
-                Text path = new Text((String) evt.getNewValue() + "\n");
-                path.setStyle("-fx-font-size: 24;");
-                textFlow.getChildren().add(path);
                 display(carte);
-                content = "Load success";
-                messageText = new Text(content);
-                messageText.setStyle("-fx-font-size: 12;");
-                textFlow.getChildren().add(messageText);
+                button_add.setDisable(false);
+                button_remove.setDisable(false);
+                button_create_tournee.setDisable(false);
+                button_nombre_coursier.setDisable(false);
+                textField.setDisable(false);
+                comboBoxIntervals.setDisable(false);
+                comboBoxCouriers.setDisable(false);
+                removeTournee.setDisable(false);
+                undoButton.setDisable(false);
+                redoButton.setDisable(false);
                 break;
             }
             case Carte.ERROR: showAlert((String) evt.getNewValue()); break;
@@ -310,18 +288,25 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_add.setManaged(true);
                     button_add.setVisible(true);
                     button_add_before.setManaged(false);
-                    button_add_before.setDisable(true);
                     button_add_before.setVisible(false);
                     button_add_after.setManaged(false);
-                    button_add_after.setDisable(true);
                     button_add_after.setVisible(false);
                     button_generate.setManaged(false);
-                    button_generate.setDisable(true);
                     button_generate.setVisible(false);
                     textNumeroCoursier.setManaged(true);
                     textNumeroCoursier.setVisible(true);
                     comboBoxCouriers.setManaged(true);
                     comboBoxCouriers.setVisible(true);
+                    button_create_tournee.setManaged(true);
+                    button_create_tournee.setVisible(true);
+                    button_nombre_coursier.setManaged(true);
+                    button_nombre_coursier.setVisible(true);
+                    textCreneau.setManaged(true);
+                    textCreneau.setVisible(true);
+                    comboBoxIntervals.setManaged(true);
+                    comboBoxIntervals.setVisible(true);
+                    textField.setManaged(true);
+                    textField.setVisible(true);
 
                 } else {
                     listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
@@ -329,26 +314,30 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     button_add.setManaged(false);
                     button_add.setVisible(false);
                     button_add_before.setManaged(true);
-                    button_add_before.setDisable(false);
                     button_add_before.setVisible(true);
                     button_add_after.setManaged(true);
-                    button_add_after.setDisable(false);
                     button_add_after.setVisible(true);
                     button_generate.setManaged(true);
-                    button_generate.setDisable(false);
                     button_generate.setVisible(true);
                     textNumeroCoursier.setManaged(false);
                     textNumeroCoursier.setVisible(false);
                     comboBoxCouriers.setManaged(false);
                     comboBoxCouriers.setVisible(false);
-
-
+                    button_create_tournee.setManaged(false);
+                    button_create_tournee.setVisible(false);
+                    button_nombre_coursier.setManaged(false);
+                    button_nombre_coursier.setVisible(false);
                     button_remove.setManaged(false);
-                    button_remove.setDisable(true);
                     button_remove.setVisible(false);
                     button_remove_after.setManaged(true);
-                    button_remove_after.setDisable(false);
                     button_remove_after.setVisible(true);
+                    textCreneau.setVisible(false);
+                    textCreneau.setManaged(false);
+                    comboBoxIntervals.setManaged(false);
+                    comboBoxIntervals.setVisible(false);
+                    textField.setManaged(false);
+                    textField.setVisible(false);
+
                 }
                 isCalculated = true;
                 break;
@@ -380,25 +369,29 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 button_add.setManaged(true);
                 button_add.setVisible(true);
                 button_add_before.setManaged(false);
-                button_add_before.setDisable(true);
                 button_add_before.setVisible(false);
                 button_add_after.setManaged(false);
-                button_add_after.setDisable(true);
                 button_add_after.setVisible(false);
                 button_generate.setManaged(false);
-                button_generate.setDisable(true);
                 button_generate.setVisible(false);
                 textNumeroCoursier.setManaged(true);
                 textNumeroCoursier.setVisible(true);
                 comboBoxCouriers.setManaged(true);
                 comboBoxCouriers.setVisible(true);
-
                 button_remove.setManaged(true);
-                button_remove.setDisable(false);
                 button_remove.setVisible(true);
                 button_remove_after.setManaged(false);
-                button_remove_after.setDisable(true);
                 button_remove_after.setVisible(false);
+                button_create_tournee.setManaged(true);
+                button_create_tournee.setVisible(true);
+                button_nombre_coursier.setManaged(true);
+                button_nombre_coursier.setVisible(true);
+                textCreneau.setManaged(true);
+                textCreneau.setVisible(true);
+                comboBoxIntervals.setManaged(true);
+                comboBoxIntervals.setVisible(true);
+                textField.setManaged(true);
+                textField.setVisible(true);
                 isCalculated = false;
                 break;
             }
@@ -418,9 +411,11 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
             Tournee tournee = entry.getValue();
             if(tournee.getListeLivraisons().size() > 1 || (tournee.getListeLivraisons().size() == 1 && tournee.getListeLivraisons().get(0).getDestination() != carte.getEntrepot())){
-                Text segment = new Text("Id Coursier: " + entry.getKey() + "\n");
+                Text segment = new Text("\n"+" Coursier : " + entry.getKey() +"\n");
+                segment.setStyle("-fx-font-size: 20px");
                 info.getChildren().add(segment);
                 display(entry.getKey(), tournee);
+                info.getChildren().add(new Text("\n"));
             }
             sizeTournee.add(entry.getValue().getListeLivraisons().size());
         }
@@ -443,12 +438,11 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         ArrayList<Livraison> list = tournee.getListeLivraisons();
 
         for(Livraison livraison : list){
-            Label newLabel = new Label(" longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + " heure : " + livraison.getHeureLivraison()+ "\n");
+            Label newLabel = new Label(" Longitude : " + livraison.getDestination().getLongitude() + " latitude: " + livraison.getDestination().getLatitude() + "\n Heure : " + livraison.getCreneauHoraire()+ "\n");
             newLabel.setOnMouseClicked(event -> {
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
                 this.selectedIndex = list.indexOf(livraison);
-                System.out.println("test");
                 if(selectedLabel!= null) selectedLabel.setTextFill(Color.BLACK);
                 selectedLabel = newLabel;
                 selectedLabel.setTextFill(Color.YELLOW);
@@ -465,6 +459,23 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         errorLabel.setText(alert);
     }
 
+    protected void showWarning(String warning) {
+        aide.getChildren().clear();
+        Text text_warning = new Text(warning);
+        text_warning.setFill(Color.RED);
+        aide.getChildren().add(text_warning);
+    }
+
+    protected void showInfo(String info) {
+        aide.getChildren().clear();
+        Text text_info = new Text(info);
+        aide.getChildren().add(text_info);
+    }
+
+    public void setTextCreneau(Label textCreneau) {
+        this.textCreneau = textCreneau;
+    }
+
     public void setLongitudeLabel(Label label){
         this.longitudeLabel = label;
     }
@@ -477,13 +488,12 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public void setTextLatitudeLabel(String s) {
         latitudeLabel.setText(s);
     }
-
-    public void setResetTourneeButton(Button button){
-        this.resetTourneeButton = button;
-    }
-
     public void setInfo(TextFlow text){
         this.info = text;
+    }
+
+    public void setAide(TextFlow text){
+        this.aide = text;
     }
 
     public void setCoordinatesPane(Pane coordinatesPane) {
@@ -496,5 +506,20 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
     public void setErrorLabel(Label errorLabel) {
         this.errorLabel = errorLabel;
+    }
+    public void setButton_Nombre_coursier(Button changeNumberCouriersButton) {
+        this.button_nombre_coursier = changeNumberCouriersButton;
+    }
+
+    public void setUndoButton(Button undoButton) {
+        this.undoButton = undoButton;
+    }
+
+    public void setRemoveTournee(Button removeTournnee) {
+        this.removeTournee = removeTournnee;
+    }
+
+    public void setRedoButton(Button redoButton) {
+        this.redoButton = redoButton;
     }
 }

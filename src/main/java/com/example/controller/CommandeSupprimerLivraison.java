@@ -8,9 +8,9 @@ import com.example.model.Livraison;
  */
 public class CommandeSupprimerLivraison implements Commande{
 
-    private Livraison livraison;
-    private int numeroCoursier;
-    private Carte carte;
+    private final Livraison livraison;
+    private final int numeroCoursier;
+    private final Carte carte;
 
     /**
      * Constructeur par défaut de la commande de suppression de livraison.
@@ -31,7 +31,7 @@ public class CommandeSupprimerLivraison implements Commande{
      */
     @Override
     public void execute() {
-        if (carte.getListeTournees().get(numeroCoursier).getListeLivraisons().size()>0) {
+        if (!carte.getListeTournees().get(numeroCoursier).getListeLivraisons().isEmpty()) {
             carte.removeLivraison(numeroCoursier, livraison);
 
         }
