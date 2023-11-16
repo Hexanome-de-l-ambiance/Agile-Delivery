@@ -13,7 +13,9 @@ import java.io.IOException;
 
 import static java.lang.Math.round;
 
-
+/**
+ * Représente une tournée effectuée par un coursier, composée de livraisons et de chemins.
+ */
 public class Tournee{
 
     /**
@@ -37,7 +39,9 @@ public class Tournee{
     private LocalTime heureFinTournee;
 
     /**
-     * Default constructor
+     * Constructeur par défaut pour une tournée.
+     *
+     * @param c Le numéro du coursier associé à cette tournée.
      */
     public Tournee(int c) {
         listeChemins = new LinkedList<>();
@@ -59,7 +63,7 @@ public class Tournee{
     }
 
     /**
-     * Ajoute une livraison à la tournée et met à jour les horaires de livraison suivants sans recalculer la tournée.
+     * Ajoute une livraison à la tournée après le calcul des tournées et met à jour les horaires de livraison suivants sans recalculer la tournée.
      * @param carte sur laquelle se trouve la livraison.
      * @param livraison a ajoutée à la tournée.
      * @param index indice de la livraison dans la tournée. Si <code>index</code> vaut <code>livraisons.size()</code> alors la livraison est ajoutée à la fin de la tournée.
@@ -125,7 +129,7 @@ public class Tournee{
         listeLivraisons.remove(livraison);}
 
     /**
-     * Supprime une livraison de la tournée et recalcule les horaires de livraison suivants sans recalculer la tournée.
+     * Supprime une livraison de la tournée après le calcul des tournées et recalcule les horaires de livraison suivants sans recalculer la tournée.
      * @param carte sur laquelle se trouve la livraison.
      * @param index indice de la livraison dans la tournée à retirer.
      */
@@ -169,7 +173,12 @@ public class Tournee{
         }
     }
 
-
+    /**
+     * Calcule la tournée pour les livraisons.
+     *
+     * @param carte La carte où se déroule la tournée.
+     * @return <code>true</code> si le calcul de la tournée s'est déroulé avec succès, sinon <code>false</code>.
+     */
     public boolean calculerTournee(Carte carte) {
         long start = System.currentTimeMillis();
         listeChemins.clear();
@@ -213,6 +222,11 @@ public class Tournee{
         return true;
     }
 
+    /**
+     * Met à jour l'ordre des livraisons dans la liste des livraisons en fonction des identifiants fournis.
+     *
+     * @param livraisonsId Liste d'identifiants de livraisons décrivant le nouvel ordre.
+     */
     private void updateLivraisonsOrder(ArrayList<Long> livraisonsId) {
     	ArrayList<Livraison> newLivraisons = new ArrayList<>(listeLivraisons.size());
     	for(int i=1; i < livraisonsId.size(); i++)
@@ -241,6 +255,11 @@ public class Tournee{
         return heureFinTournee;
     }
 
+    /**
+     * Génère une feuille de route au format HTML pour la tournée du coursier.
+     *
+     * @param fileName Le nom du fichier HTML à créer.
+     */
     public void genererFeuilleDeRouteHTML(String fileName) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalTime heureActuelle = LocalTime.of(8, 0, 0);
@@ -268,6 +287,8 @@ public class Tournee{
 
                 if(listeLivraisons.get(0).getCreneauHoraire().isAfter(heureActuelle)){
                     writer.write("<p>Heure de début de tournée : " + listeLivraisons.get(0).getCreneauHoraire().minusMinutes(listeChemins.get(0).getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()).format(formatter) + "</p>");
+                }else{
+                    writer.write("<p>Heure de début de tournée : " + heureActuelle.format(formatter) + "</p>");
                 }
                 writer.write("<p>Heure de fin de tournée : " + heureFinTournee.format(formatter) + "</p>");
             }

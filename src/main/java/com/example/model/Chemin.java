@@ -1,16 +1,26 @@
 package com.example.model;
 
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.*;
 
 /**
- * 
+ * Représente un chemin composé de segments reliant des intersections.
  */
 public class Chemin {
 
+    /**
+     * La liste des segments que suit le chemin
+     */
     private LinkedList<Segment> listeSegments;
+
+    /**
+     * La longueur du chemin
+     */
     private double longueur;
+
+    /**
+     * La durée de parcours du chemin
+     */
     private Duration duree;
 
     /**

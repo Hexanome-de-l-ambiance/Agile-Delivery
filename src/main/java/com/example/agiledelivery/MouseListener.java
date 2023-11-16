@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * 
+ * Cette classe est responsable de la gestion des événements de souris, tels que les clics et les mouvements.
  */
 public class MouseListener implements EventHandler<ActionEvent> {
 
@@ -40,16 +40,27 @@ public class MouseListener implements EventHandler<ActionEvent> {
     private static final double SCALE_FACTOR = 5.0;
     private Circle lastClickedCircle;
 
+    /**
+     * Initialiser le listener de la souris.
+     *
+     * @param textualView    La vue textuelle associée
+     * @param graphicalView  La vue graphique associée
+     * @param controller     Le contrôleur associé
+     */
     public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {
         this.controller = controller;
         this.graphicalView = graphicalView;
         this.graph = graphicalView.getGraph();
         this.textualView = textualView;
-
-
         setOnEvent();
     }
 
+    /**
+     * Configurer les gestionnaires d'événements pour les interactions de la vue
+     * Les événements configurés incluent le clic de la souris, le déplacement de la souris et le défilement de la souris.
+     * En fonction des événements, cette méthode effectue des actions telles que la gestion du clic de souris,
+     * le déplacement de la carte graphique et l'ajustement de l'échelle de la carte.
+     */
     protected void setOnEvent(){
         graphicalView.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown()) {
@@ -146,7 +157,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 }
             });
         }
-
     }
     @Override
     public void handle(ActionEvent actionEvent) {

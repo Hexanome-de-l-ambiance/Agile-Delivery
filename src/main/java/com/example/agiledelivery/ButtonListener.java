@@ -7,18 +7,38 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
-
+/**
+ * Cette classe est responsable de la gestion des événements de boutons et de l'envoi des actions correspondantes au contrôleur.
+ */
 public class ButtonListener implements EventHandler<ActionEvent> {
+
     private Controller controller;
+
     private TextualView textualView;
+
+    /**
+     * Constructeur pour définir le contrôleur.
+     *
+     * @param controller Le contrôleur à définir
+     */
     public ButtonListener(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Définir la vue textuelle pour suivre les informations choisies par l'utilisateur.
+     *
+     * @param textualView La vue textuelle à définir
+     */
     public void setTextualView(TextualView textualView) {
         this.textualView = textualView;
     }
 
+    /**
+     * Gérer l'événement d'action généré par les boutons ou les outils.
+     *
+     * @param event L'événement écouté par le listener
+     */
     @Override
     public void handle(ActionEvent event) {
         String actionCommand;
@@ -27,7 +47,6 @@ public class ButtonListener implements EventHandler<ActionEvent> {
         } else {
             actionCommand = ((Button) event.getSource()).getId();
         }
-        System.out.println(actionCommand);
 
         // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
@@ -69,7 +88,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 int numeroCoursier = textualView.getNumeroCoursier();
                 Livraison livraison = textualView.getLivraison();
                 if (numeroCoursier == -1 || livraison == null) {
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 } else {
                     controller.deleteDelivery(numeroCoursier, livraison);
                 }
@@ -80,7 +99,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 } else {
                     controller.deleteDelivery(numeroCoursier, livraison, index);
                 }
@@ -92,7 +111,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 }
                 try {
                     controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);
@@ -106,7 +125,7 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison à supprimer non choisie");
+                    textualView.showAlert("Livraison non choisie");
                 }
                 try {
                     controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index+1);

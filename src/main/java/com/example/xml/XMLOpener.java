@@ -21,16 +21,22 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+/**
+ * Cette classe gère l'ouverture et la lecture des fichiers XML pour charger des données dans une carte.
+ */
 public class XMLOpener{
 
     XMLOpener() {}
-
-
 
     private static class SingletonHelper {
         private static final XMLOpener INSTANCE = new XMLOpener();
     }
 
+    /**
+     * Récupère l'instance unique de XMLOpener selon le modèle de conception Singleton.
+     *
+     * @return L'instance unique de XMLOpener.
+     */
     public static XMLOpener getInstance() {
         return SingletonHelper.INSTANCE;
     }
@@ -44,6 +50,15 @@ public class XMLOpener{
         }
 
     }
+
+
+    /**
+     * Charge les données d'une tournée à partir d'un fichier XML.
+     *
+     * @param stage La fenêtre parente pour la boîte de dialogue de chargement.
+     * @param carte L'objet Carte dans lequel charger les données de la tournée depuis le fichier XML.
+     * @throws CustomXMLParsingException En cas d'erreur lors du chargement des données de la tournée à partir du fichier XML.
+     */
 
     public void loadTour(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
@@ -69,7 +84,13 @@ public class XMLOpener{
         }
     }
 
-
+    /**
+     * Lit et analyse le fichier XML pour charger les intersections et les segments de la carte.
+     *
+     * @param stage La fenêtre parente pour la boîte de dialogue de chargement.
+     * @param carte L'objet Carte dans lequel charger les données depuis le fichier XML.
+     * @throws CustomXMLParsingException En cas d'erreur lors de la lecture ou du chargement des données de tournée à partir du fichier XML.
+     */
     public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
         String xsdPath = "data/xsd/map.xsd";
@@ -104,6 +125,13 @@ public class XMLOpener{
         }
     }
 
+    /**
+     * Lit et analyse un fichier XML à partir du chemin spécifié pour initialiser les intersections et les segments de la carte.
+     *
+     * @param carte L'objet Carte dans lequel initialiser les intersections et les segments depuis le fichier XML.
+     * @param path  Le chemin du fichier XML à lire.
+     * @throws CustomXMLParsingException En cas d'erreur lors de la lecture ou de l'initialisation des données du plan à partir du fichier XML.
+     */
     public void readFile(Carte carte, String path) throws CustomXMLParsingException {
         File file = new File(path);
         String xsdPath = "data/xsd/map.xsd";
@@ -132,8 +160,9 @@ public class XMLOpener{
         }
     }
 
-
-
+    /**
+     * Gestionnaire SAX pour la lecture des éléments liés aux tournées dans un fichier XML.
+     */
     private static class HandlerTour extends DefaultHandler {
         private final Carte carte;
         private Livraison currentLivraison;
@@ -191,7 +220,9 @@ public class XMLOpener{
     }
 
 
-
+    /**
+     * Gestionnaire SAX pour la lecture des éléments liés à la carte dans un fichier XML.
+     */
     private static class HandlerPlan extends DefaultHandler {
         private Carte carte;
         public HandlerPlan(Carte carte){

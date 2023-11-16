@@ -3,14 +3,18 @@ package com.example.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * La classe SeqIter implémente un itérateur pour parcourir les sommets non visités
+ * dans le graphe qui sont les successeurs du sommet courant.
+ */
 public class SeqIter implements Iterator<Integer> {
 	private Integer[] candidates;
 	private int nbCandidates;
 
 	/**
-	 * Create an iterator to traverse the set of vertices in <code>unvisited</code> 
-	 * which are successors of <code>currentVertex</code> in <code>g</code>
-	 * Vertices are traversed in the same order as in <code>unvisited</code>
+	 * Créez un itérateur pour parcourir l'ensemble des sommets dans <code>unvisited</code>
+	 * qui sont les successeurs du <code>currentVertex</code> dans <code>g</code>
+	 * Les sommets sont parcourus dans le même ordre que dans <code>unvisited</code>
 	 * @param unvisited
 	 * @param currentVertex
 	 * @param g

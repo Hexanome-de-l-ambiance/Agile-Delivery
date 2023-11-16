@@ -8,21 +8,26 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+
 /**
- *
+ * Le controleur des views
  */
 public class ViewController {
 
+    /**
+     * Constructeur de ViewController.
+     *
+     * @param carte      La carte.
+     * @param controller Le contrôleur.
+     */
     public ViewController(Carte carte, Controller controller){
         this.carte = carte;
         this.controller = controller;
     }
 
-    /**
-     * Default constructor
-     */
+
     private Carte carte;
-    private Stage stage;
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
     private GraphicalView graphicalView;
@@ -97,7 +102,9 @@ public class ViewController {
     @FXML
     private Label textNumeroCoursier;
 
-
+    /**
+     * Initialiser les views
+     */
     @FXML
     public void initialize() {
         graphicalView = new GraphicalView(carte, mapPane);
@@ -108,21 +115,12 @@ public class ViewController {
         buttonListener.setTextualView(textualView);
         mapPane.getChildren().add(0,graphicalView);
 
-        loadMapButton.setOnAction(event -> buttonListener.handle(event));
-        ajouterLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        calculerTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        undoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        redoButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        supprimerLivraisonButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        resetTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        chargerTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        sauvegarderTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        changeNumberCouriersButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        supprimerApresTourneeButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        ajouterApresButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        ajouterAvantButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-        genererFeuilleDeRouteButton.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
-
+        for (Button button : Arrays.asList(ajouterLivraisonButton, calculerTourneeButton, undoButton, redoButton, supprimerLivraisonButton, resetTourneeButton, changeNumberCouriersButton, supprimerApresTourneeButton, ajouterApresButton, ajouterAvantButton, genererFeuilleDeRouteButton)) {
+            button.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        }
+        for (MenuItem menuItem : Arrays.asList(chargerTourneeButton, sauvegarderTourneeButton,loadMapButton)) {
+            menuItem.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
+        }
 
 
         handleHeightChanged();
@@ -133,7 +131,9 @@ public class ViewController {
         setupTextualView();
         System.out.println(longitudeLabel.getText());
     }
-
+    /**
+     * Faire les setups pour les membres du textualView
+     */
     private void setupTextualView(){
         textualView.setCouriersComboBox(coursierComboBox);
         textualView.setCreneauComboBox(creneauComboBox);
@@ -151,7 +151,9 @@ public class ViewController {
         textualView.setInfo(info);
         textualView.setTextNumeroCoursier(textNumeroCoursier);
     }
-
+    /**
+     * Gérer les changements de la propriété de hauteur (height) de mapPane en ajustant la vue graphique en conséquence.
+     */
     private void handleHeightChanged(){
         mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = (double) newValue;
@@ -165,6 +167,9 @@ public class ViewController {
         });
     }
 
+    /**
+     * Gérer les changements de la propriété de largeur (width) de mapPane en ajustant la vue graphique en conséquence.
+     */
     private void handleWidthChanged(){
         mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             double newWidth = (double) newValue;

@@ -4,9 +4,6 @@ import com.example.model.*;
 
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
@@ -17,20 +14,34 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * La vue graphique
+ */
 public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
 
     private Carte carte;
+
     private Pane graph;
+
     private HashMap<Circle, Intersection> circleMap;
+
     private HashSet<Pair<Circle, Circle>> circlePairSet = new HashSet<>();
+
     private HashSet<Pair<Long, Long>> hashSet = new HashSet<>();
+
     private MouseListener mouseListener;
+
     private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.YELLOWGREEN, Color.PURPLE, Color.ORANGE, Color.PINK, Color.AQUA, Color.FUCHSIA, Color.SIENNA));
 
-    private final double DETECTION_RADIUS = 7.0;
-    private Intersection selectedIntersection = null;
+    protected final double DETECTION_RADIUS = 7.0;
     protected final double CIRCLE_RADIUS = 3.0;
 
+    /**
+     * Initialiser le view
+     *
+     * @param carte     La carte à afficher
+     * @param mapPane   Le conteneur de la carte
+     */
     public GraphicalView(Carte carte, Pane mapPane) {
         this.setPrefWidth(mapPane.getPrefWidth());
         this.setPrefHeight(mapPane.getPrefHeight());
@@ -53,6 +64,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
     public HashMap<Circle, Intersection> getCircleMap() {
         return circleMap;
     }
+
     public HashSet<Pair<Circle, Circle>> getCirclePairSet() {
         return circlePairSet;
     }
@@ -61,6 +73,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         this.mouseListener = mouseListener;
     }
 
+    /**
+     * Gérer les changements dans les propriétés de l'événement de PropertyChange en effectuant différentes actions basées sur l'événement.
+     * @param evt L'événement de changement de propriété
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
@@ -83,6 +99,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
     }
 
+    /**
+     * Afficher la carte sur le view en fonction des tournées fournies.
+     * @param carte La carte à afficher
+     */
     @Override
     public void display(Carte carte) {
         double minLat = carte.getMinLat();
@@ -142,6 +162,12 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         mouseListener.setOnEvent();
     }
 
+    /**
+     * Afficher une tournée spécifique pour un numéro de coursier donné.
+     *
+     * @param numeroCoursier Le numéro du coursier
+     * @param tournee        La tournée à afficher
+     */
     @Override
     public void display(int numeroCoursier, Tournee tournee) {
         double minLat = carte.getMinLat();
@@ -227,9 +253,5 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
                 graph.getChildren().add(line);
             }
         }
-    }
-
-    private void applyCustomStroke(Line line, Color startColor, Color endColor) {
-        line.setStroke(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, startColor), new Stop(1, endColor)));
     }
 }
