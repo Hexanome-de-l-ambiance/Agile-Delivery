@@ -127,7 +127,7 @@
           </SplitPane>
            <Pane fx:id="test" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="1306.0" style="-fx-background-color: #87CEFA;" SplitPane.resizableWithParent="false">
             <children>
-               <Label fx:id="errorLabel" layoutX="5.0" layoutY="146.0" prefHeight="31.0" prefWidth="1309.0" text="Welcome!" />
+               <Label fx:id="errorLabel" layoutX="5.0" layoutY="146.0" prefHeight="31.0" prefWidth="1309.0" text="Veuillez charger une carte." />
               <Button fx:id="calculerTourneeButton" disable="true" layoutX="330.0" layoutY="10.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="270.0" stylesheets="@../../../css/style.css" text="Calculer une tournée">
                   <cursor>
                      <Cursor fx:constant="HAND" />

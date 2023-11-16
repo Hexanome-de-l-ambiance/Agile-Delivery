@@ -249,7 +249,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String event = evt.getPropertyName();
-        errorLabel.setText("");
         switch (event) {
             case Carte.RESET:
             {
@@ -267,6 +266,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 removeTournee.setDisable(false);
                 undoButton.setDisable(false);
                 redoButton.setDisable(false);
+                showAlert("Vous pouvez ajouter une livraison en cliquant sur une destination, supprimer une livraison en cliquant sur la liste, charger ou sauvegarder les tournées.");
                 break;
             }
             case Carte.ERROR: showAlert((String) evt.getNewValue()); break;
@@ -276,6 +276,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 coordinatesPane.setVisible(false);
                 latitudeLabel.setText("");
                 longitudeLabel.setText("");
+                showAlert("Livraison ajoutée.");
                 break;
             }
             case Carte.UPDATE: {
@@ -340,11 +341,13 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
 
                 }
                 isCalculated = true;
+                showAlert("Nouvelle tournée calculée. Vous pouvez choisir une livraison pour ajouter une nouvelle livraison avant ou après cette livaison, ou supprimer une livraison.");
                 break;
             }
             case Carte.REMOVE: {
                 listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 displayListeTournees(listeTournees);
+                showAlert("Livraison supprimée.");
                 break;
             }
             case Carte.SET_NB_COURIERS:{
@@ -354,10 +357,9 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                     couriers.add(String.valueOf(i));
                 }
                 comboBoxCouriers.setItems(couriers);
-                System.out.println("123");
-
                 numberCouriersText.setText("Nombre de coursiers : " + evt.getNewValue() + "\n");
                 info.getChildren().clear();
+                showAlert("Nombre de coursiers est modifié. Nouveau nombre : " + newNumber);
                 break;
             }
             case Carte.RESET_TOURS:{
@@ -393,6 +395,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 textField.setManaged(true);
                 textField.setVisible(true);
                 isCalculated = false;
+                showAlert("Tournées réinitialisées. Vous pouvez refaire l'ajout et le calcul des tournées.");
                 break;
             }
         }
@@ -443,6 +446,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 this.numeroCoursier = numeroCoursier;
                 this.livraison = livraison;
                 this.selectedIndex = list.indexOf(livraison);
+                showAlert("Vous avez choisi une livraison. Vous pouvez supprimer cette livraison en cliquant sur le bouton.");
                 if(selectedLabel!= null) selectedLabel.setTextFill(Color.BLACK);
                 selectedLabel = newLabel;
                 selectedLabel.setTextFill(Color.YELLOW);
@@ -457,19 +461,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
      */
     protected void showAlert(String alert){
         errorLabel.setText(alert);
-    }
-
-    protected void showWarning(String warning) {
-        aide.getChildren().clear();
-        Text text_warning = new Text(warning);
-        text_warning.setFill(Color.RED);
-        aide.getChildren().add(text_warning);
-    }
-
-    protected void showInfo(String info) {
-        aide.getChildren().clear();
-        Text text_info = new Text(info);
-        aide.getChildren().add(text_info);
     }
 
     public void setTextCreneau(Label textCreneau) {

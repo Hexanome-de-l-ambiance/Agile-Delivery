@@ -140,6 +140,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
                     textualView.setCoordinatesPaneVisible(true);
                     textualView.setTextLongitudeLabel(" longitude : " +entry.getValue().getLongitude());
                     textualView.setTextLatitudeLabel(" latitude : " +entry.getValue().getLatitude());
+                    textualView.showAlert("Veuillez choisir les options à gauche, et cliquez sur le bouton Ajouter une livraison.");
                     for (Pair<Circle, Circle> circlePair : circlePairSet) {
                         if (circlePair.getKey().equals(key) && circlePair.getValue() != lastClickedCircle) {
                             Circle associatedCircle = circlePair.getValue();
