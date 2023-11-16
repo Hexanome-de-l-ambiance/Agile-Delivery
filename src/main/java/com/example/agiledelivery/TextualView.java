@@ -308,7 +308,6 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 coordinatesPane.setVisible(false);
                 latitudeLabel.setText("");
                 longitudeLabel.setText("");
-                isCalculated = true;
 
                 button_nombre_coursier.setManaged(false);
                 button_nombre_coursier.setVisible(false);
