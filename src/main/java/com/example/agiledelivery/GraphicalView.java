@@ -3,6 +3,7 @@ package com.example.agiledelivery;
 import com.example.model.*;
 
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -32,10 +33,10 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
         this.setPrefHeight(mapPane.getPrefHeight());
         this.carte = carte;
         graph = new Pane();
-        graph.setPrefWidth(mapPane.getPrefWidth()-10);
-        graph.setPrefHeight(mapPane.getPrefHeight()-10);
         graph.setLayoutX(0);
         graph.setLayoutY(0);
+        graph.setPrefWidth(mapPane.getPrefWidth());
+        graph.setPrefHeight(mapPane.getPrefHeight());
         graph.setStyle("-fx-background-color: lightblue;");
         this.getChildren().add(graph);
         this.setStyle("-fx-background-color: lightblue;");

@@ -6,9 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Stage;
 
 import java.util.Arrays;
+
+import static java.lang.Math.abs;
 
 /**
  *
@@ -101,6 +102,9 @@ public class ViewController {
     @FXML
     private Label textNumeroCoursier;
 
+    @FXML
+    private Label textCreneau;
+
 
     @FXML
     public void initialize() {
@@ -118,10 +122,13 @@ public class ViewController {
         for (MenuItem menuItem : Arrays.asList(chargerTourneeButton, sauvegarderTourneeButton,loadMapButton)) {
             menuItem.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
         }
+        graphicalView.prefWidthProperty().bind(mapPane.widthProperty());
+        graphicalView.prefHeightProperty().bind(mapPane.heightProperty());
+        graphicalView.setStyle("-fx-background-color: RED");
 
 
-        handleHeightChanged();
-        handleWidthChanged();
+        //handleHeightChanged();
+        //handleWidthChanged();
 
 
 
@@ -135,7 +142,6 @@ public class ViewController {
         textualView.setCoordinatesPane(coordinatesPane);
         textualView.setLongitudeLabel(longitudeLabel);
         textualView.setLatitudeLabel(latitudeLabel);
-        textualView.setResetTourneeButton(resetTourneeButton);
         textualView.setButton_add(ajouterLivraisonButton);
         textualView.setButton_add_before(ajouterAvantButton);
         textualView.setButton_add_after(ajouterApresButton);
@@ -145,16 +151,16 @@ public class ViewController {
         textualView.setTextField(courierNumberTextField);
         textualView.setInfo(info);
         textualView.setTextNumeroCoursier(textNumeroCoursier);
+        textualView.setButton_create_tournee(calculerTourneeButton);
+        textualView.setButton_Nombre_coursier(changeNumberCouriersButton);
+        textualView.setTextCreneau(textCreneau);
     }
 
     private void handleHeightChanged(){
         mainView.heightProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = (double) newValue;
             double oldHeight = (double) oldValue;
-            if (oldHeight == 0.0){
-                oldHeight = newHeight;
-            }
-            
+
         });
         mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             double newHeight = (double) newValue;
@@ -164,7 +170,9 @@ public class ViewController {
             }
             double scaleFactor = (newHeight/oldHeight);
             graphicalView.getGraph().setScaleY(scaleFactor*graphicalView.getGraph().getScaleY());
-            graphicalView.getGraph().setTranslateY(10);
+            double offsetY = abs((1 - scaleFactor)) * mapPane.getHeight() / 2.0;
+            graphicalView.getGraph().setTranslateY(graphicalView.getGraph().getTranslateY() + offsetY);
+
         });
     }
 
@@ -178,6 +186,7 @@ public class ViewController {
             double scaleFactor = (newWidth/oldWidth);
 
             graphicalView.getGraph().setScaleX(scaleFactor*graphicalView.getGraph().getScaleX());
+
         });
     }
 

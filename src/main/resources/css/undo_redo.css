@@ -1,0 +1,19 @@
+#undoButton{
+    -fx-background-image: url('../img/undo.png');
+    -fx-background-size: cover; /* or use 'contain' depending on your needs */
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 10px; /* optional: add padding to make room for text */
+    -fx-text-fill: white; /* optional: set text color */
+    cursor: pointer;
+}
+
+#redoButton{
+    -fx-background-image: url('../img/refaire.png');
+    -fx-background-size: cover; /* or use 'contain' depending on your needs */
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 10px; /* optional: add padding to make room for text */
+    -fx-text-fill: white; /* optional: set text color */
+    cursor: pointer;
+}

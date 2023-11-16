@@ -61,7 +61,7 @@ public class MouseListener implements EventHandler<ActionEvent> {
                     lastClickedCircle.setFill(Color.BLACK);
                     lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);
                 }
-                textualView.setCoordinatesPaneVisible(false);
+                textualView.setCoordinatesPaneVisible(true);
                 textualView.setTextLatitudeLabel("");
                 textualView.setTextLongitudeLabel("");
 
@@ -126,9 +126,9 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 } else {
                     Intersection selectedIntersection = entry.getValue();
                     controller.addDestination(selectedIntersection);
-                    textualView.setHint("Intersection id: "+ entry.getValue().getId() +
-                            " longitude: " + entry.getValue().getLongitude()+
-                            " latitude: " + entry.getValue().getLatitude()+"\n");
+                    textualView.setCoordinatesPaneVisible(true);
+                    textualView.setTextLongitudeLabel(" longitude : " +entry.getValue().getLongitude());
+                    textualView.setTextLatitudeLabel(" latitude : " +entry.getValue().getLatitude());
                     for (Pair<Circle, Circle> circlePair : circlePairSet) {
                         if (circlePair.getKey().equals(key) && circlePair.getValue() != lastClickedCircle) {
                             Circle associatedCircle = circlePair.getValue();
