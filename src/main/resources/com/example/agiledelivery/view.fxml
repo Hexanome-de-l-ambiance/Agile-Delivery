@@ -88,15 +88,15 @@
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="ajouterApresButton" layoutX="25.0" layoutY="340.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter apres la livraison choisi" visible="false">
+               <Button fx:id="ajouterApresButton" layoutX="25.0" layoutY="340.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Ajouter après la livraison" visible="false">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="supprimerLivraisonButton" alignment="CENTER" disable="true" layoutX="25.0" layoutY="340.0" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison">
+               <Button fx:id="supprimerLivraisonButton" alignment="CENTER" disable="true" layoutX="25.0" layoutY="340.0" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une livraison">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
-               <Button fx:id="supprimerApresTourneeButton" layoutX="25.0" layoutY="410.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une Livraison apres calcul" visible="false">
+               <Button fx:id="supprimerApresTourneeButton" layoutX="25.0" layoutY="410.0" managed="false" mnemonicParsing="false" prefHeight="54.0" prefWidth="207.0" stylesheets="@../../../css/style.css" text="Supprimer une livraison" visible="false">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor></Button>
