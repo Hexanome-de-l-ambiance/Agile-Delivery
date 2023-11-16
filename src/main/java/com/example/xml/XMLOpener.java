@@ -16,7 +16,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 /**
- * Cette classe gère l'ouverture et la lecture des fichiers XML pour charger des données dans une carte.
+ * Cette classe gère la lecture des fichiers XML pour charger des données dans une carte.
  */
 public class XMLOpener{
 
