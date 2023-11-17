@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <!-- Definition of the 'map' element -->
+    <xs:element name="map">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="warehouse" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="intersection" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="segment" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Definition of the 'warehouse' element -->
+    <xs:element name="warehouse">
+        <xs:complexType>
+            <xs:attribute name="address" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Definition of the 'intersection' element -->
+    <xs:element name="intersection">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:integer" use="required"/>
+            <xs:attribute name="latitude" type="xs:decimal" use="required"/>
+            <xs:attribute name="longitude" type="xs:decimal" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Definition of the 'segment' element -->
+    <xs:element name="segment">
+        <xs:complexType>
+            <xs:attribute name="destination" type="xs:integer" use="required"/>
+            <xs:attribute name="length" type="xs:decimal" use="required"/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="origin" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

@@ -14,13 +14,19 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 /**
  * Cette classe gère la lecture des fichiers XML pour charger des données dans une carte.
  */
 public class XMLOpener{
 
-    private XMLOpener() {}
+    XMLOpener() {}
 
     private static class SingletonHelper {
         private static final XMLOpener INSTANCE = new XMLOpener();
@@ -35,6 +41,17 @@ public class XMLOpener{
         return SingletonHelper.INSTANCE;
     }
 
+
+    public void saveTour(Stage stage, Carte carte) throws CustomXMLParsingException {
+        try {
+            XMLMaker.getInstance().saveTourneeToXML(stage, carte);
+        } catch (CustomXMLParsingException e) {
+            throw new CustomXMLParsingException(e.getMessage());
+        }
+
+    }
+
+
     /**
      * Charge les données d'une tournée à partir d'un fichier XML.
      *
@@ -42,6 +59,7 @@ public class XMLOpener{
      * @param carte L'objet Carte dans lequel charger les données de la tournée depuis le fichier XML.
      * @throws CustomXMLParsingException En cas d'erreur lors du chargement des données de la tournée à partir du fichier XML.
      */
+
     public void loadTour(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
 
@@ -70,9 +88,20 @@ public class XMLOpener{
      */
     public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
+        String xsdPath = "data/xsd/map.xsd";
         if (file == null) {
             carte.sendException(new CustomXMLParsingException("Pas de fichier sélectionné"));
             throw new CustomXMLParsingException("Pas de fichier sélectionné");
+        }
+
+        if (!new File(xsdPath).exists()) {
+            carte.sendException(new CustomXMLParsingException("XSD file not found"));
+            throw new CustomXMLParsingException("XSD file not found");
+        }
+
+        if (!validateXML(xsdPath, file.getAbsolutePath())) {
+            carte.sendException(new CustomXMLParsingException("Invalid XML file"));
+            throw new CustomXMLParsingException("Invalid XML file");
         }
         carte.reset();
         try {
@@ -100,9 +129,19 @@ public class XMLOpener{
      */
     public void readFile(Carte carte, String path) throws CustomXMLParsingException {
         File file = new File(path);
-
+        String xsdPath = "data/xsd/map.xsd";
         if (file.length() == 0) {
             throw new CustomXMLParsingException("Fichier vide");
+        }
+
+        if (!new File(xsdPath).exists()) {
+            carte.sendException(new CustomXMLParsingException("XSD file not found"));
+            throw new CustomXMLParsingException("XSD file not found");
+        }
+
+        if (!validateXML(xsdPath, file.getAbsolutePath())) {
+            carte.sendException(new CustomXMLParsingException("Invalid XML file"));
+            throw new CustomXMLParsingException("Invalid XML file");
         }
 
         try {
@@ -203,6 +242,21 @@ public class XMLOpener{
                 Long id = Long.valueOf(attributes.getValue("address"));
                 carte.setEntrepotId(id);
             }
+        }
+    }
+
+    public boolean validateXML(String xsdPath, String xmlPath) throws CustomXMLParsingException {
+        try {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Source schemaSource = new StreamSource(new File(xsdPath));
+            Schema schema = schemaFactory.newSchema(schemaSource);
+            Validator validator = schema.newValidator();
+            Source xmlSource = new StreamSource(new File(xmlPath));
+            validator.validate(xmlSource);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
