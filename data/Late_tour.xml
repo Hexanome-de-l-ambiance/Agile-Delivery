@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tournees nbCoursiers="5">
+    <tournee numeroCoursier="1">
+        <livraisons>
+            <livraison>
+                <address id="21717906"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+            <livraison>
+                <address id="25471028"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+            <livraison>
+                <address id="25451937"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+            <livraison>
+                <address id="25618206"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+            <livraison>
+                <address id="190951253"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="2">
+        <livraisons/>
+    </tournee>
+    <tournee numeroCoursier="3">
+        <livraisons/>
+    </tournee>
+    <tournee numeroCoursier="4">
+        <livraisons/>
+    </tournee>
+    <tournee numeroCoursier="5">
+        <livraisons/>
+    </tournee>
+</tournees>
