@@ -266,7 +266,51 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     public TextField getTextField() {
         return textField;
     }
+    public void setTextCreneau(Label textCreneau) {
+        this.textCreneau = textCreneau;
+    }
 
+    public void setLongitudeLabel(Label label){
+        this.longitudeLabel = label;
+    }
+    public void setTextLongitudeLabel(String s) {
+        longitudeLabel.setText(s);
+    }
+    public void setLatitudeLabel(Label label){
+        this.latitudeLabel = label;
+    }
+    public void setTextLatitudeLabel(String s) {
+        latitudeLabel.setText(s);
+    }
+    public void setInfo(TextFlow text){
+        this.info = text;
+    }
+    public void setCoordinatesPane(Pane coordinatesPane) {
+        this.coordinatesPane = coordinatesPane;
+    }
+
+    public void setCoordinatesPaneVisible(boolean b) {
+        this.coordinatesPane.setVisible(b);
+    }
+
+    public void setErrorLabel(Label errorLabel) {
+        this.errorLabel = errorLabel;
+    }
+    public void setButton_Nombre_coursier(Button changeNumberCouriersButton) {
+        this.button_nombre_coursier = changeNumberCouriersButton;
+    }
+
+    public void setUndoButton(Button undoButton) {
+        this.undoButton = undoButton;
+    }
+
+    public void setRemoveTournee(Button removeTournnee) {
+        this.removeTournee = removeTournnee;
+    }
+
+    public void setRedoButton(Button redoButton) {
+        this.redoButton = redoButton;
+    }
     /**
      * Gérer les changements dans les propriétés de l'événement de PropertyChange en effectuant différentes actions basées sur l'événement.
      * @param evt L'événement de changement de propriété
@@ -525,49 +569,5 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         errorLabel.setText(error);
         errorLabel.setTextFill(Color.RED);
     }
-    public void setTextCreneau(Label textCreneau) {
-        this.textCreneau = textCreneau;
-    }
 
-    public void setLongitudeLabel(Label label){
-        this.longitudeLabel = label;
-    }
-    public void setTextLongitudeLabel(String s) {
-        longitudeLabel.setText(s);
-    }
-    public void setLatitudeLabel(Label label){
-        this.latitudeLabel = label;
-    }
-    public void setTextLatitudeLabel(String s) {
-        latitudeLabel.setText(s);
-    }
-    public void setInfo(TextFlow text){
-        this.info = text;
-    }
-    public void setCoordinatesPane(Pane coordinatesPane) {
-        this.coordinatesPane = coordinatesPane;
-    }
-
-    public void setCoordinatesPaneVisible(boolean b) {
-        this.coordinatesPane.setVisible(b);
-    }
-
-    public void setErrorLabel(Label errorLabel) {
-        this.errorLabel = errorLabel;
-    }
-    public void setButton_Nombre_coursier(Button changeNumberCouriersButton) {
-        this.button_nombre_coursier = changeNumberCouriersButton;
-    }
-
-    public void setUndoButton(Button undoButton) {
-        this.undoButton = undoButton;
-    }
-
-    public void setRemoveTournee(Button removeTournnee) {
-        this.removeTournee = removeTournnee;
-    }
-
-    public void setRedoButton(Button redoButton) {
-        this.redoButton = redoButton;
-    }
 }
