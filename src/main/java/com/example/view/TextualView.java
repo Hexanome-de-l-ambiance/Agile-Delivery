@@ -535,10 +535,13 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
             }
             newLabel.setOnMouseClicked(event -> {
                 this.numeroCoursier = numeroCoursier;
+                Color defaultColor = Color.BLACK;
+                if(this.livraison != null && this.livraison.getEtat() == Livraison.Etat.EN_RETARD) {defaultColor = Color.RED; }
                 this.livraison = livraison;
                 this.selectedIndex = list.indexOf(livraison);
+
                 showAlert("Vous avez choisi une livraison. Vous pouvez supprimer cette livraison en cliquant sur le bouton.");
-                if(selectedLabel!= null) selectedLabel.setTextFill(Color.BLACK);
+                if(selectedLabel!= null) selectedLabel.setTextFill(defaultColor);
                 selectedLabel = newLabel;
                 selectedLabel.setTextFill(Color.YELLOW);
             });
