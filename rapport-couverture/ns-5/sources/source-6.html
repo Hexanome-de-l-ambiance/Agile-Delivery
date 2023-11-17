@@ -1,0 +1,146 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Window</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.view</a>
+</div>
+
+<h1>Coverage Summary for Class: Window (com.example.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Window</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.view;
+&nbsp;
+&nbsp;import com.example.controller.Controller;
+&nbsp;import com.example.model.Carte;
+&nbsp;import javafx.application.Application;
+&nbsp;import javafx.fxml.FXMLLoader;
+&nbsp;import javafx.scene.Scene;
+&nbsp;import javafx.stage.Stage;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;public class Window extends Application {</b>
+&nbsp;    protected static final String LOAD_PLAN = &quot;loadMapButton&quot;;
+&nbsp;    protected static final String ADD_DESTINATION = &quot;ajouterLivraisonButton&quot;;
+&nbsp;    protected static final String CALCULATE_TOUR = &quot;calculerTourneeButton&quot;;
+&nbsp;    protected static final String UNDO = &quot;undoButton&quot;;
+&nbsp;    protected static final String REDO = &quot;redoButton&quot;;
+&nbsp;    protected static final String LOAD_TOUR = &quot;chargerTourneeButton&quot;;
+&nbsp;    protected static final String SAVE_TOUR = &quot;sauvegarderTourneeButton&quot;;
+&nbsp;    protected static final String RESET = &quot;resetTourneeButton&quot;;
+&nbsp;    protected static final String GENERATE = &quot;genererFeuilleDeRouteButton&quot;;
+&nbsp;    protected static final String RESET_NB_COURIERS = &quot;changeNumberCouriersButton&quot;;
+&nbsp;    protected static final String REMOVE = &quot;supprimerLivraisonButton&quot;;
+&nbsp;    protected static final String ADD_DESTINATION_BEFORE = &quot;ajouterAvantButton&quot;;
+&nbsp;    protected static final String ADD_DESTINATION_AFTER = &quot;ajouterApresButton&quot;;
+&nbsp;    protected static final String REMOVE_AFTER_CALCULATED = &quot;supprimerApresTourneeButton&quot;;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void start(Stage primaryStage) throws Exception {
+<b class="nc">&nbsp;        Carte carte = new Carte(1);</b>
+<b class="nc">&nbsp;        FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;view.fxml&quot;));</b>
+<b class="nc">&nbsp;        ViewController controller = new ViewController(carte, new Controller(carte,primaryStage));</b>
+<b class="nc">&nbsp;        loader.setController(controller);</b>
+<b class="nc">&nbsp;        Scene scene = loader.load();</b>
+<b class="nc">&nbsp;        primaryStage.setScene(scene);</b>
+<b class="nc">&nbsp;        primaryStage.show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void main(String[] args) {
+<b class="nc">&nbsp;        launch(args);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

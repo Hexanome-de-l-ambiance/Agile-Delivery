@@ -1,0 +1,142 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TSP2</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.tsp</a>
+</div>
+
+<h1>Coverage Summary for Class: TSP2 (com.example.tsp)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TSP2</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (14/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.tsp;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Iterator;
+&nbsp;
+&nbsp;public class TSP2 extends TSP1{
+&nbsp;
+&nbsp;    public TSP2() {
+<b class="nc">&nbsp;        super();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public TSP2(int startVertex) {
+<b class="fc">&nbsp;        super(startVertex);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected double bound(Integer currentVertex, Collection&lt;Integer&gt; unvisited) {
+<b class="fc">&nbsp;        double longueur = Double.MAX_VALUE;</b>
+<b class="fc">&nbsp;        for (Integer i : unvisited) {</b>
+<b class="fc">&nbsp;            if (g.getCost(currentVertex, i) &lt; longueur) {</b>
+<b class="fc">&nbsp;                longueur = g.getCost(currentVertex, i);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Integer i : unvisited)</b>
+&nbsp;        {
+<b class="fc">&nbsp;            double arcMin = g.getCost(i,0);</b>
+<b class="fc">&nbsp;            for (Integer j : unvisited)</b>
+&nbsp;            {
+<b class="fc">&nbsp;                if (j != i &amp;&amp; g.getCost(i,j) &lt; arcMin)</b>
+&nbsp;                {
+<b class="nc">&nbsp;                    arcMin = g.getCost(i,j);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            longueur += arcMin;</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return longueur;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

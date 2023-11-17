@@ -1,0 +1,304 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ViewController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.view</a>
+</div>
+
+<h1>Coverage Summary for Class: ViewController (com.example.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ViewController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/57)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.view;
+&nbsp;
+&nbsp;import com.example.controller.Controller;
+&nbsp;import com.example.model.Carte;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.layout.Pane;
+&nbsp;import javafx.scene.text.TextFlow;
+&nbsp;
+&nbsp;import java.util.Arrays;
+&nbsp;
+&nbsp;/**
+&nbsp; * Le controleur des views
+&nbsp; */
+&nbsp;public class ViewController {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructeur de ViewController.
+&nbsp;     *
+&nbsp;     * @param carte      La carte.
+&nbsp;     * @param controller Le contrôleur.
+&nbsp;     */
+<b class="nc">&nbsp;    public ViewController(Carte carte, Controller controller){</b>
+<b class="nc">&nbsp;        this.carte = carte;</b>
+<b class="nc">&nbsp;        this.controller = controller;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private Carte carte;
+&nbsp;    private ButtonListener buttonListener;
+&nbsp;    private MouseListener mouseListener;
+&nbsp;    private GraphicalView graphicalView;
+&nbsp;
+&nbsp;    private final Controller controller;
+&nbsp;    private TextualView textualView;
+&nbsp;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private MenuItem loadMapButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Label latitudeLabel;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Label longitudeLabel;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private SplitPane mainView;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Pane mapPane;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button ajouterLivraisonButton;
+&nbsp;    @FXML
+&nbsp;    private Button supprimerLivraisonButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private ComboBox&lt;String&gt; coursierComboBox;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private ComboBox&lt;String&gt; creneauComboBox;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Pane coordinatesPane;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button calculerTourneeButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button undoButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button redoButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button resetTourneeButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button ajouterAvantButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button ajouterApresButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button genererFeuilleDeRouteButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextFlow info;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private MenuItem sauvegarderTourneeButton;
+&nbsp;    @FXML
+&nbsp;    private MenuItem chargerTourneeButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Button changeNumberCouriersButton;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextField courierNumberTextField;
+&nbsp;    @FXML
+&nbsp;    private Button supprimerApresTourneeButton;
+&nbsp;    @FXML
+&nbsp;    private Label textNumeroCoursier;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Label errorLabel;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private TextFlow aide;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private Label textCreneau;
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private ScrollPane scrollPane;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialiser les views
+&nbsp;     */
+&nbsp;    @FXML
+&nbsp;    public void initialize() {
+<b class="nc">&nbsp;        graphicalView = new GraphicalView(carte, mapPane);</b>
+<b class="nc">&nbsp;        textualView = new TextualView(carte);</b>
+<b class="nc">&nbsp;        buttonListener = new ButtonListener(controller);</b>
+<b class="nc">&nbsp;        mouseListener = new MouseListener(textualView, graphicalView,controller);</b>
+<b class="nc">&nbsp;        graphicalView.setMouseListener(mouseListener);</b>
+<b class="nc">&nbsp;        buttonListener.setTextualView(textualView);</b>
+<b class="nc">&nbsp;        mapPane.getChildren().add(0,graphicalView);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Button button : Arrays.asList(ajouterLivraisonButton, calculerTourneeButton, undoButton, redoButton, supprimerLivraisonButton, resetTourneeButton, changeNumberCouriersButton, supprimerApresTourneeButton, ajouterApresButton, ajouterAvantButton, genererFeuilleDeRouteButton)) {</b>
+<b class="nc">&nbsp;            button.setOnAction(actionEvent -&gt; buttonListener.handle(actionEvent));</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        for (MenuItem menuItem : Arrays.asList(chargerTourneeButton, sauvegarderTourneeButton,loadMapButton)) {</b>
+<b class="nc">&nbsp;            menuItem.setOnAction(actionEvent -&gt; buttonListener.handle(actionEvent));</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        graphicalView.prefHeightProperty().bind(mapPane.heightProperty());</b>
+<b class="nc">&nbsp;        graphicalView.getGraph().prefHeightProperty().bind(graphicalView.heightProperty().add(-10));</b>
+<b class="nc">&nbsp;        graphicalView.prefWidthProperty().bind(mapPane.widthProperty());</b>
+<b class="nc">&nbsp;        graphicalView.getGraph().prefWidthProperty().bind(graphicalView.widthProperty().add(-10));</b>
+<b class="nc">&nbsp;        handleHeightChanged();</b>
+<b class="nc">&nbsp;        handleWidthChanged();</b>
+<b class="nc">&nbsp;        setupTextualView();</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Faire les setups pour les membres du textualView
+&nbsp;     */
+&nbsp;    private void setupTextualView(){
+<b class="nc">&nbsp;        textualView.setCouriersComboBox(coursierComboBox);</b>
+<b class="nc">&nbsp;        textualView.setCreneauComboBox(creneauComboBox);</b>
+<b class="nc">&nbsp;        textualView.setCoordinatesPane(coordinatesPane);</b>
+<b class="nc">&nbsp;        textualView.setLongitudeLabel(longitudeLabel);</b>
+<b class="nc">&nbsp;        textualView.setLatitudeLabel(latitudeLabel);</b>
+<b class="nc">&nbsp;        textualView.setButton_add(ajouterLivraisonButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_add_before(ajouterAvantButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_add_after(ajouterApresButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_generate(genererFeuilleDeRouteButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_remove(supprimerLivraisonButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_remove_after(supprimerApresTourneeButton);</b>
+<b class="nc">&nbsp;        textualView.setTextField(courierNumberTextField);</b>
+<b class="nc">&nbsp;        textualView.setInfo(info);</b>
+<b class="nc">&nbsp;        textualView.setTextNumeroCoursier(textNumeroCoursier);</b>
+<b class="nc">&nbsp;        textualView.setErrorLabel(errorLabel);</b>
+<b class="nc">&nbsp;        textualView.setButton_create_tournee(calculerTourneeButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_Nombre_coursier(changeNumberCouriersButton);</b>
+<b class="nc">&nbsp;        textualView.setTextCreneau(textCreneau);</b>
+<b class="nc">&nbsp;        textualView.setRemoveTournee(resetTourneeButton);</b>
+<b class="nc">&nbsp;        textualView.setRedoButton(redoButton);</b>
+<b class="nc">&nbsp;        textualView.setUndoButton(undoButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_Charger_carte(loadMapButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_sauvegarder_tournee(sauvegarderTourneeButton);</b>
+<b class="nc">&nbsp;        textualView.setButton_charger_tournee(chargerTourneeButton);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Gérer les changements de la propriété de hauteur (height) de mainView en ajustant la vue graphique en conséquence.
+&nbsp;     */
+&nbsp;    private void handleHeightChanged() {
+<b class="nc">&nbsp;        mainView.heightProperty().addListener((observable, oldValue, newValue) -&gt; {</b>
+<b class="nc">&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;                if (oldValue.longValue() != 0.0) scrollPane.setPrefHeight(mapPane.getHeight());</b>
+&nbsp;            });
+&nbsp;        });
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Gérer les changements de la propriété de largeur (width) de mainView en ajustant la vue graphique en conséquence.
+&nbsp;     */
+&nbsp;    private void handleWidthChanged(){
+<b class="nc">&nbsp;        mainView.widthProperty().addListener((observable, oldValue, newValue) -&gt; {</b>
+<b class="nc">&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;                if (oldValue.longValue() != 0.0) {</b>
+<b class="nc">&nbsp;                    coordinatesPane.setLayoutX(mapPane.getWidth() / 2 - coordinatesPane.getWidth() / 2);</b>
+<b class="nc">&nbsp;                    calculerTourneeButton.setLayoutX(mainView.getWidth() / 3 - calculerTourneeButton.getWidth() / 2);</b>
+<b class="nc">&nbsp;                    resetTourneeButton.setLayoutX(2 * mainView.getWidth() / 3 - resetTourneeButton.getWidth() / 2);</b>
+<b class="nc">&nbsp;                    genererFeuilleDeRouteButton.setLayoutX(mainView.getWidth() / 3 - calculerTourneeButton.getWidth() / 2);</b>
+&nbsp;                }
+&nbsp;            });
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

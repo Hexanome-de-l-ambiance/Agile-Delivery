@@ -1,0 +1,578 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Carte</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Carte (com.example.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Carte</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    35.5%
+  </span>
+  <span class="absValue">
+    (11/31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20.4%
+  </span>
+  <span class="absValue">
+    (37/181)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.model;
+&nbsp;
+&nbsp;import com.example.xml.DirectoryMaker;
+&nbsp;import javafx.beans.property.SimpleIntegerProperty;
+&nbsp;import javafx.stage.Stage;
+&nbsp;import javafx.util.Pair;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.beans.PropertyChangeSupport;
+&nbsp;import java.io.BufferedWriter;
+&nbsp;import java.io.FileWriter;
+&nbsp;import java.io.IOException;
+&nbsp;import java.time.Duration;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;import java.util.*;
+&nbsp;import java.io.File;
+&nbsp;
+&nbsp;import static java.lang.Math.round;
+&nbsp;
+&nbsp;/**
+&nbsp; * Représente une carte avec des intersections, des segments et des tournées.
+&nbsp; */
+&nbsp;public class Carte {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La latitude minimale de la carte.
+&nbsp;     */
+&nbsp;    private double minLat;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La latitude maximale de la carte.
+&nbsp;     */
+&nbsp;    private double maxLat;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La longitude minimale de la carte.
+&nbsp;     */
+&nbsp;    private double minLon;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La longitude maximale de la carte.
+&nbsp;     */
+&nbsp;    private double maxLon;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La liste des intersections sur la carte, indexée par leur identifiant.
+&nbsp;     */
+&nbsp;    private HashMap&lt;Long, Intersection&gt; listeIntersection;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La liste des segments sur la carte, indexée par l&#39;intersection de départ et d&#39;arrivée.
+&nbsp;     */
+&nbsp;    private HashMap&lt;Pair&lt;Long, Long&gt;, Segment&gt; listeSegments;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La liste d&#39;adjacence représentant les relations entre les intersections,
+&nbsp;     * indexée par l&#39;identifiant de l&#39;intersection avec une liste de paires (identifiant, distance).
+&nbsp;     */
+&nbsp;    private HashMap&lt;Long, ArrayList&lt;Pair&lt;Long, Double&gt;&gt;&gt; listeAdjacence;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La liste des tournées sur la carte, indexée par le numéro du coursier/de la tournée.
+&nbsp;     */
+&nbsp;    private HashMap&lt;Integer, Tournee&gt; listeTournees;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Le nombre de coursiers.
+&nbsp;     */
+&nbsp;    private int nbCoursiers;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * L&#39;identifiant de l&#39;entrepôt sur la carte.
+&nbsp;     */
+&nbsp;    private Long entrepotId;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indique si la tournée est vide.
+&nbsp;     */
+<b class="fc">&nbsp;    private boolean isTourEmpty = true;</b>
+<b class="fc">&nbsp;    private boolean isTourneeCalculee = false;</b>
+&nbsp;    public static final String RESET = &quot;reset&quot;;
+&nbsp;    public static final String RESET_TOURS = &quot;reset tours&quot;;
+&nbsp;    public static final String READ = &quot;read&quot;;
+&nbsp;    public static final String UPDATE = &quot;update&quot;;
+&nbsp;    public static final String ERROR = &quot;error&quot;;
+&nbsp;    public static final String ADD = &quot;add destination&quot;;
+&nbsp;    public static final String REMOVE = &quot;remove destination&quot;;
+&nbsp;    public static final String SET_NB_COURIERS = &quot;set number of couriers&quot;;
+&nbsp;
+<b class="fc">&nbsp;    private SimpleIntegerProperty idProperty = new SimpleIntegerProperty(1);</b>
+<b class="fc">&nbsp;    private PropertyChangeSupport support = new PropertyChangeSupport(this);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructeur de la classe Carte.
+&nbsp;     *
+&nbsp;     * @param nombreCoursier Le nombre initial de coursiers.
+&nbsp;     */
+<b class="fc">&nbsp;    public Carte(int nombreCoursier){</b>
+<b class="fc">&nbsp;        listeIntersection = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        listeSegments = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        listeTournees = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        listeAdjacence = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        this.nbCoursiers = nombreCoursier;</b>
+<b class="fc">&nbsp;        for(int i = 1; i &lt;= nbCoursiers; i++){</b>
+<b class="fc">&nbsp;            listeTournees.put(i, new Tournee(i));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Modifie le nombre de coursiers sur la carte.
+&nbsp;     *
+&nbsp;     * @param nbCoursiers Le nouveau nombre de coursiers.
+&nbsp;     */
+&nbsp;    public void setNbCoursiers(int nbCoursiers) {
+<b class="nc">&nbsp;        this.nbCoursiers = nbCoursiers;</b>
+<b class="nc">&nbsp;        this.listeTournees.clear();</b>
+<b class="nc">&nbsp;        for(int i = 1; i &lt;= nbCoursiers; i++){</b>
+<b class="nc">&nbsp;            listeTournees.put(i, new Tournee(i));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        this.isTourneeCalculee = false;</b>
+<b class="nc">&nbsp;        firePropertyChange(SET_NB_COURIERS, null, nbCoursiers);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialise la liste d&#39;adjacence entre les intersections.
+&nbsp;     */
+&nbsp;    public void initAdjacenceList() {
+<b class="fc">&nbsp;        listeAdjacence.clear();</b>
+<b class="fc">&nbsp;        for (Map.Entry&lt;Pair&lt;Long, Long&gt;, Segment&gt; entry : listeSegments.entrySet()) {</b>
+<b class="fc">&nbsp;            Segment segment = entry.getValue();</b>
+<b class="fc">&nbsp;            Long origin = segment.getOrigin().getId();</b>
+<b class="fc">&nbsp;            Long destination = segment.getDestination().getId();</b>
+<b class="fc">&nbsp;            if (listeAdjacence.containsKey(origin)) {</b>
+<b class="fc">&nbsp;                listeAdjacence.get(origin).add(new Pair&lt;&gt;(destination, segment.getLength()));</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                ArrayList&lt;Pair&lt;Long, Double&gt;&gt; list = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;                list.add(new Pair&lt;&gt;(destination, segment.getLength()));</b>
+<b class="fc">&nbsp;                listeAdjacence.put(origin, list);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute une intersection à la carte.
+&nbsp;     *
+&nbsp;     * @param id       L&#39;identifiant de l&#39;intersection.
+&nbsp;     * @param latitude La latitude de l&#39;intersection.
+&nbsp;     * @param longitude La longitude de l&#39;intersection.
+&nbsp;     */
+&nbsp;    public void addIntersection(Long id, double latitude, double longitude) {
+<b class="fc">&nbsp;        Intersection newIntersection = new Intersection(id, latitude, longitude);</b>
+<b class="fc">&nbsp;        listeIntersection.put(id, newIntersection);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute un segment reliant deux intersections sur la carte.
+&nbsp;     *
+&nbsp;     * @param ori    L&#39;identifiant de l&#39;intersection de départ du segment.
+&nbsp;     * @param dest   L&#39;identifiant de l&#39;intersection d&#39;arrivée du segment.
+&nbsp;     * @param length La longueur du segment.
+&nbsp;     * @param name   Le nom du segment.
+&nbsp;     */
+&nbsp;    public void addSegment(Long ori, Long dest, double length, String name) {
+<b class="fc">&nbsp;        Intersection origin = listeIntersection.get(ori);</b>
+<b class="fc">&nbsp;        Intersection destination = listeIntersection.get(dest);</b>
+<b class="fc">&nbsp;        Segment newSegment = new Segment(origin, destination, length, name);</b>
+<b class="fc">&nbsp;        listeSegments.put(new Pair&lt;&gt;(ori, dest), newSegment);</b>
+<b class="fc">&nbsp;        idProperty.set(idProperty.get() + 1);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setEntrepotId(Long id) {
+<b class="fc">&nbsp;        this.entrepotId = id;</b>
+&nbsp;    }
+<b class="fc">&nbsp;    public Intersection getEntrepot() { return listeIntersection.get(entrepotId); }</b>
+&nbsp;    public HashMap&lt;Long, Intersection&gt; getListeIntersections() {
+<b class="fc">&nbsp;        return listeIntersection;</b>
+&nbsp;    }
+&nbsp;    public HashMap&lt;Pair&lt;Long, Long&gt;, Segment&gt; getListeSegments() {
+<b class="fc">&nbsp;        return listeSegments;</b>
+&nbsp;    }
+&nbsp;    public Intersection getIntersection(Long id) {
+<b class="fc">&nbsp;        return listeIntersection.get(id);</b>
+&nbsp;    }
+&nbsp;    public ArrayList&lt;Pair&lt;Long, Double&gt;&gt; getNeighbors(Long id) {
+<b class="fc">&nbsp;        return listeAdjacence.get(id);</b>
+&nbsp;    }
+&nbsp;    public int getId() {
+<b class="nc">&nbsp;        return idProperty.get();</b>
+&nbsp;    }
+&nbsp;    public double getMinLat() {
+<b class="nc">&nbsp;        return minLat;</b>
+&nbsp;    }
+&nbsp;    public double getMaxLat() {
+<b class="nc">&nbsp;        return maxLat;</b>
+&nbsp;    }
+&nbsp;    public double getMinLon() {
+<b class="nc">&nbsp;        return minLon;</b>
+&nbsp;    }
+&nbsp;    public double getMaxLon() {
+<b class="nc">&nbsp;        return maxLon;</b>
+&nbsp;    }
+&nbsp;    public boolean isTourEmpty() {
+<b class="nc">&nbsp;        return isTourEmpty;</b>
+&nbsp;    }
+&nbsp;    public boolean isTourneeCalculee() {
+<b class="nc">&nbsp;        return isTourneeCalculee;</b>
+&nbsp;    }
+&nbsp;    public HashMap&lt;Integer, Tournee&gt; getListeTournees() {
+<b class="fc">&nbsp;        return listeTournees;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void reset() {
+<b class="nc">&nbsp;        listeIntersection.clear();</b>
+<b class="nc">&nbsp;        listeSegments.clear();</b>
+<b class="nc">&nbsp;        nbCoursiers = 1;</b>
+<b class="nc">&nbsp;        for(int i = 1; i &lt;= nbCoursiers; i++){</b>
+<b class="nc">&nbsp;            listeTournees.put(i, new Tournee(i));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        idProperty.set(1);</b>
+<b class="nc">&nbsp;        firePropertyChange(RESET, null, null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Réinitialise toutes les tournées.
+&nbsp;     */
+&nbsp;    public void resetTournee(){
+<b class="nc">&nbsp;        isTourneeCalculee = false;</b>
+<b class="nc">&nbsp;        listeTournees.clear();</b>
+<b class="nc">&nbsp;        for(int i = 1; i &lt;= nbCoursiers; i++){</b>
+<b class="nc">&nbsp;            listeTournees.put(i, new Tournee(i));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        firePropertyChange(RESET_TOURS, null, nbCoursiers);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Analyse les intersections de la carte à la fin de la lecture, pour déterminer les valeurs de latitude et longitude minimales et maximales.
+&nbsp;     *
+&nbsp;     * @param path Le chemin du fichier.
+&nbsp;     */
+&nbsp;    public void readEnd(String path){
+<b class="nc">&nbsp;        minLat = Double.MAX_VALUE;</b>
+<b class="nc">&nbsp;        maxLat = Double.MIN_VALUE;</b>
+<b class="nc">&nbsp;        minLon = Double.MAX_VALUE;</b>
+<b class="nc">&nbsp;        maxLon = Double.MIN_VALUE;</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Intersection intersection : listeIntersection.values()) {</b>
+<b class="nc">&nbsp;            minLat = Math.min(minLat, intersection.getLatitude());</b>
+<b class="nc">&nbsp;            maxLat = Math.max(maxLat, intersection.getLatitude());</b>
+<b class="nc">&nbsp;            minLon = Math.min(minLon, intersection.getLongitude());</b>
+<b class="nc">&nbsp;            maxLon = Math.max(maxLon, intersection.getLongitude());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        firePropertyChange(READ, null, path);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute une livraison à une tournée avant le calcul des tournées.
+&nbsp;     *
+&nbsp;     * @param numeroCouriser Le numéro du coursier.
+&nbsp;     * @param livraison      La livraison à ajouter.
+&nbsp;     */
+&nbsp;    public void addLivraison (int numeroCouriser, Livraison livraison) {
+<b class="nc">&nbsp;        if(livraison.getDestination() != null &amp;&amp; livraison.getCreneauHoraire() != null) {</b>
+<b class="nc">&nbsp;            listeTournees.get(numeroCouriser).addLivraison(livraison);</b>
+<b class="nc">&nbsp;            isTourEmpty = false;</b>
+<b class="nc">&nbsp;            firePropertyChange(ADD, numeroCouriser, listeTournees);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute une livraison à une position spécifique dans une tournée, après le calcul des tournées.
+&nbsp;     *
+&nbsp;     * @param numeroCouriser Le numéro du coursier.
+&nbsp;     * @param livraison      La livraison à ajouter.
+&nbsp;     * @param index          L&#39;indice où ajouter la livraison.
+&nbsp;     */
+&nbsp;    public boolean addLivraison(int numeroCouriser, Livraison livraison, int index){
+<b class="nc">&nbsp;        boolean b = listeTournees.get(numeroCouriser).addLivraison(this, livraison, index);</b>
+<b class="nc">&nbsp;        isTourEmpty = false;</b>
+<b class="nc">&nbsp;        firePropertyChange(ADD, numeroCouriser, listeTournees);</b>
+<b class="nc">&nbsp;        firePropertyChange(UPDATE, null, listeTournees);</b>
+<b class="nc">&nbsp;        if(!b){</b>
+<b class="nc">&nbsp;            firePropertyChange(ERROR, null, &quot;livraison index&quot; + index +&quot; ajoutée non valide&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return b;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Supprime une livraison d&#39;une tournée spécifique avant le calcul des tournées.
+&nbsp;     *
+&nbsp;     * @param numeroCouriser Le numéro du coursier.
+&nbsp;     * @param livraison      La livraison à supprimer.
+&nbsp;     */
+&nbsp;    public void removeLivraison (int numeroCouriser, Livraison livraison) {
+<b class="nc">&nbsp;        listeTournees.get(numeroCouriser).removeLivraison(livraison);</b>
+<b class="nc">&nbsp;        boolean b = true;</b>
+<b class="nc">&nbsp;        for(Map.Entry&lt;Integer, Tournee&gt; entry: listeTournees.entrySet()){</b>
+<b class="nc">&nbsp;            if (!entry.getValue().getListeLivraisons().isEmpty()) {</b>
+<b class="nc">&nbsp;                b = false;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        isTourEmpty = b;</b>
+<b class="nc">&nbsp;        firePropertyChange(REMOVE, numeroCouriser, listeTournees);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Supprime une livraison d&#39;une position spécifique dans une tournée, après le calcul des tournées.
+&nbsp;     *
+&nbsp;     * @param numeroCouriser Le numéro du coursier/tournée.
+&nbsp;     * @param index          L&#39;indice de la livraison à supprimer.
+&nbsp;     */
+&nbsp;    public void removeLivraison (int numeroCouriser, int index) {
+<b class="nc">&nbsp;        listeTournees.get(numeroCouriser).removeLivraison(this, index);</b>
+<b class="nc">&nbsp;        boolean b = true;</b>
+<b class="nc">&nbsp;        for(Map.Entry&lt;Integer, Tournee&gt; entry: listeTournees.entrySet()){</b>
+<b class="nc">&nbsp;            if (!entry.getValue().getListeLivraisons().isEmpty()) {</b>
+<b class="nc">&nbsp;                b = false;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        isTourEmpty = b;</b>
+<b class="nc">&nbsp;        firePropertyChange(REMOVE, numeroCouriser, listeTournees);</b>
+<b class="nc">&nbsp;        firePropertyChange(UPDATE, null, listeTournees);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calcule les tournées pour chaque coursier.
+&nbsp;     */
+&nbsp;    public void calculerTournees() {
+<b class="nc">&nbsp;        boolean error = false;</b>
+<b class="nc">&nbsp;        String s = &quot;Tournée invalide du numero &quot;;</b>
+<b class="nc">&nbsp;        for(Map.Entry&lt;Integer, Tournee&gt; entry: listeTournees.entrySet()){</b>
+<b class="nc">&nbsp;            if(!entry.getValue().calculerTournee(this)){</b>
+<b class="nc">&nbsp;                error = true;</b>
+<b class="nc">&nbsp;                s += entry.getKey() + &quot; &quot;;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        isTourneeCalculee = true;</b>
+<b class="nc">&nbsp;        firePropertyChange(UPDATE, null, listeTournees);</b>
+<b class="nc">&nbsp;        if(error){</b>
+<b class="nc">&nbsp;            firePropertyChange(ERROR, null, s);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Génère des feuilles de route au format HTML pour les tournées.
+&nbsp;     *
+&nbsp;     * @param file Le répertoire du fichier.
+&nbsp;     */
+&nbsp;    public void genererFeuilleDeRouteHTML(File file) throws IOException {
+&nbsp;
+<b class="nc">&nbsp;        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;HH:mm:ss&quot;);</b>
+<b class="nc">&nbsp;        LocalTime heureActuelle = LocalTime.of(8, 0, 0);</b>
+<b class="nc">&nbsp;        for(Map.Entry&lt;Integer, Tournee&gt; entry: listeTournees.entrySet()){</b>
+<b class="nc">&nbsp;            Tournee tournee = entry.getValue();</b>
+<b class="nc">&nbsp;            String fileName = &quot;feuilleDeRoute&quot; + entry.getKey() + &quot;.html&quot;;</b>
+<b class="nc">&nbsp;            String filePath = file.getAbsolutePath() + File.separator + fileName;</b>
+<b class="nc">&nbsp;            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;meta charset=&#39;UTF-8&#39;&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;html&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;head&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;title&gt;Feuille de route&lt;/title&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;style&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;body { font-family: &#39;Arial&#39;, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;h1 { color: #007bff; }&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;h2 { color: #555; margin-top: 15px; }&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;p { color: #777; }&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;.segment { border: 1px solid #ddd; padding: 10px; margin: 5px; background-color: #fff; }&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;.arrival-time { font-weight: bold; color: #009688; }&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;/style&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;/head&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;body&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;h1&gt;Feuille de route pour la tournée du coursier &quot; + entry.getKey() + &quot;&lt;/h1&gt;&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;                if(!tournee.getListeChemins().isEmpty()){</b>
+&nbsp;
+<b class="nc">&nbsp;                    if(tournee.getListeLivraisons().get(0).getCreneauHoraire().isAfter(heureActuelle)){</b>
+<b class="nc">&nbsp;                        writer.write(&quot;&lt;p&gt;Heure de début de tournée : &quot; + tournee.getListeLivraisons().get(0).getCreneauHoraire().minusMinutes(tournee.getListeChemins().get(0).getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()).format(formatter) + &quot;&lt;/p&gt;&quot;);</b>
+&nbsp;                    }else{
+<b class="nc">&nbsp;                        writer.write(&quot;&lt;p&gt;Heure de début de tournée : &quot; + heureActuelle.format(formatter) + &quot;&lt;/p&gt;&quot;);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    writer.write(&quot;&lt;p&gt;Heure de fin de tournée : &quot; + tournee.getHeureFinTournee().format(formatter) + &quot;&lt;/p&gt;&quot;);</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                int indexChemin = 1;</b>
+<b class="nc">&nbsp;                for (Chemin chemin : tournee.getListeChemins()) {</b>
+<b class="nc">&nbsp;                    if(indexChemin &lt; tournee.getListeChemins().size() &amp;&amp; indexChemin &gt; 1 &amp;&amp; tournee.getListeLivraisons().get(indexChemin - 1).getCreneauHoraire().isAfter(heureActuelle)){</b>
+<b class="nc">&nbsp;                        Duration tempsAttente = Duration.between(heureActuelle.plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()), tournee.getListeLivraisons().get(indexChemin - 1).getHeureLivraison());</b>
+<b class="nc">&nbsp;                        writer.write(&quot;&lt;p style=&#39;color: #850606;&#39;&gt;Temps d&#39;attente : &quot; + tempsAttente.toMinutes() + &quot; min &lt;/p&gt;&quot;);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    writer.write(&quot;&lt;div class=&#39;segment&#39;&gt;&quot;);</b>
+<b class="nc">&nbsp;                    if(indexChemin &lt; tournee.getListeChemins().size()) {</b>
+<b class="nc">&nbsp;                        writer.write(&quot;&lt;h2&gt;Livraison &quot; + indexChemin + &quot;&lt;/h2&gt;&quot;);</b>
+&nbsp;                    }else{
+<b class="nc">&nbsp;                        writer.write(&quot;&lt;h2&gt;Retour à l&#39;entrepot&lt;/h2&gt;&quot;);</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;                    int indexSegment = 1;</b>
+<b class="nc">&nbsp;                    String currentRoute = null;</b>
+<b class="nc">&nbsp;                    double totalLength = 0;</b>
+&nbsp;
+<b class="nc">&nbsp;                    for (Segment segment : chemin.getListeSegments()) {</b>
+<b class="nc">&nbsp;                        if (currentRoute == null || !currentRoute.equals(segment.getName())) {</b>
+<b class="nc">&nbsp;                            if (currentRoute != null) {</b>
+<b class="nc">&nbsp;                                writer.write(&quot;&lt;p&gt;&lt;strong&gt;&quot; + currentRoute + &quot;:&lt;/strong&gt; Longueur : &quot; + round(totalLength) + &quot; mètres &lt;/p&gt;&quot;);</b>
+&nbsp;                            }
+&nbsp;
+<b class="nc">&nbsp;                            currentRoute = segment.getName();</b>
+<b class="nc">&nbsp;                            totalLength = 0;</b>
+&nbsp;                        }
+&nbsp;
+<b class="nc">&nbsp;                        totalLength += segment.getLength();</b>
+&nbsp;
+<b class="nc">&nbsp;                        if (indexSegment == chemin.getListeSegments().size()) {</b>
+<b class="nc">&nbsp;                            writer.write(&quot;&lt;p&gt;&lt;strong&gt;&quot; + currentRoute + &quot;:&lt;/strong&gt; Longueur : &quot; + round(totalLength) + &quot; mètres &lt;/p&gt;&quot;);</b>
+&nbsp;                        }
+&nbsp;
+<b class="nc">&nbsp;                        indexSegment++;</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (indexChemin &lt; tournee.getListeChemins().size()) {</b>
+<b class="nc">&nbsp;                        writer.write(&quot;&lt;p class=&#39;arrival-time&#39;&gt;&lt;strong&gt;Heure d&#39;arrivée à la destination :&lt;/strong&gt; &quot; + tournee.getListeLivraisons().get(indexChemin - 1).getHeureLivraison().format(formatter) + &quot;&lt;/p&gt;&quot;);</b>
+<b class="nc">&nbsp;                        heureActuelle = tournee.getListeLivraisons().get(indexChemin - 1).getHeureLivraison();</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        writer.write(&quot;&lt;p class=&#39;arrival-time&#39;&gt;&lt;strong&gt;Heure de retour à l&#39;entrepôt :&lt;/strong&gt; &quot; + tournee.getHeureFinTournee().format(formatter) + &quot;&lt;/p&gt;&quot;);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    writer.write(&quot;&lt;/div&gt;&quot;);</b>
+<b class="nc">&nbsp;                    indexChemin++;</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;
+<b class="nc">&nbsp;                writer.write(&quot;&lt;/body&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;/html&gt;&quot;);</b>
+<b class="nc">&nbsp;                writer.write(&quot;&lt;/meta&gt;&quot;);</b>
+<b class="nc">&nbsp;            }catch (IOException e) {</b>
+<b class="nc">&nbsp;                throw new RuntimeException(e);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Envoie une exception à tous les écouteurs en cas d&#39;erreur.
+&nbsp;     *
+&nbsp;     * @param e L&#39;exception à envoyer.
+&nbsp;     */
+&nbsp;    public void sendException(Exception e){
+<b class="nc">&nbsp;        firePropertyChange(ERROR, null, e.getMessage());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute un écouteur pour détecter les changements de propriété de la carte.
+&nbsp;     *
+&nbsp;     * @param listener L&#39;écouteur à ajouter.
+&nbsp;     */
+&nbsp;    public void addPropertyChangeListener(PropertyChangeListener listener) {
+<b class="nc">&nbsp;        support.addPropertyChangeListener(listener);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie tous les écouteurs enregistrés d&#39;un changement de propriété.
+&nbsp;     *
+&nbsp;     * @param propertyName Le nom de la propriété.
+&nbsp;     * @param oldValue     La valeur précédente.
+&nbsp;     * @param newValue     La nouvelle valeur.
+&nbsp;     */
+&nbsp;    private void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+<b class="nc">&nbsp;        support.firePropertyChange(propertyName, oldValue, newValue);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

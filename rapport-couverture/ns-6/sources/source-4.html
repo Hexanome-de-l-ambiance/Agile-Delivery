@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > XMLMaker</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.xml</a>
+</div>
+
+<h1>Coverage Summary for Class: XMLMaker (com.example.xml)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">XMLMaker</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/40)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">XMLMaker$SingletonHelper</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/41)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.xml;
+&nbsp;
+&nbsp;import com.example.model.Carte;
+&nbsp;import com.example.model.Livraison;
+&nbsp;import com.example.model.Tournee;
+&nbsp;import javafx.stage.Stage;
+&nbsp;import org.w3c.dom.Document;
+&nbsp;import org.w3c.dom.Element;
+&nbsp;
+&nbsp;import javax.xml.parsers.DocumentBuilder;
+&nbsp;import javax.xml.parsers.DocumentBuilderFactory;
+&nbsp;import javax.xml.parsers.ParserConfigurationException;
+&nbsp;import javax.xml.transform.*;
+&nbsp;import javax.xml.transform.dom.DOMSource;
+&nbsp;import javax.xml.transform.stream.StreamResult;
+&nbsp;import java.io.File;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe fournit des méthodes pour générer et sauvegarder des données de tournées au format XML.
+&nbsp; */
+&nbsp;public class XMLMaker {
+&nbsp;
+<b class="nc">&nbsp;    private XMLMaker() {}</b>
+&nbsp;
+&nbsp;    private static class SingletonHelper {
+<b class="nc">&nbsp;        private static final XMLMaker INSTANCE = new XMLMaker();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupère l&#39;instance unique de XMLMaker selon le modèle de conception Singleton.
+&nbsp;     *
+&nbsp;     * @return L&#39;instance unique de XMLMaker.
+&nbsp;     */
+&nbsp;    public static XMLMaker getInstance() {
+<b class="nc">&nbsp;        return XMLMaker.SingletonHelper.INSTANCE;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Génère et sauvegarde les données de tournée au format XML.
+&nbsp;     *
+&nbsp;     * @param stage La fenêtre parente pour la boîte de dialogue de sauvegarde.
+&nbsp;     * @param carte L&#39;objet Carte contenant les informations de tournée à sauvegarder.
+&nbsp;     * @throws CustomXMLParsingException En cas d&#39;erreur lors de la génération ou de la sauvegarde du fichier XML.
+&nbsp;     */
+&nbsp;    public void saveTourneeToXML(Stage stage, Carte carte) throws CustomXMLParsingException {
+<b class="nc">&nbsp;        File file = XMLFilter.getInstance().open(stage, false);</b>
+<b class="nc">&nbsp;        if (file == null) {</b>
+&nbsp;            // Utilisateur a annulé l&#39;opération
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();</b>
+<b class="nc">&nbsp;            DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();</b>
+<b class="nc">&nbsp;            Document document = documentBuilder.newDocument();</b>
+&nbsp;
+&nbsp;            // Créer &lt;tournees&gt; element
+<b class="nc">&nbsp;            Element tourneeElement = document.createElement(&quot;tournees&quot;);</b>
+<b class="nc">&nbsp;            document.appendChild(tourneeElement);</b>
+<b class="nc">&nbsp;            tourneeElement.setAttribute(&quot;nbCoursiers&quot;, String.valueOf(carte.getListeTournees().size()));</b>
+&nbsp;
+<b class="nc">&nbsp;            for (HashMap.Entry&lt;Integer, Tournee&gt; tourneeEntry : carte.getListeTournees().entrySet()) {</b>
+<b class="nc">&nbsp;                Element tourElement = document.createElement(&quot;tournee&quot;);</b>
+<b class="nc">&nbsp;                tourneeElement.appendChild(tourElement);</b>
+<b class="nc">&nbsp;                tourElement.setAttribute(&quot;numeroCoursier&quot;, String.valueOf(tourneeEntry.getKey()));</b>
+<b class="nc">&nbsp;                Element livraisonsElement = document.createElement(&quot;livraisons&quot;);</b>
+<b class="nc">&nbsp;                tourElement.appendChild(livraisonsElement);</b>
+&nbsp;
+<b class="nc">&nbsp;                List&lt;Livraison&gt; livraisonsList = tourneeEntry.getValue().getListeLivraisons(); // Assuming getLivraisons() exists and returns List&lt;Livraison&gt;</b>
+<b class="nc">&nbsp;                Long entrepotId = carte.getEntrepot().getId();</b>
+<b class="nc">&nbsp;                for (Livraison livraison : livraisonsList) {</b>
+&nbsp;                    // Si la livraison est l&#39;entrepot, ne pas l&#39;ajouter
+<b class="nc">&nbsp;                    if (livraison.getDestination().getId().equals(entrepotId)) {</b>
+<b class="nc">&nbsp;                        continue;</b>
+&nbsp;                    }
+&nbsp;
+<b class="nc">&nbsp;                    Element livraisonElement = document.createElement(&quot;livraison&quot;);</b>
+<b class="nc">&nbsp;                    livraisonsElement.appendChild(livraisonElement);</b>
+&nbsp;
+<b class="nc">&nbsp;                    Element addressElement = document.createElement(&quot;address&quot;);</b>
+<b class="nc">&nbsp;                    addressElement.setAttribute(&quot;id&quot;, String.valueOf(livraison.getDestination().getId())); // Assuming getDestination() and getId() exist</b>
+<b class="nc">&nbsp;                    livraisonElement.appendChild(addressElement);</b>
+&nbsp;
+<b class="nc">&nbsp;                    Element heureLivraisonElement = document.createElement(&quot;creneauHoraire&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;                    heureLivraisonElement.setTextContent(livraison.getCreneauHoraire().toString()); // Assuming getHeureLivraison() exists and returns a Time object</b>
+<b class="nc">&nbsp;                    livraisonElement.appendChild(heureLivraisonElement);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // Créer le fichier XML
+<b class="nc">&nbsp;            TransformerFactory transformerFactory = TransformerFactory.newInstance();</b>
+<b class="nc">&nbsp;            Transformer transformer = transformerFactory.newTransformer();</b>
+<b class="nc">&nbsp;            transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);</b>
+<b class="nc">&nbsp;            DOMSource domSource = new DOMSource(document);</b>
+<b class="nc">&nbsp;            StreamResult streamResult = new StreamResult(file);</b>
+&nbsp;
+<b class="nc">&nbsp;            transformer.transform(domSource, streamResult);</b>
+<b class="nc">&nbsp;        } catch (ParserConfigurationException | TransformerException e) {</b>
+<b class="nc">&nbsp;            throw new CustomXMLParsingException(&quot;Erreur lors de la génération du fichier XML&quot;, e);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

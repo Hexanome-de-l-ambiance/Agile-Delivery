@@ -1,0 +1,100 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Graph</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.tsp</a>
+</div>
+
+<h1>Coverage Summary for Class: Graph (com.example.tsp)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">Graph</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.tsp;
+&nbsp;
+&nbsp;/**
+&nbsp; * L&#39;interface Graph définit les méthodes pour représenter un graphe.
+&nbsp; */
+&nbsp;public interface Graph {
+&nbsp;	/**
+&nbsp;	 * @return the number of vertices in &lt;code&gt;this&lt;/code&gt;
+&nbsp;	 */
+&nbsp;	public abstract int getNbVertices();
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * @param i 
+&nbsp;	 * @param j 
+&nbsp;	 * @return the cost of arc (i,j) if (i,j) is an arc; -1 otherwise
+&nbsp;	 */
+&nbsp;	public abstract double getCost(int i, int j);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * @param i 
+&nbsp;	 * @param j 
+&nbsp;	 * @return true if &lt;code&gt;(i,j)&lt;/code&gt; is an arc of &lt;code&gt;this&lt;/code&gt;
+&nbsp;	 */
+&nbsp;	public abstract boolean isArc(int i, int j);
+&nbsp;
+&nbsp;	/**
+&nbsp;	 *
+&nbsp;	 * @param i
+&nbsp;	 * @return the id of the vertex number &lt;code&gt;i&lt;/code&gt; in &lt;code&gt;this&lt;/code&gt;
+&nbsp;	 */
+&nbsp;	public abstract Long getId(int i);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

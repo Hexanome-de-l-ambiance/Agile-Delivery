@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ListeDeCommandes</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: ListeDeCommandes (com.example.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ListeDeCommandes</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.controller;
+&nbsp;
+&nbsp;import java.util.LinkedList;
+&nbsp;
+&nbsp;/**
+&nbsp; * Une liste de commandes permettant de gérer l&#39;historique des commandes pour l&#39;annulation et la réfaite.
+&nbsp; */
+&nbsp;public class ListeDeCommandes {
+&nbsp;
+&nbsp;    private LinkedList&lt;Commande&gt; listeDeCommandes;
+&nbsp;    private int index;
+&nbsp;    /**
+&nbsp;     * Constructeur par défaut initialisant la liste de commandes.
+&nbsp;     */
+<b class="nc">&nbsp;    public ListeDeCommandes() {</b>
+<b class="nc">&nbsp;        index = -1;</b>
+<b class="nc">&nbsp;        listeDeCommandes = new LinkedList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute une commande à la liste et l&#39;exécute, effaçant les commandes futures.
+&nbsp;     *
+&nbsp;     * @param commande La commande à ajouter et à exécuter.
+&nbsp;     */
+&nbsp;    public void addCommande(Commande commande) {
+<b class="nc">&nbsp;        for(int i = 1; i &lt; listeDeCommandes.size()-index; i++){</b>
+<b class="nc">&nbsp;            listeDeCommandes.remove(index+1);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        index++;</b>
+<b class="nc">&nbsp;        listeDeCommandes.add(index, commande);</b>
+<b class="nc">&nbsp;        commande.execute();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Annule la dernière commande exécutée dans la liste.
+&nbsp;     */
+&nbsp;    public void undo(){
+<b class="nc">&nbsp;        if (index&gt;= 0){</b>
+<b class="nc">&nbsp;            listeDeCommandes.get(index).undo();</b>
+<b class="nc">&nbsp;            index--;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Réexécute la dernière commande annulée dans la liste.
+&nbsp;     */
+&nbsp;    public void redo(){
+<b class="nc">&nbsp;        if(index &lt; listeDeCommandes.size()-1){</b>
+<b class="nc">&nbsp;            index++;</b>
+<b class="nc">&nbsp;            listeDeCommandes.get(index).execute();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Réinitialise la liste de commandes, effaçant l&#39;historique.
+&nbsp;     */
+&nbsp;    public void reset(){
+<b class="nc">&nbsp;        index = -1;</b>
+<b class="nc">&nbsp;        listeDeCommandes = new LinkedList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

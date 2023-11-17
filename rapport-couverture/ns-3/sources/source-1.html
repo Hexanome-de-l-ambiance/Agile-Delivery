@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CompleteGraph</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.tsp</a>
+</div>
+
+<h1>Coverage Summary for Class: CompleteGraph (com.example.tsp)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CompleteGraph</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (28/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.tsp;
+&nbsp;
+&nbsp;import com.example.model.Carte;
+&nbsp;import com.example.model.Intersection;
+&nbsp;import com.example.model.Livraison;
+&nbsp;import com.example.utils.Astar;
+&nbsp;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;public class CompleteGraph implements Graph{
+&nbsp;	int nbVertices;
+&nbsp;	double [][] cost;
+&nbsp;	HashMap&lt;Integer, Long&gt; indexToId;
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Create a complete directed graph such that each edge is the shortest path between two intersections
+&nbsp;	 * @param carte the map
+&nbsp;	 * @param livraisons the list of intersections
+&nbsp;	 */
+<b class="fc">&nbsp;	public CompleteGraph(Carte carte, ArrayList&lt;Livraison&gt; livraisons) {</b>
+<b class="fc">&nbsp;		Intersection entrepot = carte.getEntrepot();</b>
+<b class="fc">&nbsp;		int entrepotIndex = livraisons.size();</b>
+<b class="fc">&nbsp;		this.nbVertices = livraisons.size() + 1;</b>
+<b class="fc">&nbsp;		this.cost = new double[nbVertices][nbVertices];</b>
+&nbsp;
+<b class="fc">&nbsp;		this.indexToId = new HashMap&lt;&gt;(nbVertices);</b>
+<b class="fc">&nbsp;		for(int i = 0; i &lt; livraisons.size() ; i++) {</b>
+<b class="fc">&nbsp;			indexToId.put(i, livraisons.get(i).getDestination().getId());</b>
+&nbsp;		}
+<b class="fc">&nbsp;		indexToId.put(entrepotIndex, entrepot.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;		cost[livraisons.size()][livraisons.size()] = -1;</b>
+<b class="fc">&nbsp;		for(int i=0; i &lt; livraisons.size(); i++)</b>
+&nbsp;		{
+<b class="fc">&nbsp;			cost[livraisons.size()][i] = Astar.calculDistance(carte, entrepot, livraisons.get(i).getDestination());</b>
+<b class="fc">&nbsp;			cost[i][livraisons.size()] = Astar.calculDistance(carte, livraisons.get(i).getDestination(), entrepot);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		for(int i=0 ; i&lt;livraisons.size() ; i++)</b>
+&nbsp;		{
+<b class="fc">&nbsp;			for(int j=0 ; j &lt; livraisons.size() ; j++)</b>
+&nbsp;			{
+<b class="fc">&nbsp;				if(i == j)</b>
+&nbsp;				{
+<b class="fc">&nbsp;					cost[i][j] = -1;</b>
+<b class="fc">&nbsp;					continue;</b>
+&nbsp;				}
+<b class="fc">&nbsp;				LocalTime debutCreneauHoraire1 = livraisons.get(i).getCreneauHoraire();</b>
+<b class="fc">&nbsp;				LocalTime finCreneauHoraire1 = livraisons.get(i).getCreneauHoraire().plus(Livraison.DUREE_CRENEAU_HORAIRE);</b>
+<b class="fc">&nbsp;				LocalTime debutCreneauHoraire2 = livraisons.get(j).getCreneauHoraire();</b>
+<b class="fc">&nbsp;				if(debutCreneauHoraire1 == debutCreneauHoraire2 || finCreneauHoraire1.isBefore(debutCreneauHoraire2) || finCreneauHoraire1.equals(debutCreneauHoraire2)) {</b>
+<b class="fc">&nbsp;					cost[i][j] = Astar.calculDistance(carte, livraisons.get(i).getDestination(), livraisons.get(j).getDestination());</b>
+&nbsp;				}else{
+<b class="fc">&nbsp;					cost[i][j] = -1;</b>
+&nbsp;				}
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public int getNbVertices() {
+<b class="fc">&nbsp;		return nbVertices;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public double getCost(int i, int j) {
+<b class="fc">&nbsp;		return cost[i][j];</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public boolean isArc(int i, int j) {
+<b class="fc">&nbsp;		return cost[i][j] != -1;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	public Long getId(int i) {
+<b class="fc">&nbsp;		return indexToId.get(i);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

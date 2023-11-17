@@ -1,0 +1,142 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Distance</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: Distance (com.example.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Distance</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.utils;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe utilitaire pour calculer la distance entre deux points
+&nbsp; */
+<b class="nc">&nbsp;public class Distance {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rayon de la Terre en kilomètres
+&nbsp;     */
+&nbsp;    private static final double R = 6371.01;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     *
+&nbsp;     * @param lat1 latitude du point 1
+&nbsp;     * @param lon1 longitude du point 1
+&nbsp;     * @param lat2 latitude du point 2
+&nbsp;     * @param lon2 longitude du point 2
+&nbsp;     * @return La distance entre le point 1 et 2 en mètres en utilisant la formule de Haversine
+&nbsp;     */
+&nbsp;    public static double haversine(double lat1, double lon1, double lat2, double lon2) {
+&nbsp;        // Conversion en radians
+<b class="fc">&nbsp;        lat1 = Math.toRadians(lat1);</b>
+<b class="fc">&nbsp;        lon1 = Math.toRadians(lon1);</b>
+<b class="fc">&nbsp;        lat2 = Math.toRadians(lat2);</b>
+<b class="fc">&nbsp;        lon2 = Math.toRadians(lon2);</b>
+&nbsp;
+&nbsp;        // formule de Haversine
+<b class="fc">&nbsp;        double dLat = lat2 - lat1;</b>
+<b class="fc">&nbsp;        double dLon = lon2 - lon1;</b>
+<b class="fc">&nbsp;        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +</b>
+<b class="fc">&nbsp;                Math.cos(lat1) * Math.cos(lat2) *</b>
+<b class="fc">&nbsp;                        Math.sin(dLon / 2) * Math.sin(dLon / 2);</b>
+<b class="fc">&nbsp;        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));</b>
+&nbsp;
+<b class="fc">&nbsp;        return R * c * 1000;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,279 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Controller</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: Controller (com.example.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Controller</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.controller;
+&nbsp;
+&nbsp;import com.example.model.Carte;
+&nbsp;import com.example.model.Intersection;
+&nbsp;import com.example.model.Livraison;
+&nbsp;import javafx.stage.Stage;
+&nbsp;import java.time.LocalTime;
+&nbsp;/**
+&nbsp; * Le contrôleur (Controller) gère les interactions entre les états.
+&nbsp; */
+&nbsp;public class Controller {
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    private Carte carte;
+&nbsp;    private Etat etatCourant;
+&nbsp;    private Stage stage;
+&nbsp;    private ListeDeCommandes listeDeCommandes;
+<b class="nc">&nbsp;    protected final EtatInitial etatInitial = new EtatInitial();</b>
+<b class="nc">&nbsp;    protected final EtatCarteChargee etatCarteChargee = new EtatCarteChargee();</b>
+<b class="nc">&nbsp;    protected final EtatAjoutDestination etatAjoutDestination = new EtatAjoutDestination();</b>
+<b class="nc">&nbsp;    protected final EtatTourneeCalculee etatTourneeCalculee = new EtatTourneeCalculee();</b>
+<b class="nc">&nbsp;    protected final EtatAjoutDestination2 etatAjoutDestination2 = new EtatAjoutDestination2();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définit l&#39;état courant du contrôleur.
+&nbsp;     *
+&nbsp;     * @param etat L&#39;état courant du contrôleur
+&nbsp;     */
+&nbsp;    protected void setEtatCourant(Etat etat){
+<b class="nc">&nbsp;        etatCourant = etat;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Obtient l&#39;état courant du contrôleur.
+&nbsp;     *
+&nbsp;     * @return L&#39;état courant du contrôleur
+&nbsp;     */
+&nbsp;    public Etat getEtatCourant() {
+<b class="nc">&nbsp;        return etatCourant;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructeur du contrôleur.
+&nbsp;     *
+&nbsp;     * @param carte La carte utilisée dans l&#39;application
+&nbsp;     * @param stage La fenêtre principale de l&#39;application
+&nbsp;     */
+<b class="nc">&nbsp;    public Controller(Carte carte, Stage stage) {</b>
+<b class="nc">&nbsp;        listeDeCommandes = new ListeDeCommandes();</b>
+<b class="nc">&nbsp;        etatCourant = etatInitial;</b>
+<b class="nc">&nbsp;        this.stage = stage;</b>
+<b class="nc">&nbsp;        this.carte = carte;</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajouter une intersection pour l&#39;ajout d&#39;une livraison dans l&#39;état courant du contrôleur.
+&nbsp;     *
+&nbsp;     * @param intersection L&#39;intersection à ajouter
+&nbsp;     */
+&nbsp;    public void addDestination(Intersection intersection) {
+<b class="nc">&nbsp;        etatCourant.addIntersection(this,intersection);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Désélectionner une intersection pour l&#39;ajout de la livraison dans l&#39;état courant du contrôleur.
+&nbsp;     */
+<b class="nc">&nbsp;    public void unselectIntersection() { etatCourant.unselectIntersection(this);}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute une livraison à un coursier avant le calcul des tournées avec l&#39;heure spécifiée dans l&#39;état courant du contrôleur.
+&nbsp;     *
+&nbsp;     * @param numeroCoursier Le numéro du coursier
+&nbsp;     * @param heure          L&#39;heure de livraison
+&nbsp;     */
+&nbsp;    public void addDelivery(int numeroCoursier, int heure) {
+<b class="nc">&nbsp;        etatCourant.addDelivery(listeDeCommandes, LocalTime.of(heure,0,0), numeroCoursier, this, carte);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Supprimer une livraison d&#39;un coursier avant le calcul des tournées dans l&#39;état courant du contrôleur.
+&nbsp;     *
+&nbsp;     * @param numeroCoursier Le numéro du coursier
+&nbsp;     * @param livraison      La livraison à supprimer
+&nbsp;     */
+&nbsp;    public void deleteDelivery(int numeroCoursier, Livraison livraison) {
+<b class="nc">&nbsp;        etatCourant.deleteDelivery(listeDeCommandes, numeroCoursier, livraison, this, carte);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajouter une livraison à un coursier après le calcul des tournées avec l&#39;heure et l&#39;index spécifiés dans l&#39;état courant du contrôleur.
+&nbsp;     *
+&nbsp;     * @param numeroCoursier Le numéro du coursier
+&nbsp;     * @param heure          L&#39;heure de livraison
+&nbsp;     * @param index          L&#39;indice de la livraison
+&nbsp;     */
+&nbsp;    public void addDelivery(int numeroCoursier, int heure, int index) {
+<b class="nc">&nbsp;        etatCourant.addDelivery(listeDeCommandes, LocalTime.of(heure,0,0), numeroCoursier, index, this, carte);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Supprimer une livraison d&#39;un coursier après le calcul des tournées à l&#39;indice spécifié dans l&#39;état courant du contrôleur.
+&nbsp;     *
+&nbsp;     * @param numeroCoursier Le numéro du coursier
+&nbsp;     * @param livraison      La livraison à supprimer
+&nbsp;     * @param index          L&#39;indice de la livraison à supprimer
+&nbsp;     */
+&nbsp;    public void deleteDelivery(int numeroCoursier, Livraison livraison, int index) {
+<b class="nc">&nbsp;        etatCourant.deleteDelivery(listeDeCommandes, numeroCoursier, livraison, index, this, carte);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculer les tournées dans l&#39;état courant du contrôleur.
+&nbsp;     */
+&nbsp;    public void calculateDelivery() {
+<b class="nc">&nbsp;        etatCourant.calculerLivraisons(listeDeCommandes,this, carte);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Modifier le nombre de coursiers dans l&#39;état courant du contrôleur et réinitialise la liste des commandes.
+&nbsp;     *
+&nbsp;     * @param nombre Le nouveau nombre de coursiers
+&nbsp;     */
+&nbsp;    public void modifierCoursiers(int nombre) {
+<b class="nc">&nbsp;        etatCourant.modifierCoursiers(this, carte, nombre);</b>
+<b class="nc">&nbsp;        listeDeCommandes.reset();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Charger la tournée dans l&#39;état courant du contrôleur.
+&nbsp;     */
+&nbsp;    public void loadTour() {
+<b class="nc">&nbsp;        etatCourant.loadTour(carte, stage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Enregistrer la tournée dans l&#39;état courant du contrôleur.
+&nbsp;     */
+&nbsp;    public void saveTour() {
+<b class="nc">&nbsp;        etatCourant.saveTour( carte, stage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Annuler la dernière commande dans l&#39;état courant du contrôleur.
+&nbsp;     */
+&nbsp;    public void undo() {
+<b class="nc">&nbsp;        etatCourant.undo(listeDeCommandes);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Refaire la dernière commande annulée dans l&#39;état courant du contrôleur.
+&nbsp;     */
+&nbsp;    public void redo() {
+<b class="nc">&nbsp;        etatCourant.redo(listeDeCommandes);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Charger la carte dans l&#39;état courant du contrôleur.
+&nbsp;     */
+&nbsp;    public void load() {
+<b class="nc">&nbsp;        etatCourant.loadMap(this, carte, stage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Réinitialiser la carte dans l&#39;état courant du contrôleur.
+&nbsp;     */
+<b class="nc">&nbsp;    public void reset() { etatCourant.reset(this, carte);};</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Généner la feuille de route des chemins dans l&#39;état courant du contrôleur.
+&nbsp;     */
+<b class="nc">&nbsp;    public void genererFeuilleRoute(){ etatCourant.genererFeuilleRoute(this, carte, stage);}</b>
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

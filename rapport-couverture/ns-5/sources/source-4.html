@@ -1,0 +1,711 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TextualView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.view</a>
+</div>
+
+<h1>Coverage Summary for Class: TextualView (com.example.view)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TextualView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/42)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/230)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TextualView$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/43)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/231)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.view;
+&nbsp;
+&nbsp;import com.example.model.*;
+&nbsp;
+&nbsp;import javafx.collections.FXCollections;
+&nbsp;import javafx.collections.ObservableList;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.layout.Pane;
+&nbsp;import javafx.scene.paint.Color;
+&nbsp;import javafx.scene.text.Text;
+&nbsp;import javafx.scene.text.TextFlow;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;/**
+&nbsp; * La vue textuelle
+&nbsp; */
+&nbsp;public class TextualView extends Pane implements PropertyChangeListener, Visitor {
+&nbsp;
+&nbsp;    private final Carte carte;
+&nbsp;    private TextFlow info;
+<b class="nc">&nbsp;    private final Text numberCouriersText = new Text(&quot;Nombre de coursiers : 1&quot; + &quot;\n&quot;);</b>
+&nbsp;    private Label textNumeroCoursier;
+<b class="nc">&nbsp;    HashMap&lt;Integer, Tournee&gt; listeTournees = new HashMap&lt;&gt;();</b>
+&nbsp;    private ComboBox&lt;String&gt; comboBoxCouriers;
+&nbsp;    private ComboBox&lt;String&gt; comboBoxIntervals;
+&nbsp;
+<b class="nc">&nbsp;    private final ObservableList&lt;String&gt; couriers = FXCollections.observableArrayList(</b>
+&nbsp;            &quot;1&quot;
+&nbsp;    );
+<b class="nc">&nbsp;    private final ObservableList&lt;String&gt; intervals = FXCollections.observableArrayList(</b>
+&nbsp;            &quot;8&quot;,
+&nbsp;            &quot;9&quot;,
+&nbsp;            &quot;10&quot;,
+&nbsp;            &quot;11&quot;
+&nbsp;    );
+&nbsp;
+<b class="nc">&nbsp;    private final ArrayList&lt;Integer&gt; sizeTournee = new ArrayList&lt;&gt;();</b>
+&nbsp;    private TextField textField;
+<b class="nc">&nbsp;    private int numeroCoursier = -1;</b>
+<b class="nc">&nbsp;    private Livraison livraison = null;</b>
+<b class="nc">&nbsp;    private Label selectedLabel = null;</b>
+<b class="nc">&nbsp;    private int selectedIndex = -1;</b>
+&nbsp;
+&nbsp;    private Label longitudeLabel;
+&nbsp;    private Label latitudeLabel;
+&nbsp;    private Pane coordinatesPane;
+&nbsp;    private Button button_add;
+&nbsp;    private Button button_add_before;
+&nbsp;    private Button button_add_after;
+&nbsp;    private Button button_generate;
+&nbsp;    private Button button_remove;
+&nbsp;    private Button button_remove_after;
+&nbsp;    private Button resetTourneeButton;
+&nbsp;
+&nbsp;    private Button button_create_tournee;
+&nbsp;
+&nbsp;    private Button button_nombre_coursier;
+&nbsp;
+&nbsp;    private Label textCreneau;
+&nbsp;
+&nbsp;    private Button undoButton;
+&nbsp;
+&nbsp;    private Button removeTournee;
+&nbsp;
+&nbsp;    private Button redoButton;
+&nbsp;
+&nbsp;    private Label errorLabel;
+&nbsp;
+&nbsp;    private MenuItem sauvegarderTourneeButton;
+&nbsp;
+&nbsp;    private MenuItem chargerTourneeButton;
+&nbsp;
+&nbsp;    private MenuItem buttonChargerCarte;
+&nbsp;
+<b class="nc">&nbsp;    private ArrayList&lt;Color&gt; colors = new ArrayList&lt;&gt;(Arrays.asList(Color.BLUE, Color.GREEN, Color.PURPLE, Color.ORANGE, Color.RED, Color.FUCHSIA, Color.SIENNA));</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialiser le view
+&nbsp;     *
+&nbsp;     * @param carte La carte à afficher
+&nbsp;     */
+<b class="nc">&nbsp;    public TextualView(Carte carte) {</b>
+<b class="nc">&nbsp;        this.carte = carte;</b>
+<b class="nc">&nbsp;        carte.addPropertyChangeListener(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir la comboBox pour les coursiers.
+&nbsp;     *
+&nbsp;     * @param comboBox La comboBox à définir
+&nbsp;     */
+&nbsp;    public void setCouriersComboBox(ComboBox&lt;String&gt; comboBox){
+<b class="nc">&nbsp;        this.comboBoxCouriers = comboBox;</b>
+<b class="nc">&nbsp;        this.comboBoxCouriers.setItems(couriers);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir la comboBox pour les fenêtres temporelles.
+&nbsp;     *
+&nbsp;     * @param comboBox La comboBox à définir
+&nbsp;     */
+&nbsp;    public void setCreneauComboBox(ComboBox&lt;String&gt; comboBox){
+<b class="nc">&nbsp;        this.comboBoxIntervals = comboBox;</b>
+<b class="nc">&nbsp;        this.comboBoxIntervals.setItems(intervals);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour ajouter une livraison.
+&nbsp;     *
+&nbsp;     * @param button_add Le bouton à définir
+&nbsp;     */
+&nbsp;    public void setButton_add(Button button_add) {
+<b class="nc">&nbsp;        this.button_add = button_add;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour ajouter une livraison avant une livraison sélectionnée.
+&nbsp;     *
+&nbsp;     * @param button_add_before Le bouton à définir
+&nbsp;     */
+&nbsp;    public void setButton_add_before(Button button_add_before) {
+<b class="nc">&nbsp;        this.button_add_before = button_add_before;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour ajouter une livraison après une livraison sélectionnée.
+&nbsp;     *
+&nbsp;     * @param button_add_after Le bouton à définir
+&nbsp;     */
+&nbsp;    public void setButton_add_after(Button button_add_after) {
+<b class="nc">&nbsp;        this.button_add_after = button_add_after;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour générer les tournées.
+&nbsp;     *
+&nbsp;     * @param button_generate Le bouton à définir
+&nbsp;     */
+&nbsp;    public void setButton_generate(Button button_generate) {
+<b class="nc">&nbsp;        this.button_generate = button_generate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour supprimer une livraison.
+&nbsp;     *
+&nbsp;     * @param button_remove Le bouton à définir
+&nbsp;     */
+&nbsp;    public void setButton_remove(Button button_remove) {
+<b class="nc">&nbsp;        this.button_remove = button_remove;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour supprimer une livraison après une livraison sélectionnée.
+&nbsp;     *
+&nbsp;     * @param button_remove_after Le bouton à définir
+&nbsp;     */
+&nbsp;    public void setButton_remove_after(Button button_remove_after) {
+<b class="nc">&nbsp;        this.button_remove_after = button_remove_after;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le texte pour le numéro de coursier.
+&nbsp;     *
+&nbsp;     * @param textNumeroCoursier Le texte à définir
+&nbsp;     */
+&nbsp;    public void setTextNumeroCoursier(Label textNumeroCoursier) {
+<b class="nc">&nbsp;        this.textNumeroCoursier = textNumeroCoursier;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le textField pour le numéro de coursier.
+&nbsp;     *
+&nbsp;     * @param textField Le textField à définir
+&nbsp;     */
+&nbsp;    public void setTextField(TextField textField) {
+<b class="nc">&nbsp;        this.textField = textField;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour créer les tournées.
+&nbsp;     * @param button_create_tournee Le bouton à définir
+&nbsp;     */
+<b class="nc">&nbsp;    public void setButton_create_tournee(Button button_create_tournee) { this.button_create_tournee = button_create_tournee; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour sauvegarder les tournées.
+&nbsp;     * @param sauvegarderTourneeButton Le bouton à définir
+&nbsp;     */
+<b class="nc">&nbsp;    public void setButton_sauvegarder_tournee(MenuItem sauvegarderTourneeButton) { this.sauvegarderTourneeButton = sauvegarderTourneeButton; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour charger les tournées.
+&nbsp;     * @param chargerTourneeButton Le bouton à définir
+&nbsp;     */
+<b class="nc">&nbsp;    public void setButton_charger_tournee(MenuItem chargerTourneeButton) { this.chargerTourneeButton = chargerTourneeButton; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir le bouton pour charger la carte.
+&nbsp;     * @param chargerCarteButton
+&nbsp;     */
+<b class="nc">&nbsp;    public void setButton_Charger_carte(MenuItem chargerCarteButton) { this.buttonChargerCarte = chargerCarteButton; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupérer le numéro de coursier sélectionné.
+&nbsp;     *
+&nbsp;     * @return Le numéro de coursier sélectionné
+&nbsp;     */
+&nbsp;    public int getNumeroCoursier() {
+<b class="nc">&nbsp;        return numeroCoursier;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupérer l&#39;index de livraison sélectionné.
+&nbsp;     *
+&nbsp;     * @return L&#39;index de la livraison sélectionnée
+&nbsp;     */
+&nbsp;    public int getSelectedIndex() {
+<b class="nc">&nbsp;        return selectedIndex;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupérer la livraison sélectionnée.
+&nbsp;     *
+&nbsp;     * @return La livraison sélectionnée
+&nbsp;     */
+&nbsp;    public Livraison getLivraison() {
+<b class="nc">&nbsp;        return livraison;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupérer la liste des coursiers.
+&nbsp;     *
+&nbsp;     * @return La liste des coursiers
+&nbsp;     */
+&nbsp;    public ComboBox&lt;String&gt; getComboBoxCouriers() {
+<b class="nc">&nbsp;        return comboBoxCouriers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupérer la liste des fenêtres temporelles.
+&nbsp;     *
+&nbsp;     * @return La liste des fenêtres temporelles
+&nbsp;     */
+&nbsp;    public ComboBox&lt;String&gt; getComboBoxIntervals() {
+<b class="nc">&nbsp;        return comboBoxIntervals;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Vérifie si les tournées de la carte ont été calculées.
+&nbsp;     *
+&nbsp;     * @return Vrai si les tournées de la carte ont été calculées, sinon faux.
+&nbsp;     */
+&nbsp;    public boolean isCalculated() {
+<b class="nc">&nbsp;        return carte.isTourneeCalculee();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupère le champ de texte associé au nombre des coursiers.
+&nbsp;     *
+&nbsp;     * @return Le champ de texte associé au nombre des coursiers.
+&nbsp;     */
+&nbsp;    public TextField getTextField() {
+<b class="nc">&nbsp;        return textField;</b>
+&nbsp;    }
+&nbsp;    public void setTextCreneau(Label textCreneau) {
+<b class="nc">&nbsp;        this.textCreneau = textCreneau;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setLongitudeLabel(Label label){
+<b class="nc">&nbsp;        this.longitudeLabel = label;</b>
+&nbsp;    }
+&nbsp;    public void setTextLongitudeLabel(String s) {
+<b class="nc">&nbsp;        longitudeLabel.setText(s);</b>
+&nbsp;    }
+&nbsp;    public void setLatitudeLabel(Label label){
+<b class="nc">&nbsp;        this.latitudeLabel = label;</b>
+&nbsp;    }
+&nbsp;    public void setTextLatitudeLabel(String s) {
+<b class="nc">&nbsp;        latitudeLabel.setText(s);</b>
+&nbsp;    }
+&nbsp;    public void setInfo(TextFlow text){
+<b class="nc">&nbsp;        this.info = text;</b>
+&nbsp;    }
+&nbsp;    public void setCoordinatesPane(Pane coordinatesPane) {
+<b class="nc">&nbsp;        this.coordinatesPane = coordinatesPane;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCoordinatesPaneVisible(boolean b) {
+<b class="nc">&nbsp;        this.coordinatesPane.setVisible(b);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setErrorLabel(Label errorLabel) {
+<b class="nc">&nbsp;        this.errorLabel = errorLabel;</b>
+&nbsp;    }
+&nbsp;    public void setButton_Nombre_coursier(Button changeNumberCouriersButton) {
+<b class="nc">&nbsp;        this.button_nombre_coursier = changeNumberCouriersButton;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUndoButton(Button undoButton) {
+<b class="nc">&nbsp;        this.undoButton = undoButton;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setRemoveTournee(Button removeTournnee) {
+<b class="nc">&nbsp;        this.removeTournee = removeTournnee;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setRedoButton(Button redoButton) {
+<b class="nc">&nbsp;        this.redoButton = redoButton;</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Gérer les changements dans les propriétés de l&#39;événement de PropertyChange en effectuant différentes actions basées sur l&#39;événement.
+&nbsp;     * @param evt L&#39;événement de changement de propriété
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void propertyChange(PropertyChangeEvent evt) {
+<b class="nc">&nbsp;        String event = evt.getPropertyName();</b>
+<b class="nc">&nbsp;        switch (event) {</b>
+&nbsp;            case Carte.RESET:
+&nbsp;            {
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Carte.READ: {
+<b class="nc">&nbsp;                if(carte.getEntrepot() != null){</b>
+<b class="nc">&nbsp;                    display(carte);</b>
+<b class="nc">&nbsp;                    button_add.setDisable(false);</b>
+<b class="nc">&nbsp;                    button_remove.setDisable(false);</b>
+<b class="nc">&nbsp;                    button_create_tournee.setDisable(false);</b>
+<b class="nc">&nbsp;                    button_nombre_coursier.setDisable(false);</b>
+<b class="nc">&nbsp;                    textField.setDisable(false);</b>
+<b class="nc">&nbsp;                    comboBoxIntervals.setDisable(false);</b>
+<b class="nc">&nbsp;                    comboBoxCouriers.setDisable(false);</b>
+<b class="nc">&nbsp;                    removeTournee.setDisable(false);</b>
+<b class="nc">&nbsp;                    undoButton.setDisable(false);</b>
+<b class="nc">&nbsp;                    redoButton.setDisable(false);</b>
+<b class="nc">&nbsp;                    sauvegarderTourneeButton.setDisable(false);</b>
+<b class="nc">&nbsp;                    chargerTourneeButton.setDisable(false);</b>
+<b class="nc">&nbsp;                    showAlert(&quot;Vous pouvez ajouter une livraison en cliquant sur une destination, supprimer une livraison en cliquant sur la liste, charger ou sauvegarder les tournées.&quot;);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    button_add.setDisable(true);</b>
+<b class="nc">&nbsp;                    button_remove.setDisable(true);</b>
+<b class="nc">&nbsp;                    button_create_tournee.setDisable(true);</b>
+<b class="nc">&nbsp;                    button_nombre_coursier.setDisable(true);</b>
+<b class="nc">&nbsp;                    textField.setDisable(true);</b>
+<b class="nc">&nbsp;                    comboBoxIntervals.setDisable(true);</b>
+<b class="nc">&nbsp;                    comboBoxCouriers.setDisable(true);</b>
+<b class="nc">&nbsp;                    removeTournee.setDisable(true);</b>
+<b class="nc">&nbsp;                    undoButton.setDisable(true);</b>
+<b class="nc">&nbsp;                    redoButton.setDisable(true);</b>
+<b class="nc">&nbsp;                    sauvegarderTourneeButton.setDisable(true);</b>
+<b class="nc">&nbsp;                    chargerTourneeButton.setDisable(true);</b>
+<b class="nc">&nbsp;                    showError(&quot;Erreur lors du chargement de la carte. Veuillez charger une carte valide.&quot;);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            case Carte.ERROR: showError((String) evt.getNewValue()); break;</b>
+&nbsp;            case Carte.ADD: {
+<b class="nc">&nbsp;                listeTournees = (HashMap&lt;Integer, Tournee&gt;) evt.getNewValue();</b>
+<b class="nc">&nbsp;                displayListeTournees(listeTournees);</b>
+<b class="nc">&nbsp;                coordinatesPane.setVisible(false);</b>
+<b class="nc">&nbsp;                latitudeLabel.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;                longitudeLabel.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;                showAlert(&quot;Livraison ajoutée.&quot;);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Carte.UPDATE: {
+<b class="nc">&nbsp;                if(isCalculated()){</b>
+<b class="nc">&nbsp;                    buttonChargerCarte.setDisable(true);</b>
+<b class="nc">&nbsp;                    chargerTourneeButton.setDisable(true);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                listeTournees = (HashMap&lt;Integer, Tournee&gt;) evt.getNewValue();</b>
+<b class="nc">&nbsp;                displayListeTournees(listeTournees);</b>
+<b class="nc">&nbsp;                coordinatesPane.setVisible(false);</b>
+<b class="nc">&nbsp;                latitudeLabel.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;                longitudeLabel.setText(&quot;&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;                button_nombre_coursier.setManaged(false);</b>
+<b class="nc">&nbsp;                button_nombre_coursier.setVisible(false);</b>
+<b class="nc">&nbsp;                textField.setManaged(false);</b>
+<b class="nc">&nbsp;                textField.setVisible(false);</b>
+<b class="nc">&nbsp;                button_create_tournee.setManaged(false);</b>
+<b class="nc">&nbsp;                button_create_tournee.setVisible(false);</b>
+<b class="nc">&nbsp;                button_generate.setManaged(true);</b>
+<b class="nc">&nbsp;                button_generate.setVisible(true);</b>
+&nbsp;
+<b class="nc">&nbsp;                if(carte.isTourEmpty()){</b>
+<b class="nc">&nbsp;                    button_add.setManaged(true);</b>
+<b class="nc">&nbsp;                    button_add.setVisible(true);</b>
+<b class="nc">&nbsp;                    button_add_before.setManaged(false);</b>
+<b class="nc">&nbsp;                    button_add_before.setVisible(false);</b>
+<b class="nc">&nbsp;                    button_add_after.setManaged(false);</b>
+<b class="nc">&nbsp;                    button_add_after.setVisible(false);</b>
+&nbsp;
+<b class="nc">&nbsp;                    textNumeroCoursier.setManaged(true);</b>
+<b class="nc">&nbsp;                    textNumeroCoursier.setVisible(true);</b>
+<b class="nc">&nbsp;                    comboBoxCouriers.setManaged(true);</b>
+<b class="nc">&nbsp;                    comboBoxCouriers.setVisible(true);</b>
+&nbsp;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    listeTournees = (HashMap&lt;Integer, Tournee&gt;) evt.getNewValue();</b>
+<b class="nc">&nbsp;                    displayListeTournees(listeTournees);</b>
+<b class="nc">&nbsp;                    button_add.setManaged(false);</b>
+<b class="nc">&nbsp;                    button_add.setVisible(false);</b>
+<b class="nc">&nbsp;                    button_add_before.setManaged(true);</b>
+<b class="nc">&nbsp;                    button_add_before.setVisible(true);</b>
+<b class="nc">&nbsp;                    button_add_after.setManaged(true);</b>
+<b class="nc">&nbsp;                    button_add_after.setVisible(true);</b>
+&nbsp;
+<b class="nc">&nbsp;                    textNumeroCoursier.setManaged(false);</b>
+<b class="nc">&nbsp;                    textNumeroCoursier.setVisible(false);</b>
+<b class="nc">&nbsp;                    comboBoxCouriers.setManaged(false);</b>
+<b class="nc">&nbsp;                    comboBoxCouriers.setVisible(false);</b>
+<b class="nc">&nbsp;                    button_remove.setManaged(false);</b>
+<b class="nc">&nbsp;                    button_remove.setVisible(false);</b>
+<b class="nc">&nbsp;                    button_remove_after.setManaged(true);</b>
+<b class="nc">&nbsp;                    button_remove_after.setVisible(true);</b>
+&nbsp;
+&nbsp;                }
+<b class="nc">&nbsp;                showAlert(&quot;Nouvelle tournée calculée. Vous pouvez choisir une livraison pour ajouter une nouvelle livraison avant ou après cette livaison, ou supprimer une livraison.&quot;);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Carte.REMOVE: {
+<b class="nc">&nbsp;                listeTournees = (HashMap&lt;Integer, Tournee&gt;) evt.getNewValue();</b>
+<b class="nc">&nbsp;                displayListeTournees(listeTournees);</b>
+<b class="nc">&nbsp;                showAlert(&quot;Livraison supprimée.&quot;);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Carte.SET_NB_COURIERS:{
+<b class="nc">&nbsp;                int newNumber = (int) evt.getNewValue();</b>
+<b class="nc">&nbsp;                couriers.clear();</b>
+<b class="nc">&nbsp;                for(int i = 1; i &lt;= newNumber; i++){</b>
+<b class="nc">&nbsp;                    couriers.add(String.valueOf(i));</b>
+&nbsp;                }
+<b class="nc">&nbsp;                comboBoxCouriers.setItems(couriers);</b>
+<b class="nc">&nbsp;                numberCouriersText.setText(&quot;Nombre de coursiers : &quot; + evt.getNewValue() + &quot;\n&quot;);</b>
+<b class="nc">&nbsp;                info.getChildren().clear();</b>
+<b class="nc">&nbsp;                showAlert(&quot;Nombre de coursiers modifié : &quot; + newNumber);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Carte.RESET_TOURS:{
+<b class="nc">&nbsp;                buttonChargerCarte.setDisable(false);</b>
+<b class="nc">&nbsp;                chargerTourneeButton.setDisable(false);</b>
+<b class="nc">&nbsp;                couriers.clear();</b>
+<b class="nc">&nbsp;                couriers.add(&quot;1&quot;);</b>
+<b class="nc">&nbsp;                comboBoxCouriers.setItems(couriers);</b>
+<b class="nc">&nbsp;                numberCouriersText.setText(&quot;Nombre de coursiers : &quot; + evt.getNewValue() + &quot;\n&quot;);</b>
+<b class="nc">&nbsp;                info.getChildren().clear();</b>
+<b class="nc">&nbsp;                button_add.setManaged(true);</b>
+<b class="nc">&nbsp;                button_add.setVisible(true);</b>
+<b class="nc">&nbsp;                button_add_before.setManaged(false);</b>
+<b class="nc">&nbsp;                button_add_before.setVisible(false);</b>
+<b class="nc">&nbsp;                button_add_after.setManaged(false);</b>
+<b class="nc">&nbsp;                button_add_after.setVisible(false);</b>
+<b class="nc">&nbsp;                button_generate.setManaged(false);</b>
+<b class="nc">&nbsp;                button_generate.setVisible(false);</b>
+<b class="nc">&nbsp;                textNumeroCoursier.setManaged(true);</b>
+<b class="nc">&nbsp;                textNumeroCoursier.setVisible(true);</b>
+<b class="nc">&nbsp;                comboBoxCouriers.setManaged(true);</b>
+<b class="nc">&nbsp;                comboBoxCouriers.setVisible(true);</b>
+<b class="nc">&nbsp;                button_remove.setManaged(true);</b>
+<b class="nc">&nbsp;                button_remove.setVisible(true);</b>
+<b class="nc">&nbsp;                button_remove_after.setManaged(false);</b>
+<b class="nc">&nbsp;                button_remove_after.setVisible(false);</b>
+<b class="nc">&nbsp;                button_create_tournee.setManaged(true);</b>
+<b class="nc">&nbsp;                button_create_tournee.setVisible(true);</b>
+<b class="nc">&nbsp;                button_nombre_coursier.setManaged(true);</b>
+<b class="nc">&nbsp;                button_nombre_coursier.setVisible(true);</b>
+<b class="nc">&nbsp;                textField.setManaged(true);</b>
+<b class="nc">&nbsp;                textField.setVisible(true);</b>
+<b class="nc">&nbsp;                showAlert(&quot;Tournées réinitialisées. Vous pouvez refaire l&#39;ajout et le calcul des tournées.&quot;);</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Afficher la liste des tournées sur le view en fonction des tournées fournies.
+&nbsp;     * @param listeTournees La liste des tournées à afficher
+&nbsp;     */
+&nbsp;    private void displayListeTournees(HashMap&lt;Integer, Tournee&gt; listeTournees){
+<b class="nc">&nbsp;        info.getChildren().clear();</b>
+<b class="nc">&nbsp;        numeroCoursier = -1;</b>
+<b class="nc">&nbsp;        livraison = null;</b>
+<b class="nc">&nbsp;        selectedLabel = null;</b>
+<b class="nc">&nbsp;        for(Map.Entry&lt;Integer, Tournee&gt; entry: listeTournees.entrySet()){</b>
+<b class="nc">&nbsp;            Tournee tournee = entry.getValue();</b>
+<b class="nc">&nbsp;            if(tournee.getListeLivraisons().size() &gt; 1 || (tournee.getListeLivraisons().size() == 1 &amp;&amp; tournee.getListeLivraisons().get(0).getDestination() != carte.getEntrepot())){</b>
+<b class="nc">&nbsp;                Text segment = new Text(&quot;\n&quot;+&quot; Coursier : &quot; + entry.getKey() +&quot;\n&quot;);</b>
+<b class="nc">&nbsp;                segment.setStyle(&quot;-fx-font-size: 20px&quot;);</b>
+<b class="nc">&nbsp;                info.getChildren().add(segment);</b>
+<b class="nc">&nbsp;                display(entry.getKey(), tournee);</b>
+<b class="nc">&nbsp;                info.getChildren().add(new Text(&quot;\n&quot;));</b>
+&nbsp;            }
+<b class="nc">&nbsp;            sizeTournee.add(entry.getValue().getListeLivraisons().size());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void display(Carte carte) {
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Afficher une tournée spécifique pour un numéro de coursier donné.
+&nbsp;     *
+&nbsp;     * @param numeroCoursier Le numéro du coursier
+&nbsp;     * @param tournee        La tournée à afficher
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void display(int numeroCoursier, Tournee tournee)
+&nbsp;    {
+&nbsp;
+<b class="nc">&nbsp;        ArrayList&lt;Livraison&gt; list = tournee.getListeLivraisons();</b>
+<b class="nc">&nbsp;        int i = 1;</b>
+<b class="nc">&nbsp;        for(Livraison livraison : list){</b>
+<b class="nc">&nbsp;            Label newLabel = new Label();</b>
+<b class="nc">&nbsp;            Label numberLabel = new Label();</b>
+<b class="nc">&nbsp;            numberLabel.setStyle(&quot;-fx-font-size: 15px&quot;);</b>
+<b class="nc">&nbsp;            numberLabel.setText(&quot; &quot; + i++ + &quot; : &quot;);</b>
+<b class="nc">&nbsp;            Color color = colors.get((numeroCoursier-1) % colors.size());</b>
+<b class="nc">&nbsp;            numberLabel.setTextFill(color);</b>
+<b class="nc">&nbsp;            if(!isCalculated()){</b>
+<b class="nc">&nbsp;                newLabel.setText(&quot; Longitude : &quot; + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + &quot; Latitude: &quot; + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + &quot;\n&quot; + &quot; Créneau :&quot; + livraison.getCreneauHoraire() + &quot;\n\n&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                newLabel.setText(&quot; Longitude : &quot; + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + &quot; Latitude: &quot; + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + &quot;\n&quot; + &quot; Heure :&quot; + livraison.getHeureLivraison() + &quot;\n\n&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            switch (livraison.getEtat()){</b>
+&nbsp;                case EN_RETARD:
+<b class="nc">&nbsp;                    newLabel.setTextFill(Color.RED);</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                default:
+<b class="nc">&nbsp;                    newLabel.setTextFill(Color.BLACK);</b>
+&nbsp;                    break;
+&nbsp;            }
+<b class="nc">&nbsp;            newLabel.setOnMouseClicked(event -&gt; {</b>
+<b class="nc">&nbsp;                this.numeroCoursier = numeroCoursier;</b>
+<b class="nc">&nbsp;                this.livraison = livraison;</b>
+<b class="nc">&nbsp;                this.selectedIndex = list.indexOf(livraison);</b>
+<b class="nc">&nbsp;                showAlert(&quot;Vous avez choisi une livraison. Vous pouvez supprimer cette livraison en cliquant sur le bouton.&quot;);</b>
+<b class="nc">&nbsp;                if(selectedLabel!= null) selectedLabel.setTextFill(Color.BLACK);</b>
+<b class="nc">&nbsp;                selectedLabel = newLabel;</b>
+<b class="nc">&nbsp;                selectedLabel.setTextFill(Color.YELLOW);</b>
+&nbsp;            });
+<b class="nc">&nbsp;            info.getChildren().add(numberLabel);</b>
+<b class="nc">&nbsp;            info.getChildren().add(newLabel);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        if(isCalculated()) {</b>
+<b class="nc">&nbsp;            Label heureFinTournee = new Label();</b>
+<b class="nc">&nbsp;            heureFinTournee.setText(&quot; Retour à l&#39;entrepot :&quot; + tournee.getHeureFinTournee());</b>
+<b class="nc">&nbsp;            if (tournee.getHeureFinTournee().isAfter(LocalTime.of(12, 0, 0))) {</b>
+<b class="nc">&nbsp;                heureFinTournee.setTextFill(Color.RED);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                heureFinTournee.setTextFill(Color.BLACK);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            info.getChildren().add(heureFinTournee);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Afficher une alerte.
+&nbsp;     * @param alert Le message d&#39;erreur à afficher
+&nbsp;     */
+&nbsp;    protected void showAlert(String alert){
+<b class="nc">&nbsp;        errorLabel.setText(alert);</b>
+<b class="nc">&nbsp;        errorLabel.setTextFill(Color.BLACK);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Afficher une error avec un message d&#39;erreur spécifié.
+&nbsp;     * @param error Le message d&#39;erreur à afficher
+&nbsp;     */
+&nbsp;    protected void showError(String error) {
+<b class="nc">&nbsp;        errorLabel.setText(error);</b>
+<b class="nc">&nbsp;        errorLabel.setTextFill(Color.RED);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>
