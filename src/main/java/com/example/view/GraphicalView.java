@@ -33,7 +33,7 @@ public class GraphicalView extends Pane implements PropertyChangeListener, Visit
 
     private MouseListener mouseListener;
 
-    private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.PURPLE, Color.ORANGE, Color.RED, Color.FUCHSIA, Color.SIENNA));
+    public static ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.PURPLE, Color.ORANGE, Color.RED, Color.FUCHSIA, Color.SIENNA));
 
     protected final double DETECTION_RADIUS = 7.0;
     protected final double CIRCLE_RADIUS = 2.0;

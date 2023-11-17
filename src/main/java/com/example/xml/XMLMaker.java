@@ -47,7 +47,7 @@ public class XMLMaker {
     public void saveTourneeToXML(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, false);
         if (file == null) {
-            // Utilisateur a annulé l'opération
+            carte.sendException(new CustomXMLParsingException("Pas de fichier sélectionné"));
             return;
         }
 
