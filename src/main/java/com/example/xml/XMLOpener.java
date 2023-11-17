@@ -62,11 +62,22 @@ public class XMLOpener{
 
     public void loadTour(Stage stage, Carte carte) throws CustomXMLParsingException {
         File file = XMLFilter.getInstance().open(stage, true);
-
+        String xsdPath = "data/xsd/tour.xsd";
         if (file == null) {
             carte.sendException(new CustomXMLParsingException("Pas de fichier sélectionné"));
             throw new CustomXMLParsingException("Pas de fichier sélectionné");
         }
+        if (!new File(xsdPath).exists()) {
+            carte.sendException(new CustomXMLParsingException("XSD file not found"));
+            throw new CustomXMLParsingException("XSD file not found");
+        }
+
+        if (!validateXML(xsdPath, file.getAbsolutePath())) {
+            carte.sendException(new CustomXMLParsingException("Invalid XML file"));
+            throw new CustomXMLParsingException("Invalid XML file");
+        }
+
+
 
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
