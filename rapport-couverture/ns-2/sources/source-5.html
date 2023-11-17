@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Segment</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Segment (com.example.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Segment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.model;
+&nbsp;
+&nbsp;/**
+&nbsp; * Représente un segment reliant deux intersections avec la longueur.
+&nbsp; */
+&nbsp;public class Segment {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * L&#39;intersection d&#39;origine du segment
+&nbsp;     */
+&nbsp;    private Intersection origin;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * L&#39;intersection de destination du segment
+&nbsp;     */
+&nbsp;    private Intersection destination;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La longueur du segment
+&nbsp;     */
+&nbsp;    private double length;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Le nom du segment
+&nbsp;     */
+&nbsp;    private String name;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructeur permettant d&#39;instancier un segment avec les détails fournis.
+&nbsp;     *
+&nbsp;     * @param origin L&#39;intersection d&#39;origine du segment
+&nbsp;     * @param destination L&#39;intersection de destination du segment
+&nbsp;     * @param length La longueur du segment
+&nbsp;     * @param name Le nom du segment
+&nbsp;     */
+<b class="fc">&nbsp;    public Segment(Intersection origin, Intersection destination, double length, String name) {</b>
+<b class="fc">&nbsp;        this.origin = origin;</b>
+<b class="fc">&nbsp;        this.destination = destination;</b>
+<b class="fc">&nbsp;        this.length = length;</b>
+<b class="fc">&nbsp;        this.name = name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Intersection getOrigin() {
+<b class="fc">&nbsp;        return origin;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setOrigin(Intersection origin) {
+<b class="fc">&nbsp;        this.origin = origin;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Intersection getDestination() {
+<b class="fc">&nbsp;        return destination;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDestination(Intersection destination) {
+<b class="fc">&nbsp;        this.destination = destination;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getLength() {
+<b class="fc">&nbsp;        return length;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setLength(double length) {
+<b class="fc">&nbsp;        this.length = length;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getName() {
+<b class="fc">&nbsp;        return name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setName(String name) {
+<b class="fc">&nbsp;        this.name = name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

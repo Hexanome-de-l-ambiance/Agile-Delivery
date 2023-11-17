@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TemplateTSP</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.tsp</a>
+</div>
+
+<h1>Coverage Summary for Class: TemplateTSP (com.example.tsp)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TemplateTSP</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    71.4%
+  </span>
+  <span class="absValue">
+    (5/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83%
+  </span>
+  <span class="absValue">
+    (39/47)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.tsp;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Iterator;
+&nbsp;
+&nbsp;public abstract class TemplateTSP implements TSP {
+&nbsp;	private Integer[] bestSol;
+&nbsp;	protected Graph g;
+&nbsp;	protected int startVertex;
+&nbsp;	private double bestSolCost;
+&nbsp;	private int timeLimit;
+&nbsp;	private long startTime;
+<b class="fc">&nbsp;	private Boolean solutionFound = false;</b>
+&nbsp;
+<b class="nc">&nbsp;	public TemplateTSP(){</b>
+<b class="nc">&nbsp;		startVertex = 0;</b>
+&nbsp;	}
+&nbsp;
+<b class="fc">&nbsp;	public TemplateTSP(int startVertex){</b>
+<b class="fc">&nbsp;		this.startVertex = startVertex;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public Boolean searchSolution(int timeLimit, Graph g){
+<b class="fc">&nbsp;		if (timeLimit &lt;= 0) return false;</b>
+<b class="fc">&nbsp;		startTime = System.currentTimeMillis();	</b>
+<b class="fc">&nbsp;		this.timeLimit = timeLimit;</b>
+<b class="fc">&nbsp;		this.g = g;</b>
+<b class="fc">&nbsp;		bestSol = new Integer[g.getNbVertices()];</b>
+<b class="fc">&nbsp;		Collection&lt;Integer&gt; unvisited = new ArrayList&lt;Integer&gt;(g.getNbVertices()-1);</b>
+<b class="fc">&nbsp;		for (int i=0; i&lt;g.getNbVertices(); i++) {</b>
+<b class="fc">&nbsp;			if (i != startVertex)</b>
+<b class="fc">&nbsp;				unvisited.add(i);</b>
+&nbsp;		}
+<b class="fc">&nbsp;		Collection&lt;Integer&gt; visited = new ArrayList&lt;Integer&gt;(g.getNbVertices());</b>
+<b class="fc">&nbsp;		visited.add(startVertex);</b>
+<b class="fc">&nbsp;		bestSolCost = Double.MAX_VALUE;</b>
+<b class="fc">&nbsp;		branchAndBound(startVertex, unvisited, visited, 0);</b>
+<b class="fc">&nbsp;		return solutionFound;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public Long getSolution(int i){
+<b class="nc">&nbsp;		if (g != null &amp;&amp; solutionFound &amp;&amp; i&gt;=0 &amp;&amp; i&lt;g.getNbVertices())</b>
+<b class="nc">&nbsp;			return g.getId(bestSol[i]);</b>
+<b class="nc">&nbsp;		return -1L;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public double getSolutionCost(){
+<b class="nc">&nbsp;		if (g != null)</b>
+<b class="nc">&nbsp;			return bestSolCost;</b>
+<b class="nc">&nbsp;		return -1;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public ArrayList&lt;Long&gt; getSolutions() {
+<b class="fc">&nbsp;		ArrayList&lt;Long&gt; solutions = new ArrayList&lt;&gt;(g.getNbVertices());</b>
+<b class="fc">&nbsp;		for (int i = 0; i &lt; bestSol.length; i++) {</b>
+<b class="fc">&nbsp;			solutions.add(g.getId(bestSol[i]));</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return solutions;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * Method that must be defined in TemplateTSP subclasses
+&nbsp;	 * @param currentVertex
+&nbsp;	 * @param unvisited
+&nbsp;	 * @return a lower bound of the cost of paths in &lt;code&gt;g&lt;/code&gt; starting from &lt;code&gt;currentVertex&lt;/code&gt;, visiting 
+&nbsp;	 * every vertex in &lt;code&gt;unvisited&lt;/code&gt; exactly once, and returning back to vertex &lt;code&gt;0&lt;/code&gt;.
+&nbsp;	 */
+&nbsp;	protected abstract double bound(Integer currentVertex, Collection&lt;Integer&gt; unvisited);
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * Method that must be defined in TemplateTSP subclasses
+&nbsp;	 * @param currentVertex
+&nbsp;	 * @param unvisited
+&nbsp;	 * @param g
+&nbsp;	 * @return an iterator for visiting all vertices in &lt;code&gt;unvisited&lt;/code&gt; which are successors of &lt;code&gt;currentVertex&lt;/code&gt;
+&nbsp;	 */
+&nbsp;	protected abstract Iterator&lt;Integer&gt; iterator(Integer currentVertex, Collection&lt;Integer&gt; unvisited, Graph g);
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * Template method of a branch and bound algorithm for solving the TSP in &lt;code&gt;g&lt;/code&gt;.
+&nbsp;	 * @param currentVertex the last visited vertex
+&nbsp;	 * @param unvisited the set of vertex that have not yet been visited
+&nbsp;	 * @param visited the sequence of vertices that have been already visited (including currentVertex)
+&nbsp;	 * @param currentCost the cost of the path corresponding to &lt;code&gt;visited&lt;/code&gt;
+&nbsp;	 */	
+&nbsp;	private void branchAndBound(int currentVertex, Collection&lt;Integer&gt; unvisited, 
+&nbsp;			Collection&lt;Integer&gt; visited, double currentCost){
+<b class="fc">&nbsp;		if (System.currentTimeMillis() - startTime &gt; timeLimit) return;</b>
+<b class="fc">&nbsp;	    if (unvisited.size() == 0){ </b>
+<b class="fc">&nbsp;	    	if (g.isArc(currentVertex,startVertex)){</b>
+<b class="fc">&nbsp;	    		if (currentCost+g.getCost(currentVertex,startVertex) &lt; bestSolCost){</b>
+<b class="fc">&nbsp;					solutionFound = true;</b>
+<b class="fc">&nbsp;	    			visited.toArray(bestSol);</b>
+<b class="fc">&nbsp;	    			bestSolCost = currentCost+g.getCost(currentVertex,startVertex);</b>
+&nbsp;	    		}
+&nbsp;	    	}
+<b class="fc">&nbsp;	    } else if (currentCost+bound(currentVertex,unvisited) &lt; bestSolCost){</b>
+<b class="fc">&nbsp;	        Iterator&lt;Integer&gt; it = iterator(currentVertex, unvisited, g);</b>
+<b class="fc">&nbsp;	        while (it.hasNext()){</b>
+<b class="fc">&nbsp;	        	Integer nextVertex = it.next();</b>
+<b class="fc">&nbsp;	        	visited.add(nextVertex);</b>
+<b class="fc">&nbsp;	            unvisited.remove(nextVertex);</b>
+<b class="fc">&nbsp;	            branchAndBound(nextVertex, unvisited, visited, </b>
+<b class="fc">&nbsp;	            		currentCost+g.getCost(currentVertex, nextVertex));</b>
+<b class="fc">&nbsp;	            visited.remove(nextVertex);</b>
+<b class="fc">&nbsp;	            unvisited.add(nextVertex);</b>
+<b class="fc">&nbsp;	        }	    </b>
+&nbsp;	    }
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

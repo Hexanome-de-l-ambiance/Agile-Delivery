@@ -1,0 +1,150 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CommandeSupprimerLivraisonApresCalcul</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: CommandeSupprimerLivraisonApresCalcul (com.example.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CommandeSupprimerLivraisonApresCalcul</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.controller;
+&nbsp;
+&nbsp;import com.example.model.Carte;
+&nbsp;import com.example.model.Livraison;
+&nbsp;
+&nbsp;/**
+&nbsp; * La classe CommandeSupprimerLivraisonApresCalcul implémente l&#39;interface Commande pour supprimer une livraison d&#39;une carte après le calcul.
+&nbsp; */
+&nbsp;public class CommandeSupprimerLivraisonApresCalcul implements Commande{
+&nbsp;    private Livraison livraison;
+&nbsp;    private int index;
+&nbsp;    private int numeroCouriser;
+&nbsp;    private Carte carte;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructeur de la commande de suppression de livraison après le calcul.
+&nbsp;     *
+&nbsp;     * @param livraison      La livraison à supprimer
+&nbsp;     * @param numeroCouriser Le numéro du coursier associé à la livraison
+&nbsp;     * @param index          L&#39;indice de la livraison à supprimer
+&nbsp;     * @param carte          La carte
+&nbsp;     */
+<b class="nc">&nbsp;    public CommandeSupprimerLivraisonApresCalcul(Livraison livraison, int numeroCouriser, int index, Carte carte) {</b>
+<b class="nc">&nbsp;        this.livraison = livraison;</b>
+<b class="nc">&nbsp;        this.index = index;</b>
+<b class="nc">&nbsp;        this.numeroCouriser = numeroCouriser;</b>
+<b class="nc">&nbsp;        this.carte = carte;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Exécuter la commande de suppression de livraison après le calcul en retirant la livraison de la carte à l&#39;indice spécifié.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void execute() {
+<b class="nc">&nbsp;        if (carte.getListeTournees().get(numeroCouriser).getListeLivraisons().size() &gt; index) {</b>
+<b class="nc">&nbsp;            carte.removeLivraison(numeroCouriser, index);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Annuler la commande de suppression de livraison après le calcul en ajoutant la livraison à la carte à l&#39;indice spécifié.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void undo() {
+<b class="nc">&nbsp;        carte.addLivraison(numeroCouriser, livraison, index);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > XMLOpener</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.xml</a>
+</div>
+
+<h1>Coverage Summary for Class: XMLOpener (com.example.xml)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">XMLOpener</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (3/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.8%
+  </span>
+  <span class="absValue">
+    (10/42)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">XMLOpener$HandlerPlan</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">XMLOpener$HandlerTour</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">XMLOpener$SingletonHelper</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (6/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30.7%
+  </span>
+  <span class="absValue">
+    (27/88)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.xml;
+&nbsp;
+&nbsp;import java.io.File;
+&nbsp;import java.nio.file.Path;
+&nbsp;import java.nio.file.Paths;
+&nbsp;import java.time.LocalTime;
+&nbsp;
+&nbsp;import com.example.model.Carte;
+&nbsp;import com.example.model.Intersection;
+&nbsp;import com.example.model.Livraison;
+&nbsp;import javafx.stage.Stage;
+&nbsp;import org.xml.sax.Attributes;
+&nbsp;import org.xml.sax.SAXException;
+&nbsp;import org.xml.sax.helpers.DefaultHandler;
+&nbsp;import javax.xml.parsers.SAXParser;
+&nbsp;import javax.xml.parsers.SAXParserFactory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe gère la lecture des fichiers XML pour charger des données dans une carte.
+&nbsp; */
+&nbsp;public class XMLOpener{
+&nbsp;
+<b class="fc">&nbsp;    private XMLOpener() {}</b>
+&nbsp;
+&nbsp;    private static class SingletonHelper {
+<b class="fc">&nbsp;        private static final XMLOpener INSTANCE = new XMLOpener();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupère l&#39;instance unique de XMLOpener selon le modèle de conception Singleton.
+&nbsp;     *
+&nbsp;     * @return L&#39;instance unique de XMLOpener.
+&nbsp;     */
+&nbsp;    public static XMLOpener getInstance() {
+<b class="fc">&nbsp;        return SingletonHelper.INSTANCE;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Charge les données d&#39;une tournée à partir d&#39;un fichier XML.
+&nbsp;     *
+&nbsp;     * @param stage La fenêtre parente pour la boîte de dialogue de chargement.
+&nbsp;     * @param carte L&#39;objet Carte dans lequel charger les données de la tournée depuis le fichier XML.
+&nbsp;     * @throws CustomXMLParsingException En cas d&#39;erreur lors du chargement des données de la tournée à partir du fichier XML.
+&nbsp;     */
+&nbsp;    public void loadTour(Stage stage, Carte carte) throws CustomXMLParsingException {
+<b class="nc">&nbsp;        File file = XMLFilter.getInstance().open(stage, true);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (file == null) {</b>
+<b class="nc">&nbsp;            carte.sendException(new CustomXMLParsingException(&quot;Pas de fichier sélectionné&quot;));</b>
+<b class="nc">&nbsp;            throw new CustomXMLParsingException(&quot;Pas de fichier sélectionné&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            SAXParserFactory factory = SAXParserFactory.newInstance();</b>
+<b class="nc">&nbsp;            SAXParser saxParser = factory.newSAXParser();</b>
+<b class="nc">&nbsp;            DefaultHandler handler = new HandlerTour(carte);</b>
+<b class="nc">&nbsp;            saxParser.parse(file, handler);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            carte.sendException(e);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Lit et analyse le fichier XML pour charger les intersections et les segments de la carte.
+&nbsp;     *
+&nbsp;     * @param stage La fenêtre parente pour la boîte de dialogue de chargement.
+&nbsp;     * @param carte L&#39;objet Carte dans lequel charger les données depuis le fichier XML.
+&nbsp;     * @throws CustomXMLParsingException En cas d&#39;erreur lors de la lecture ou du chargement des données de tournée à partir du fichier XML.
+&nbsp;     */
+&nbsp;    public void readFile(Stage stage, Carte carte) throws CustomXMLParsingException {
+<b class="nc">&nbsp;        File file = XMLFilter.getInstance().open(stage, true);</b>
+<b class="nc">&nbsp;        if (file == null) {</b>
+<b class="nc">&nbsp;            carte.sendException(new CustomXMLParsingException(&quot;Pas de fichier sélectionné&quot;));</b>
+<b class="nc">&nbsp;            throw new CustomXMLParsingException(&quot;Pas de fichier sélectionné&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        carte.reset();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            SAXParserFactory factory = SAXParserFactory.newInstance();</b>
+<b class="nc">&nbsp;            SAXParser saxParser = factory.newSAXParser();</b>
+<b class="nc">&nbsp;            DefaultHandler handler = new HandlerPlan(carte);</b>
+<b class="nc">&nbsp;            saxParser.parse(file, handler);</b>
+<b class="nc">&nbsp;            Path path = Paths.get(file.getAbsolutePath());</b>
+<b class="nc">&nbsp;            String fileName = path.getFileName().toString();</b>
+<b class="nc">&nbsp;            carte.readEnd(fileName);</b>
+<b class="nc">&nbsp;            carte.initAdjacenceList();</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            carte.sendException(e);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Lit et analyse un fichier XML à partir du chemin spécifié pour initialiser les intersections et les segments de la carte.
+&nbsp;     *
+&nbsp;     * @param carte L&#39;objet Carte dans lequel initialiser les intersections et les segments depuis le fichier XML.
+&nbsp;     * @param path  Le chemin du fichier XML à lire.
+&nbsp;     * @throws CustomXMLParsingException En cas d&#39;erreur lors de la lecture ou de l&#39;initialisation des données du plan à partir du fichier XML.
+&nbsp;     */
+&nbsp;    public void readFile(Carte carte, String path) throws CustomXMLParsingException {
+<b class="fc">&nbsp;        File file = new File(path);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (file.length() == 0) {</b>
+<b class="nc">&nbsp;            throw new CustomXMLParsingException(&quot;Fichier vide&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            SAXParserFactory factory = SAXParserFactory.newInstance();</b>
+<b class="fc">&nbsp;            SAXParser saxParser = factory.newSAXParser();</b>
+<b class="fc">&nbsp;            DefaultHandler handler = new HandlerPlan(carte);</b>
+<b class="fc">&nbsp;            saxParser.parse(file, handler);</b>
+<b class="fc">&nbsp;            carte.initAdjacenceList();</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gestionnaire SAX pour la lecture des éléments liés aux tournées dans un fichier XML.
+&nbsp;     */
+&nbsp;    private static class HandlerTour extends DefaultHandler {
+&nbsp;        private final Carte carte;
+&nbsp;        private Livraison currentLivraison;
+&nbsp;        private Long currentAddressId;
+<b class="nc">&nbsp;        private StringBuilder charactersBuffer = new StringBuilder();</b>
+&nbsp;        private int numeroCoursier;
+&nbsp;        private int nbCoursiers;
+&nbsp;
+<b class="nc">&nbsp;        public HandlerTour(Carte carte) {</b>
+<b class="nc">&nbsp;            this.carte = carte;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+<b class="nc">&nbsp;            charactersBuffer.setLength(0);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (&quot;tournees&quot;.equals(qName)) {</b>
+<b class="nc">&nbsp;                String nbCoursiersValue = attributes.getValue(&quot;nbCoursiers&quot;);</b>
+<b class="nc">&nbsp;                if (nbCoursiersValue != null) {</b>
+<b class="nc">&nbsp;                    nbCoursiers = Integer.parseInt(nbCoursiersValue);</b>
+<b class="nc">&nbsp;                    carte.setNbCoursiers(nbCoursiers);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            } else if (&quot;tournee&quot;.equals(qName)) {</b>
+<b class="nc">&nbsp;                String coursierIdValue = attributes.getValue(&quot;numeroCoursier&quot;);</b>
+<b class="nc">&nbsp;                if (coursierIdValue != null) {</b>
+<b class="nc">&nbsp;                    numeroCoursier = Integer.parseInt(coursierIdValue);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            } else if (&quot;livraison&quot;.equals(qName)) {</b>
+<b class="nc">&nbsp;                currentLivraison = new Livraison();</b>
+<b class="nc">&nbsp;            } else if (&quot;address&quot;.equals(qName) &amp;&amp; currentLivraison != null) {</b>
+<b class="nc">&nbsp;                currentAddressId = Long.valueOf(attributes.getValue(&quot;id&quot;));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void characters(char[] ch, int start, int length) {
+<b class="nc">&nbsp;            charactersBuffer.append(ch, start, length);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void endElement(String uri, String localName, String qName) {
+<b class="nc">&nbsp;            if (&quot;creneauHoraire&quot;.equals(qName) &amp;&amp; currentLivraison != null) {</b>
+<b class="nc">&nbsp;                LocalTime creneauHoraire = LocalTime.parse(charactersBuffer.toString().trim());</b>
+<b class="nc">&nbsp;                currentLivraison.setCreneauHoraire(creneauHoraire);</b>
+<b class="nc">&nbsp;            } else if (&quot;address&quot;.equals(qName) &amp;&amp; currentLivraison != null) {</b>
+<b class="nc">&nbsp;                Intersection intersection = carte.getIntersection(currentAddressId);</b>
+<b class="nc">&nbsp;                currentLivraison.setDestination(intersection);</b>
+<b class="nc">&nbsp;                currentAddressId = null;</b>
+<b class="nc">&nbsp;            } else if (&quot;livraison&quot;.equals(qName) &amp;&amp; currentLivraison != null) {</b>
+<b class="nc">&nbsp;                carte.addLivraison(numeroCoursier, currentLivraison);</b>
+<b class="nc">&nbsp;                currentLivraison = null;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            charactersBuffer.setLength(0);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gestionnaire SAX pour la lecture des éléments liés à la carte dans un fichier XML.
+&nbsp;     */
+&nbsp;    private static class HandlerPlan extends DefaultHandler {
+&nbsp;        private Carte carte;
+<b class="fc">&nbsp;        public HandlerPlan(Carte carte){</b>
+<b class="fc">&nbsp;            this.carte = carte;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+<b class="fc">&nbsp;            if (&quot;intersection&quot;.equals(qName)) {</b>
+<b class="fc">&nbsp;                Long id = Long.valueOf(attributes.getValue(&quot;id&quot;));</b>
+<b class="fc">&nbsp;                double latitude = Double.parseDouble(attributes.getValue(&quot;latitude&quot;));</b>
+<b class="fc">&nbsp;                double longitude = Double.parseDouble(attributes.getValue(&quot;longitude&quot;));</b>
+<b class="fc">&nbsp;                carte.addIntersection(id, latitude, longitude);</b>
+<b class="fc">&nbsp;            } else if (&quot;segment&quot;.equals(qName)) {</b>
+<b class="fc">&nbsp;                Long destination = Long.valueOf(attributes.getValue(&quot;destination&quot;));</b>
+<b class="fc">&nbsp;                double length = Double.parseDouble(attributes.getValue(&quot;length&quot;));</b>
+<b class="fc">&nbsp;                String name = attributes.getValue(&quot;name&quot;);</b>
+<b class="fc">&nbsp;                Long origin = Long.valueOf(attributes.getValue(&quot;origin&quot;));</b>
+<b class="fc">&nbsp;                carte.addSegment(origin, destination, length, name);</b>
+<b class="fc">&nbsp;            } else if(&quot;warehouse&quot;.equals(qName)){</b>
+<b class="fc">&nbsp;                Long id = Long.valueOf(attributes.getValue(&quot;address&quot;));</b>
+<b class="fc">&nbsp;                carte.setEntrepotId(id);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

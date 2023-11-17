@@ -1,0 +1,243 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ButtonListener</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.view</a>
+</div>
+
+<h1>Coverage Summary for Class: ButtonListener (com.example.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ButtonListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/64)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.view;
+&nbsp;
+&nbsp;import com.example.controller.*;
+&nbsp;import com.example.model.Livraison;
+&nbsp;import javafx.event.ActionEvent;
+&nbsp;import javafx.event.EventHandler;
+&nbsp;import javafx.scene.control.Button;
+&nbsp;import javafx.scene.control.MenuItem;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe est responsable de la gestion des événements de boutons et de l&#39;envoi des actions correspondantes au contrôleur.
+&nbsp; */
+&nbsp;public class ButtonListener implements EventHandler&lt;ActionEvent&gt; {
+&nbsp;
+&nbsp;    private Controller controller;
+&nbsp;
+&nbsp;    private TextualView textualView;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructeur pour définir le contrôleur.
+&nbsp;     *
+&nbsp;     * @param controller Le contrôleur à définir
+&nbsp;     */
+<b class="nc">&nbsp;    public ButtonListener(Controller controller) {</b>
+<b class="nc">&nbsp;        this.controller = controller;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définir la vue textuelle pour suivre les informations choisies par l&#39;utilisateur.
+&nbsp;     *
+&nbsp;     * @param textualView La vue textuelle à définir
+&nbsp;     */
+&nbsp;    public void setTextualView(TextualView textualView) {
+<b class="nc">&nbsp;        this.textualView = textualView;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gérer l&#39;événement d&#39;action généré par les boutons ou les outils.
+&nbsp;     *
+&nbsp;     * @param event L&#39;événement écouté par le listener
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void handle(ActionEvent event) {
+&nbsp;        String actionCommand;
+<b class="nc">&nbsp;        if(event.getSource().getClass().equals(MenuItem.class)){</b>
+<b class="nc">&nbsp;            actionCommand = ((MenuItem) event.getSource()).getId();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            actionCommand = ((Button) event.getSource()).getId();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        switch (actionCommand) {</b>
+<b class="nc">&nbsp;            case Window.LOAD_PLAN: controller.load(); break;</b>
+&nbsp;            case Window.ADD_DESTINATION:{
+<b class="nc">&nbsp;                if (controller.getEtatCourant() instanceof EtatInitial){</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Aucune carte n&#39;est chargée. Veuillez charger une carte avant d&#39;ajouter des destinations.&quot;);</b>
+<b class="nc">&nbsp;                } else if (!(controller.getEtatCourant() instanceof EtatAjoutDestination || controller.getEtatCourant() instanceof EtatAjoutDestination2)) {</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Veuillez sélectionner un point de livraison à ajouter.&quot;);</b>
+&nbsp;                } else {
+&nbsp;                    try {
+<b class="nc">&nbsp;                        if(textualView.isCalculated()){</b>
+<b class="nc">&nbsp;                            controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()), 0);</b>
+&nbsp;                        } else {
+<b class="nc">&nbsp;                            controller.addDelivery(Integer.parseInt(textualView.getComboBoxCouriers().getValue()), Integer.parseInt(textualView.getComboBoxIntervals().getValue()));</b>
+&nbsp;                        }
+<b class="nc">&nbsp;                    } catch (NumberFormatException e){</b>
+<b class="nc">&nbsp;                        textualView.showAlert(&quot;Veuillez choisir un numero de coursier et un fenêtre temporelle&quot;);</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;
+&nbsp;                }
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            case Window.CALCULATE_TOUR: controller.calculateDelivery();  break;</b>
+<b class="nc">&nbsp;            case Window.LOAD_TOUR: controller.loadTour(); break;</b>
+<b class="nc">&nbsp;            case Window.SAVE_TOUR: controller.saveTour(); break;</b>
+<b class="nc">&nbsp;            case Window.UNDO: controller.undo(); break;</b>
+<b class="nc">&nbsp;            case Window.REDO: controller.redo(); break;</b>
+&nbsp;            case Window.RESET_NB_COURIERS: {
+&nbsp;                try {
+<b class="nc">&nbsp;                    controller.modifierCoursiers(Integer.parseInt(textualView.getTextField().getText()));</b>
+<b class="nc">&nbsp;                } catch (NumberFormatException e){</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Veuillez saisir un entier positif&quot;);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Window.REMOVE:{
+<b class="nc">&nbsp;                int numeroCoursier = textualView.getNumeroCoursier();</b>
+<b class="nc">&nbsp;                Livraison livraison = textualView.getLivraison();</b>
+<b class="nc">&nbsp;                if (numeroCoursier == -1 || livraison == null) {</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Livraison non choisie&quot;);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    controller.deleteDelivery(numeroCoursier, livraison);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Window.REMOVE_AFTER_CALCULATED:{
+<b class="nc">&nbsp;                int numeroCoursier = textualView.getNumeroCoursier();</b>
+<b class="nc">&nbsp;                Livraison livraison = textualView.getLivraison();</b>
+<b class="nc">&nbsp;                int index = textualView.getSelectedIndex();</b>
+<b class="nc">&nbsp;                if(numeroCoursier == -1 || livraison == null){</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Livraison non choisie&quot;);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    controller.deleteDelivery(numeroCoursier, livraison, index);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            case Window.RESET: controller.reset(); break;</b>
+&nbsp;            case Window.ADD_DESTINATION_BEFORE:{
+<b class="nc">&nbsp;                int numeroCoursier = textualView.getNumeroCoursier();</b>
+<b class="nc">&nbsp;                Livraison livraison = textualView.getLivraison();</b>
+<b class="nc">&nbsp;                int index = textualView.getSelectedIndex();</b>
+<b class="nc">&nbsp;                if(numeroCoursier == -1 || livraison == null){</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Veuillez choisir une livraison et une destination&quot;);</b>
+&nbsp;                } else {
+&nbsp;                    try {
+<b class="nc">&nbsp;                        controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);</b>
+<b class="nc">&nbsp;                    } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;                        textualView.showAlert(&quot;Veuillez choisir un fenêtre temporelle&quot;);</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;                }
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case Window.ADD_DESTINATION_AFTER:{
+<b class="nc">&nbsp;                int numeroCoursier = textualView.getNumeroCoursier();</b>
+<b class="nc">&nbsp;                Livraison livraison = textualView.getLivraison();</b>
+<b class="nc">&nbsp;                int index = textualView.getSelectedIndex();</b>
+<b class="nc">&nbsp;                if(numeroCoursier == -1 || livraison == null){</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Veuillez choisir une livraison et une destination&quot;);</b>
+&nbsp;                } else {
+&nbsp;                    try {
+<b class="nc">&nbsp;                        controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index + 1);</b>
+<b class="nc">&nbsp;                    } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;                        textualView.showAlert(&quot;Veuillez choisir un fenêtre temporelle&quot;);</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;                }
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            case Window.GENERATE: controller.genererFeuilleRoute(); break;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > EtatCarteChargee</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: EtatCarteChargee (com.example.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EtatCarteChargee</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.controller;
+&nbsp;
+&nbsp;import com.example.model.Carte;
+&nbsp;import com.example.model.Intersection;
+&nbsp;import com.example.model.Livraison;
+&nbsp;import com.example.xml.CustomXMLParsingException;
+&nbsp;import com.example.xml.XMLMaker;
+&nbsp;import com.example.xml.XMLOpener;
+&nbsp;import javafx.stage.Stage;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe représente l&#39;état du contrôleur lorsque la carte est chargée.
+&nbsp; */
+<b class="nc">&nbsp;public class EtatCarteChargee implements Etat {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Charge une carte à partir d&#39;un fichier XML.
+&nbsp;     *
+&nbsp;     * @param c     Le contrôleur.
+&nbsp;     * @param carte La carte à charger.
+&nbsp;     * @param stage Le stage JavaFX.
+&nbsp;     */
+&nbsp;    public void loadMap(Controller c, Carte carte, Stage stage) {
+&nbsp;        try{
+<b class="nc">&nbsp;            XMLOpener.getInstance().readFile(stage, carte);</b>
+<b class="nc">&nbsp;        } catch (CustomXMLParsingException e) {</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ajoute une intersection à l&#39;état actuel.
+&nbsp;     *
+&nbsp;     * @param c             Le contrôleur associé.
+&nbsp;     * @param intersection  L&#39;intersection à ajouter.
+&nbsp;     */
+&nbsp;    public void addIntersection(Controller c, Intersection intersection){
+<b class="nc">&nbsp;        c.setEtatCourant(c.etatAjoutDestination);</b>
+<b class="nc">&nbsp;        c.etatAjoutDestination.addIntersection(c, intersection);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calcule les tournées à partir de la carte.
+&nbsp;     *
+&nbsp;     * @param l     La liste de commandes.
+&nbsp;     * @param c     Le contrôleur.
+&nbsp;     * @param carte La carte.
+&nbsp;     */
+&nbsp;    public void calculerLivraisons(ListeDeCommandes l, Controller c, Carte carte){
+<b class="nc">&nbsp;        carte.calculerTournees();</b>
+<b class="nc">&nbsp;        c.setEtatCourant(c.etatTourneeCalculee);</b>
+<b class="nc">&nbsp;        l.reset();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Supprime une livraison d&#39;un coursier en ajoutant une commande de suppression à la liste de commandes.
+&nbsp;     *
+&nbsp;     * @param l             La liste de commandes.
+&nbsp;     * @param numeroCoursier Le numéro du coursier.
+&nbsp;     * @param livraison     La livraison à supprimer.
+&nbsp;     * @param c             Le contrôleur.
+&nbsp;     * @param carte         La carte concernée.
+&nbsp;     */
+&nbsp;    public void deleteDelivery(ListeDeCommandes l, int numeroCoursier, Livraison livraison, Controller c, Carte carte){
+<b class="nc">&nbsp;        l.addCommande(new CommandeSupprimerLivraison(livraison, numeroCoursier, carte));</b>
+&nbsp;    };
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Modifie le nombre de coursiers sur la carte.
+&nbsp;     *
+&nbsp;     * @param c      Le contrôleur.
+&nbsp;     * @param carte  La carte.
+&nbsp;     * @param nombre Le nouveau nombre de coursiers.
+&nbsp;     */
+&nbsp;    public void modifierCoursiers(Controller c, Carte carte, int nombre) {
+<b class="nc">&nbsp;        carte.setNbCoursiers(nombre);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Charge les tournées à partir d&#39;un fichier XML.
+&nbsp;     *
+&nbsp;     * @param carte La carte.
+&nbsp;     * @param stage Le stage JavaFX.
+&nbsp;     */
+&nbsp;    public void loadTour(Carte carte, Stage stage) {
+&nbsp;        try{
+<b class="nc">&nbsp;            XMLOpener.getInstance().loadTour(stage, carte);</b>
+<b class="nc">&nbsp;        } catch (CustomXMLParsingException e) {</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Enregistre les tournées dans un fichier XML.
+&nbsp;     *
+&nbsp;     * @param carte La carte concernée.
+&nbsp;     * @param stage Le stage JavaFX.
+&nbsp;     */
+&nbsp;    public void saveTour(Carte carte, Stage stage) {
+&nbsp;        try {
+<b class="nc">&nbsp;            XMLMaker.getInstance().saveTourneeToXML(stage, carte);</b>
+<b class="nc">&nbsp;        } catch (CustomXMLParsingException e) {</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Annule la dernière commande effectuée sur la liste de commandes.
+&nbsp;     *
+&nbsp;     * @param l La liste de commandes.
+&nbsp;     */
+&nbsp;    public void undo(ListeDeCommandes l) {
+<b class="nc">&nbsp;        l.undo();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Réexécute la dernière commande annulée sur la liste de commandes.
+&nbsp;     *
+&nbsp;     * @param l La liste de commandes.
+&nbsp;     */
+&nbsp;    public void redo(ListeDeCommandes l){
+<b class="nc">&nbsp;        l.redo();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Réinitialise les tournées sur la carte.
+&nbsp;     *
+&nbsp;     * @param c     Le contrôleur.
+&nbsp;     * @param carte La carte.
+&nbsp;     */
+&nbsp;    public void reset(Controller c, Carte carte){
+<b class="nc">&nbsp;        carte.resetTournee();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tournees nbCoursiers="10">
+    <tournee numeroCoursier="1">
+        <livraisons>
+            <livraison>
+                <address id="25719219"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="2">
+        <livraisons>
+            <livraison>
+                <address id="2072612784"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="3">
+        <livraisons>
+            <livraison>
+                <address id="25153070"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="4">
+        <livraisons>
+            <livraison>
+                <address id="60491708"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="5">
+        <livraisons>
+            <livraison>
+                <address id="26317235"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="6">
+        <livraisons>
+            <livraison>
+                <address id="59654823"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="7">
+        <livraisons>
+            <livraison>
+                <address id="21696191"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="8">
+        <livraisons>
+            <livraison>
+                <address id="21717909"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="9">
+        <livraisons>
+            <livraison>
+                <address id="342869317"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+    <tournee numeroCoursier="10">
+        <livraisons>
+            <livraison>
+                <address id="208769083"/>
+                <creneauHoraire>08:00</creneauHoraire>
+            </livraison>
+        </livraisons>
+    </tournee>
+</tournees>

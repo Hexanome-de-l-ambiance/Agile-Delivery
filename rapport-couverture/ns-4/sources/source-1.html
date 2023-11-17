@@ -1,0 +1,331 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Astar</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: Astar (com.example.utils)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Astar</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.4%
+  </span>
+  <span class="absValue">
+    (75/83)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Astar$Node</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (80/88)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.utils;
+&nbsp;
+&nbsp;import com.example.model.Carte;
+&nbsp;import com.example.model.Chemin;
+&nbsp;import com.example.model.Intersection;
+&nbsp;import com.example.model.Segment;
+&nbsp;import javafx.util.Pair;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Implémente l&#39;algorithme A* pour le calcul du plus court chemin dans un graphe.
+&nbsp; */
+<b class="fc">&nbsp;public class Astar {</b>
+&nbsp;
+&nbsp;    static class Node
+&nbsp;    {
+<b class="fc">&nbsp;        public Node(long id, double cost, double estimatedCost, Node parent) {</b>
+<b class="fc">&nbsp;            this.id = id;</b>
+<b class="fc">&nbsp;            this.cost = cost;</b>
+<b class="fc">&nbsp;            this.estimatedCost = estimatedCost;</b>
+<b class="fc">&nbsp;            this.parent = parent;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        long id;
+&nbsp;        double cost;
+&nbsp;        double estimatedCost;
+&nbsp;        Node parent;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calcule la distance du plus court chemin entre deux intersections sur une carte.
+&nbsp;     *
+&nbsp;     * @param carte la carte sur laquelle calculer la distance
+&nbsp;     * @param debut l&#39;intersection de départ
+&nbsp;     * @param fin l&#39;intersection d&#39;arrivée
+&nbsp;     * @return la distance du plus court chemin entre debut et fin en mètres
+&nbsp;     */
+&nbsp;    public static double calculDistance(Carte carte, Intersection debut, Intersection fin) {
+<b class="fc">&nbsp;        PriorityQueue&lt;Node&gt; openSet = new PriorityQueue&lt;&gt;(Comparator.comparingDouble(node -&gt; node.estimatedCost));</b>
+<b class="fc">&nbsp;        HashSet&lt;Long&gt; openSetIds = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        HashMap&lt;Long, Node&gt; closedSet = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;        // Create the start node
+<b class="fc">&nbsp;        Node startNode = new Node(debut.getId(), 0, heuristic(debut, fin), null);</b>
+<b class="fc">&nbsp;        openSet.add(startNode);</b>
+<b class="fc">&nbsp;        openSetIds.add(startNode.id);</b>
+&nbsp;
+<b class="fc">&nbsp;        while (!openSet.isEmpty()) {</b>
+<b class="fc">&nbsp;            Node current = openSet.poll();</b>
+<b class="fc">&nbsp;            openSetIds.remove(current.id);</b>
+&nbsp;
+&nbsp;            // Goal reached, return the cost
+<b class="fc">&nbsp;            if (current.id == fin.getId()) {</b>
+<b class="fc">&nbsp;                return current.cost;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Explore neighbors
+<b class="fc">&nbsp;            ArrayList&lt;Pair&lt;Long, Double&gt;&gt; neighbors = carte.getNeighbors(current.id);</b>
+<b class="fc">&nbsp;            if (neighbors != null) {</b>
+<b class="fc">&nbsp;                for (Pair&lt;Long, Double&gt; neighbor : neighbors) {</b>
+<b class="fc">&nbsp;                    Intersection neighborIntersection = carte.getListeIntersections().get(neighbor.getKey());</b>
+<b class="fc">&nbsp;                    double tentativeG = current.cost + neighbor.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;                    if (closedSet.containsKey(neighbor.getKey()) &amp;&amp; tentativeG &gt;= closedSet.get(neighbor.getKey()).cost) {</b>
+<b class="fc">&nbsp;                        continue;</b>
+&nbsp;                    }
+&nbsp;
+<b class="fc">&nbsp;                    if (openSetIds.contains(neighbor.getKey())){</b>
+<b class="fc">&nbsp;                        Node existing = getNodeFromOpenSet(neighbor.getKey(), openSet);</b>
+<b class="fc">&nbsp;                        assert existing != null;</b>
+<b class="fc">&nbsp;                        if (tentativeG &lt; existing.cost) {</b>
+<b class="nc">&nbsp;                            openSet.remove(existing);</b>
+<b class="nc">&nbsp;                            openSetIds.remove(existing.id);</b>
+&nbsp;                        } else {
+&nbsp;                            continue;
+&nbsp;                        }
+&nbsp;                    }
+<b class="fc">&nbsp;                    Node neighborNode = new Node(neighbor.getKey(), tentativeG, tentativeG + heuristic(neighborIntersection, fin), current);</b>
+<b class="fc">&nbsp;                    openSet.add(neighborNode);</b>
+<b class="fc">&nbsp;                    openSetIds.add(neighborNode.id);</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;            closedSet.put(current.id, current);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        // No path found
+<b class="nc">&nbsp;        return -1;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calcule le plus court chemin entre deux intersections sur une carte.
+&nbsp;     *
+&nbsp;     * @param carte la carte sur laquelle calculer le chemin
+&nbsp;     * @param debut l&#39;intersection de départ
+&nbsp;     * @param fin l&#39;intersection d&#39;arrivée
+&nbsp;     * @return le plus court chemin entre debut et fin
+&nbsp;     */
+&nbsp;    public static Chemin calculChemin(Carte carte, Intersection debut, Intersection fin) {
+<b class="fc">&nbsp;        PriorityQueue&lt;Node&gt; openSet = new PriorityQueue&lt;&gt;(Comparator.comparingDouble(node -&gt; node.estimatedCost));</b>
+<b class="fc">&nbsp;        HashSet&lt;Long&gt; openSetIds = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        HashMap&lt;Long, Node&gt; closedSet = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;        // Create the start node
+<b class="fc">&nbsp;        Node startNode = new Node(debut.getId(), 0, heuristic(debut, fin), null);</b>
+<b class="fc">&nbsp;        openSet.add(startNode);</b>
+<b class="fc">&nbsp;        openSetIds.add(startNode.id);</b>
+&nbsp;
+<b class="fc">&nbsp;        while (!openSet.isEmpty()) {</b>
+<b class="fc">&nbsp;            Node current = openSet.poll();</b>
+<b class="fc">&nbsp;            openSetIds.remove(current.id);</b>
+&nbsp;
+&nbsp;            // Goal reached, return the path
+<b class="fc">&nbsp;            if (current.id == fin.getId()) {</b>
+<b class="fc">&nbsp;               return reconstructPath(carte, current);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            // Explore neighbors
+<b class="fc">&nbsp;            ArrayList&lt;Pair&lt;Long, Double&gt;&gt; neighbors = carte.getNeighbors(current.id);</b>
+<b class="fc">&nbsp;            if (neighbors != null) {</b>
+<b class="fc">&nbsp;                for (Pair&lt;Long, Double&gt; neighbor : neighbors) {</b>
+<b class="fc">&nbsp;                    Intersection neighborIntersection = carte.getListeIntersections().get(neighbor.getKey());</b>
+<b class="fc">&nbsp;                    double tentativeG = current.cost + neighbor.getValue();</b>
+&nbsp;
+<b class="fc">&nbsp;                    if (closedSet.containsKey(neighbor.getKey()) &amp;&amp; tentativeG &gt;= closedSet.get(neighbor.getKey()).cost) {</b>
+<b class="fc">&nbsp;                        continue;</b>
+&nbsp;                    }
+&nbsp;
+<b class="fc">&nbsp;                    if (openSetIds.contains(neighbor.getKey())) {</b>
+<b class="fc">&nbsp;                        Node existing = getNodeFromOpenSet(neighbor.getKey(), openSet);</b>
+<b class="fc">&nbsp;                        assert existing != null;</b>
+<b class="fc">&nbsp;                        if (tentativeG &lt; existing.cost) {</b>
+<b class="nc">&nbsp;                            openSet.remove(existing);</b>
+<b class="nc">&nbsp;                            openSetIds.remove(existing.id);</b>
+&nbsp;                        } else {
+&nbsp;                            continue;
+&nbsp;                        }
+&nbsp;                    }
+<b class="fc">&nbsp;                    Node neighborNode = new Node(neighbor.getKey(), tentativeG, tentativeG + heuristic(neighborIntersection, fin), current);</b>
+<b class="fc">&nbsp;                    openSet.add(neighborNode);</b>
+<b class="fc">&nbsp;                    openSetIds.add(neighborNode.id);</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+<b class="fc">&nbsp;            closedSet.put(current.id, current);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Reconstruit le chemin à partir des nœuds parents jusqu&#39;à l&#39;origine.
+&nbsp;     *
+&nbsp;     * @param carte  La carte contenant les intersections et les segments.
+&nbsp;     * @param node   Le nœud final.
+&nbsp;     * @return le chemin reconstruit à partir du nœud final jusqu&#39;à l&#39;origine.
+&nbsp;     */
+&nbsp;    public static Chemin reconstructPath(Carte carte, Node node) {
+<b class="fc">&nbsp;        if(node == null) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Chemin path = new Chemin();</b>
+<b class="fc">&nbsp;        Node current = node;</b>
+<b class="fc">&nbsp;        while (current.parent != null) {</b>
+<b class="fc">&nbsp;            Segment segment = carte.getListeSegments().get(new Pair&lt;&gt;(current.parent.id, current.id));</b>
+<b class="fc">&nbsp;            path.addSegmentInFirstPosition(segment);</b>
+<b class="fc">&nbsp;            current = current.parent;</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return path;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calcule la distance heuristique entre deux intersections.
+&nbsp;     *
+&nbsp;     * @param origin      L&#39;intersection de départ.
+&nbsp;     * @param destination L&#39;intersection d&#39;arrivée.
+&nbsp;     * @return la distance heuristique entre origin et destination.
+&nbsp;     */
+&nbsp;    private static double heuristic(Intersection origin, Intersection destination) {
+<b class="fc">&nbsp;        double x1 = origin.getLatitude();</b>
+<b class="fc">&nbsp;        double y1 = origin.getLongitude();</b>
+&nbsp;
+<b class="fc">&nbsp;        double x2 = destination.getLatitude();</b>
+<b class="fc">&nbsp;        double y2 = destination.getLongitude();</b>
+&nbsp;
+<b class="fc">&nbsp;        return Distance.haversine(x1, y1, x2, y2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Obtient un nœud spécifique à partir de l&#39;ensemble ouvert (openSet) par son identifiant.
+&nbsp;     *
+&nbsp;     * @param nodeId   L&#39;identifiant du nœud.
+&nbsp;     * @param openSet  L&#39;ensemble de nœuds ouvert.
+&nbsp;     * @return le nœud correspondant à nodeId s&#39;il est présent dans l&#39;ensemble ouvert, sinon null.
+&nbsp;     */
+&nbsp;    private static Node getNodeFromOpenSet(long nodeId, PriorityQueue&lt;Node&gt; openSet) {
+<b class="fc">&nbsp;        for (Node node : openSet) {</b>
+<b class="fc">&nbsp;            if (node.id == nodeId) {</b>
+<b class="fc">&nbsp;                return node;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

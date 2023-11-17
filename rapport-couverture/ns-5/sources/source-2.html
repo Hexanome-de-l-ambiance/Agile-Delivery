@@ -1,0 +1,408 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GraphicalView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.view</a>
+</div>
+
+<h1>Coverage Summary for Class: GraphicalView (com.example.view)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GraphicalView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/153)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GraphicalView$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/154)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.view;
+&nbsp;
+&nbsp;import com.example.model.*;
+&nbsp;
+&nbsp;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.beans.property.ReadOnlyDoubleProperty;
+&nbsp;import javafx.scene.layout.Pane;
+&nbsp;import javafx.scene.shape.Circle;
+&nbsp;import javafx.scene.shape.Line;
+&nbsp;import javafx.scene.paint.Color;
+&nbsp;import javafx.scene.shape.Polygon;
+&nbsp;import javafx.scene.shape.StrokeType;
+&nbsp;import javafx.util.Pair;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * La vue graphique
+&nbsp; */
+&nbsp;public class GraphicalView extends Pane implements PropertyChangeListener, Visitor{
+&nbsp;
+&nbsp;    private Carte carte;
+&nbsp;
+&nbsp;    private Pane graph;
+&nbsp;
+&nbsp;    private HashMap&lt;Circle, Intersection&gt; circleMap;
+&nbsp;
+<b class="nc">&nbsp;    private HashSet&lt;Pair&lt;Circle, Circle&gt;&gt; circlePairSet = new HashSet&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;    private HashSet&lt;Pair&lt;Long, Long&gt;&gt; hashSet = new HashSet&lt;&gt;();</b>
+&nbsp;
+&nbsp;    private MouseListener mouseListener;
+&nbsp;
+<b class="nc">&nbsp;    private ArrayList&lt;Color&gt; colors = new ArrayList&lt;&gt;(Arrays.asList(Color.BLUE, Color.GREEN, Color.PURPLE, Color.ORANGE, Color.RED, Color.FUCHSIA, Color.SIENNA));</b>
+&nbsp;
+<b class="nc">&nbsp;    protected final double DETECTION_RADIUS = 7.0;</b>
+<b class="nc">&nbsp;    protected final double CIRCLE_RADIUS = 2.0;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialiser le view
+&nbsp;     *
+&nbsp;     * @param carte     La carte à afficher
+&nbsp;     * @param mapPane   Le conteneur de la carte
+&nbsp;     */
+<b class="nc">&nbsp;    public GraphicalView(Carte carte, Pane mapPane) {</b>
+<b class="nc">&nbsp;        this.setPrefWidth(mapPane.getPrefWidth());</b>
+<b class="nc">&nbsp;        this.setPrefHeight(mapPane.getPrefHeight());</b>
+<b class="nc">&nbsp;        this.carte = carte;</b>
+<b class="nc">&nbsp;        graph = new Pane();</b>
+<b class="nc">&nbsp;        graph.setLayoutX(5);</b>
+<b class="nc">&nbsp;        graph.setLayoutY(5);</b>
+<b class="nc">&nbsp;        graph.setPrefWidth(this.getPrefWidth());</b>
+<b class="nc">&nbsp;        graph.setPrefHeight(this.getPrefHeight());</b>
+<b class="nc">&nbsp;        graph.setStyle(&quot;-fx-background-color: lightblue;&quot;);</b>
+<b class="nc">&nbsp;        this.getChildren().add(graph);</b>
+<b class="nc">&nbsp;        this.setStyle(&quot;-fx-background-color: lightblue;&quot;);</b>
+<b class="nc">&nbsp;        carte.addPropertyChangeListener(this);</b>
+<b class="nc">&nbsp;        this.circleMap = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (ReadOnlyDoubleProperty readOnlyDoubleProperty : Arrays.asList(widthProperty(), heightProperty())) {</b>
+<b class="nc">&nbsp;            readOnlyDoubleProperty.addListener((obs, oldVal, newVal) -&gt; {</b>
+<b class="nc">&nbsp;                if (oldVal.longValue() != 0.0 &amp;&amp; !graph.getChildren().isEmpty()){</b>
+<b class="nc">&nbsp;                   handleResize();</b>
+&nbsp;                }
+&nbsp;            });
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;    public Pane getGraph() {
+<b class="nc">&nbsp;        return graph;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public HashMap&lt;Circle, Intersection&gt; getCircleMap() {
+<b class="nc">&nbsp;        return circleMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public HashSet&lt;Pair&lt;Circle, Circle&gt;&gt; getCirclePairSet() {
+<b class="nc">&nbsp;        return circlePairSet;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMouseListener(MouseListener mouseListener) {
+<b class="nc">&nbsp;        this.mouseListener = mouseListener;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gérer les changements dans les propriétés de l&#39;événement de PropertyChange en effectuant différentes actions basées sur l&#39;événement.
+&nbsp;     * @param evt L&#39;événement de changement de propriété
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void propertyChange(PropertyChangeEvent evt) {
+<b class="nc">&nbsp;        String event = evt.getPropertyName();</b>
+<b class="nc">&nbsp;        switch (event) {</b>
+<b class="nc">&nbsp;            case Carte.RESET: graph.getChildren().clear(); break;</b>
+<b class="nc">&nbsp;            case Carte.READ: display(carte); break;</b>
+&nbsp;            case Carte.ADD, Carte.REMOVE, Carte.UPDATE:{
+<b class="nc">&nbsp;                graph.getChildren().clear();</b>
+<b class="nc">&nbsp;                hashSet.clear();</b>
+<b class="nc">&nbsp;                display(carte);</b>
+<b class="nc">&nbsp;                HashMap&lt;Integer, Tournee&gt; listeTournees = (HashMap&lt;Integer, Tournee&gt;) evt.getNewValue();</b>
+<b class="nc">&nbsp;                for(Map.Entry&lt;Integer, Tournee&gt; entry: listeTournees.entrySet()){</b>
+<b class="nc">&nbsp;                    display(entry.getKey(), entry.getValue());</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            case Carte.SET_NB_COURIERS, Carte.RESET_TOURS: graph.getChildren().clear();display(carte);break;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Afficher la carte sur le view en fonction des tournées fournies.
+&nbsp;     * @param carte La carte à afficher
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void display(Carte carte) {
+<b class="nc">&nbsp;        if(carte.getEntrepot() == null) { return; }</b>
+<b class="nc">&nbsp;        double minLat = carte.getMinLat();</b>
+<b class="nc">&nbsp;        double maxLat = carte.getMaxLat();</b>
+<b class="nc">&nbsp;        double minLon = carte.getMinLon();</b>
+<b class="nc">&nbsp;        double maxLon = carte.getMaxLon();</b>
+&nbsp;
+<b class="nc">&nbsp;        double midLat = (minLat + maxLat) / 2;</b>
+<b class="nc">&nbsp;        double midLon = (minLon + maxLon) / 2;</b>
+&nbsp;
+<b class="nc">&nbsp;        double rangeLat = maxLat - minLat;</b>
+<b class="nc">&nbsp;        double rangeLon = maxLon - minLon;</b>
+&nbsp;
+<b class="nc">&nbsp;        double scaleX = graph.getWidth() / rangeLon;</b>
+<b class="nc">&nbsp;        double scaleY = graph.getHeight() / rangeLat;</b>
+<b class="nc">&nbsp;        double scale = Math.min(scaleX, scaleY);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Intersection intersection : carte.getListeIntersections().values()) {</b>
+<b class="nc">&nbsp;            if(intersection == carte.getEntrepot()) continue;</b>
+&nbsp;
+<b class="nc">&nbsp;            double adjustedX = (intersection.getLongitude() - midLon) * scale + graph.getWidth() / 2;</b>
+<b class="nc">&nbsp;            double adjustedY = -(intersection.getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+&nbsp;
+<b class="nc">&nbsp;            Circle circle = new Circle(adjustedX, adjustedY, CIRCLE_RADIUS, Color.BLACK);</b>
+<b class="nc">&nbsp;            Circle detectionCircle = new Circle(adjustedX, adjustedY, DETECTION_RADIUS);</b>
+<b class="nc">&nbsp;            detectionCircle.setFill(Color.TRANSPARENT);</b>
+<b class="nc">&nbsp;            detectionCircle.setOnMouseEntered(event -&gt; circle.setFill(Color.RED));</b>
+<b class="nc">&nbsp;            detectionCircle.setOnMouseExited(event -&gt; {</b>
+<b class="nc">&nbsp;                if (circle.getRadius() == CIRCLE_RADIUS) {</b>
+<b class="nc">&nbsp;                    circle.setFill(Color.BLACK);</b>
+&nbsp;                }
+&nbsp;            });
+&nbsp;
+<b class="nc">&nbsp;            circleMap.put(detectionCircle, intersection);</b>
+<b class="nc">&nbsp;            circlePairSet.add(new Pair&lt;&gt;(detectionCircle, circle));</b>
+<b class="nc">&nbsp;            graph.getChildren().add(circle);</b>
+<b class="nc">&nbsp;            graph.getChildren().add(detectionCircle);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Segment segment : carte.getListeSegments().values()) {</b>
+<b class="nc">&nbsp;            double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + graph.getWidth() / 2;</b>
+<b class="nc">&nbsp;            double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+<b class="nc">&nbsp;            double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;</b>
+<b class="nc">&nbsp;            double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+&nbsp;
+<b class="nc">&nbsp;            Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);</b>
+<b class="nc">&nbsp;            graph.getChildren().add(line);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        Intersection entrepot = carte.getEntrepot();</b>
+<b class="nc">&nbsp;        double adjustedX = (entrepot.getLongitude() - midLon) * scale + graph.getWidth() / 2;</b>
+<b class="nc">&nbsp;        double adjustedY = -(entrepot.getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+&nbsp;
+<b class="nc">&nbsp;        Circle circle = new Circle(adjustedX, adjustedY, 5, Color.GREEN);</b>
+<b class="nc">&nbsp;        circle.toFront();</b>
+<b class="nc">&nbsp;        graph.getChildren().add(circle);</b>
+&nbsp;
+<b class="nc">&nbsp;        mouseListener.setOnEvent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Afficher une tournée spécifique pour un numéro de coursier donné.
+&nbsp;     *
+&nbsp;     * @param numeroCoursier Le numéro du coursier
+&nbsp;     * @param tournee        La tournée à afficher
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void display(int numeroCoursier, Tournee tournee) {
+<b class="nc">&nbsp;        double minLat = carte.getMinLat();</b>
+<b class="nc">&nbsp;        double maxLat = carte.getMaxLat();</b>
+<b class="nc">&nbsp;        double minLon = carte.getMinLon();</b>
+<b class="nc">&nbsp;        double maxLon = carte.getMaxLon();</b>
+&nbsp;
+<b class="nc">&nbsp;        double midLat = (minLat + maxLat) / 2;</b>
+<b class="nc">&nbsp;        double midLon = (minLon + maxLon) / 2;</b>
+&nbsp;
+<b class="nc">&nbsp;        double rangeLat = maxLat - minLat;</b>
+<b class="nc">&nbsp;        double rangeLon = maxLon - minLon;</b>
+&nbsp;
+<b class="nc">&nbsp;        double scaleX = graph.getWidth() / rangeLon;</b>
+<b class="nc">&nbsp;        double scaleY = graph.getHeight() / rangeLat;</b>
+<b class="nc">&nbsp;        double scale = Math.min(scaleX, scaleY);</b>
+<b class="nc">&nbsp;        Color color = colors.get((numeroCoursier-1) % colors.size());</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Livraison livraison : tournee.getListeLivraisons()) {</b>
+<b class="nc">&nbsp;            if(livraison.getDestination() == carte.getEntrepot()) continue;</b>
+<b class="nc">&nbsp;            double adjustedX = (livraison.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;</b>
+<b class="nc">&nbsp;            double adjustedY = -(livraison.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+&nbsp;
+<b class="nc">&nbsp;            Circle circle = new Circle(adjustedX, adjustedY, 6);</b>
+&nbsp;
+<b class="nc">&nbsp;            switch (livraison.getEtat()) {</b>
+<b class="nc">&nbsp;                case INDETERMINE -&gt; circle.setFill(Color.BLUE);</b>
+<b class="nc">&nbsp;                case EN_AVANCE -&gt; circle.setFill(Color.GREEN);</b>
+<b class="nc">&nbsp;                case A_L_HEURE -&gt; circle.setFill(Color.YELLOW);</b>
+<b class="nc">&nbsp;                case EN_RETARD -&gt; circle.setFill(Color.RED);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;            circle.toFront();</b>
+<b class="nc">&nbsp;            graph.getChildren().add(circle);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        int i = 1;</b>
+<b class="nc">&nbsp;        for(Chemin chemin : tournee.getListeChemins())</b>
+&nbsp;        {
+<b class="nc">&nbsp;            for (Segment segment : chemin.getListeSegments()) {</b>
+<b class="nc">&nbsp;                double adjustedX1 = (segment.getOrigin().getLongitude() - midLon) * scale + graph.getWidth() / 2;</b>
+<b class="nc">&nbsp;                double adjustedY1 = -(segment.getOrigin().getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+<b class="nc">&nbsp;                double adjustedX2 = (segment.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2;</b>
+<b class="nc">&nbsp;                double adjustedY2 = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+&nbsp;
+<b class="nc">&nbsp;                double angle = Math.atan2((adjustedY2 - adjustedY1), (adjustedX2 - adjustedX1));</b>
+&nbsp;
+&nbsp;                // Create a Polygon to represent the arrowhead for the last segment
+<b class="nc">&nbsp;                if(segment == chemin.getListeSegments().get(chemin.getListeSegments().size() - 1) &amp;&amp; segment.getDestination() != carte.getEntrepot()) {</b>
+<b class="nc">&nbsp;                    Polygon arrowhead = new Polygon();</b>
+<b class="nc">&nbsp;                    arrowhead.getPoints().addAll(</b>
+<b class="nc">&nbsp;                            adjustedX2 - 15 * Math.cos(angle - Math.toRadians(30)), adjustedY2 - 15 * Math.sin(angle - Math.toRadians(30)),</b>
+<b class="nc">&nbsp;                            adjustedX2, adjustedY2,</b>
+<b class="nc">&nbsp;                            adjustedX2 - 15 * Math.cos(angle + Math.toRadians(30)), adjustedY2 - 15 * Math.sin(angle + Math.toRadians(30))</b>
+&nbsp;                    );
+<b class="nc">&nbsp;                    arrowhead.setFill(Color.BLACK);</b>
+<b class="nc">&nbsp;                    arrowhead.toFront();</b>
+<b class="nc">&nbsp;                    graph.getChildren().add(arrowhead);</b>
+&nbsp;
+<b class="nc">&nbsp;                    double adjustedX = (segment.getDestination().getLongitude() - midLon) * scale + graph.getWidth() / 2 ;</b>
+<b class="nc">&nbsp;                    double adjustedY = -(segment.getDestination().getLatitude() - midLat) * scale + graph.getHeight() / 2;</b>
+<b class="nc">&nbsp;                    javafx.scene.text.Text text = new javafx.scene.text.Text(&quot;&quot; + i++);</b>
+<b class="nc">&nbsp;                    text.setX(adjustedX - 5);</b>
+<b class="nc">&nbsp;                    text.setY(adjustedY - 15);</b>
+<b class="nc">&nbsp;                    text.setStroke(color);</b>
+<b class="nc">&nbsp;                    text.setStyle(&quot;-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: white; -fx-stroke-width: 1px;&quot;);</b>
+<b class="nc">&nbsp;                    text.toFront();</b>
+<b class="nc">&nbsp;                    graph.getChildren().add(text);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                Line line = new Line(adjustedX1, adjustedY1, adjustedX2, adjustedY2);</b>
+&nbsp;
+<b class="nc">&nbsp;                line.setStrokeType(StrokeType.OUTSIDE); // Set the stroke type</b>
+<b class="nc">&nbsp;                line.setStrokeWidth(2); // Set the stroke width</b>
+<b class="nc">&nbsp;                line.setStroke(color);</b>
+<b class="nc">&nbsp;                if(hashSet.contains(new Pair&lt;&gt;(segment.getOrigin().getId(), segment.getDestination().getId())) || hashSet.contains(new Pair&lt;&gt;(segment.getDestination().getId(), segment.getOrigin().getId()))) {</b>
+<b class="nc">&nbsp;                    line.getStrokeDashArray().addAll((double)(numeroCoursier%3), 8d);</b>
+&nbsp;                }
+&nbsp;                else {
+<b class="nc">&nbsp;                    hashSet.add(new Pair&lt;&gt;(segment.getOrigin().getId(), segment.getDestination().getId()));</b>
+&nbsp;                }
+<b class="nc">&nbsp;                graph.getChildren().add(line);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void handleResize() {
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;            graph.getChildren().clear();</b>
+<b class="nc">&nbsp;            hashSet.clear();</b>
+<b class="nc">&nbsp;            display(carte);</b>
+<b class="nc">&nbsp;            HashMap&lt;Integer, Tournee&gt; listeTournees = carte.getListeTournees();</b>
+<b class="nc">&nbsp;            for (Map.Entry&lt;Integer, Tournee&gt; entry : listeTournees.entrySet()) {</b>
+<b class="nc">&nbsp;                display(entry.getKey(), entry.getValue());</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

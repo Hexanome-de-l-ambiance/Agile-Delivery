@@ -1,0 +1,99 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TSP</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.tsp</a>
+</div>
+
+<h1>Coverage Summary for Class: TSP (com.example.tsp)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">TSP</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.tsp;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;/**
+&nbsp; * L&#39;interface TSP définit les méthodes pour résoudre le problème du voyageur de commerce (Traveling Salesman Problem).
+&nbsp; */
+&nbsp;public interface TSP {
+&nbsp;	/**
+&nbsp;	 * Search for a shortest cost hamiltonian circuit in &lt;code&gt;g&lt;/code&gt; within &lt;code&gt;timeLimit&lt;/code&gt; milliseconds
+&nbsp;	 * (returns the best found tour whenever the time limit is reached)
+&nbsp;	 * Warning: The computed tour always start from vertex 0
+&nbsp;	 * @param timeLimit
+&nbsp;	 * @param g
+&nbsp;	 */
+&nbsp;	public Boolean searchSolution(int timeLimit, Graph g);
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * @param i
+&nbsp;	 * @return the ith visited vertex in the solution computed by &lt;code&gt;searchSolution&lt;/code&gt; 
+&nbsp;	 * (-1 if &lt;code&gt;searchSolution&lt;/code&gt; has not been called yet, or if i &amp;lt; 0 or i &amp;gt;= g.getNbSommets()).
+&nbsp;	 */
+&nbsp;	public Long getSolution(int i);
+&nbsp;	
+&nbsp;	/** 
+&nbsp;	 * @return the total cost of the solution computed by &lt;code&gt;searchSolution&lt;/code&gt; 
+&nbsp;	 * (-1 if &lt;code&gt;searchSolution&lt;/code&gt; has not been called yet).
+&nbsp;	 */
+&nbsp;	public double getSolutionCost();
+&nbsp;
+&nbsp;	public ArrayList&lt;Long&gt; getSolutions();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>

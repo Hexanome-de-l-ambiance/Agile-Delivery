@@ -1,0 +1,273 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MouseListener</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.view</a>
+</div>
+
+<h1>Coverage Summary for Class: MouseListener (com.example.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MouseListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/73)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.view;
+&nbsp;
+&nbsp;import com.example.controller.Controller;
+&nbsp;import com.example.model.Intersection;
+&nbsp;import javafx.event.ActionEvent;
+&nbsp;import javafx.event.EventHandler;
+&nbsp;import javafx.scene.input.ScrollEvent;
+&nbsp;import javafx.scene.layout.Pane;
+&nbsp;import javafx.scene.paint.Color;
+&nbsp;import javafx.scene.shape.Circle;
+&nbsp;import javafx.util.Pair;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe est responsable de la gestion des événements de souris, tels que les clics et les mouvements.
+&nbsp; */
+&nbsp;public class MouseListener implements EventHandler&lt;ActionEvent&gt; {
+&nbsp;
+&nbsp;    private Controller controller;
+&nbsp;    private GraphicalView graphicalView;
+&nbsp;    private TextualView textualView;
+&nbsp;    private Pane graph;
+&nbsp;    private double mouseX, mouseY;
+&nbsp;    private boolean isDragged;
+&nbsp;
+&nbsp;    private static final double MAX_SCALE = 5.0;
+&nbsp;    private static final double MIN_SCALE = 0.5;
+&nbsp;
+&nbsp;    private static final double MAP_BOUNDARY_LEFT = -100;
+&nbsp;    private static final double MAP_BOUNDARY_RIGHT = 100;
+&nbsp;    private static final double MAP_BOUNDARY_TOP = -100;
+&nbsp;    private static final double MAP_BOUNDARY_BOTTOM = 100;
+&nbsp;    private static final double PADDING = 10;
+&nbsp;
+&nbsp;    private static final double SCALE_FACTOR = 5.0;
+&nbsp;    private Circle lastClickedCircle;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialiser le listener de la souris.
+&nbsp;     *
+&nbsp;     * @param textualView    La vue textuelle associée
+&nbsp;     * @param graphicalView  La vue graphique associée
+&nbsp;     * @param controller     Le contrôleur associé
+&nbsp;     */
+<b class="nc">&nbsp;    public MouseListener(TextualView textualView, GraphicalView graphicalView, Controller controller) {</b>
+<b class="nc">&nbsp;        this.controller = controller;</b>
+<b class="nc">&nbsp;        this.graphicalView = graphicalView;</b>
+<b class="nc">&nbsp;        this.graph = graphicalView.getGraph();</b>
+<b class="nc">&nbsp;        this.textualView = textualView;</b>
+<b class="nc">&nbsp;        setOnEvent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Configurer les gestionnaires d&#39;événements pour les interactions de la vue
+&nbsp;     * Les événements configurés incluent le clic de la souris, le déplacement de la souris et le défilement de la souris.
+&nbsp;     * En fonction des événements, cette méthode effectue des actions telles que la gestion du clic de souris,
+&nbsp;     * le déplacement de la carte graphique et l&#39;ajustement de l&#39;échelle de la carte.
+&nbsp;     */
+&nbsp;    protected void setOnEvent(){
+<b class="nc">&nbsp;        graphicalView.setOnMousePressed(event -&gt; {</b>
+<b class="nc">&nbsp;            if(event.isPrimaryButtonDown()) {</b>
+<b class="nc">&nbsp;                mouseX = event.getSceneX() - graph.getLayoutX();</b>
+<b class="nc">&nbsp;                mouseY = event.getSceneY() - graph.getLayoutY();</b>
+<b class="nc">&nbsp;            }if(event.isSecondaryButtonDown()){</b>
+<b class="nc">&nbsp;                controller.unselectIntersection();</b>
+<b class="nc">&nbsp;                if (lastClickedCircle != null) {</b>
+<b class="nc">&nbsp;                    lastClickedCircle.setFill(Color.BLACK);</b>
+<b class="nc">&nbsp;                    lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                textualView.setCoordinatesPaneVisible(false);</b>
+<b class="nc">&nbsp;                textualView.setTextLatitudeLabel(&quot;&quot;);</b>
+<b class="nc">&nbsp;                textualView.setTextLongitudeLabel(&quot;&quot;);</b>
+&nbsp;
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        graphicalView.setOnMouseReleased(event -&gt; {</b>
+<b class="nc">&nbsp;                isDragged = false;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        graphicalView.setOnMouseDragged(event -&gt; {</b>
+<b class="nc">&nbsp;            if(event.isPrimaryButtonDown()) {</b>
+<b class="nc">&nbsp;                double newX = event.getSceneX() - mouseX;</b>
+<b class="nc">&nbsp;                double newY = event.getSceneY() - mouseY;</b>
+&nbsp;
+<b class="nc">&nbsp;                newX = Math.max(newX, MAP_BOUNDARY_LEFT * SCALE_FACTOR * graph.getScaleX() - PADDING);</b>
+<b class="nc">&nbsp;                newX = Math.min(newX, MAP_BOUNDARY_RIGHT * SCALE_FACTOR * graph.getScaleX() + PADDING);</b>
+<b class="nc">&nbsp;                newY = Math.max(newY, MAP_BOUNDARY_TOP * SCALE_FACTOR * graph.getScaleY() - PADDING);</b>
+<b class="nc">&nbsp;                newY = Math.min(newY, MAP_BOUNDARY_BOTTOM * SCALE_FACTOR * graph.getScaleY() + PADDING);</b>
+&nbsp;
+<b class="nc">&nbsp;                graph.setLayoutX(newX);</b>
+<b class="nc">&nbsp;                graph.setLayoutY(newY);</b>
+<b class="nc">&nbsp;                isDragged = true;</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        graphicalView.setOnScroll((ScrollEvent event) -&gt; {</b>
+<b class="nc">&nbsp;            double deltaY = event.getDeltaY();</b>
+<b class="nc">&nbsp;            double scaleFactor = 1.1;</b>
+&nbsp;
+<b class="nc">&nbsp;            double newScaleX = graph.getScaleX();</b>
+<b class="nc">&nbsp;            double newScaleY = graph.getScaleY();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (deltaY &lt; 0) {</b>
+<b class="nc">&nbsp;                newScaleX /= scaleFactor;</b>
+<b class="nc">&nbsp;                newScaleY /= scaleFactor;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                newScaleX *= scaleFactor;</b>
+<b class="nc">&nbsp;                newScaleY *= scaleFactor;</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            newScaleX = Math.max(newScaleX, MIN_SCALE);</b>
+<b class="nc">&nbsp;            newScaleY = Math.max(newScaleY, MIN_SCALE);</b>
+<b class="nc">&nbsp;            newScaleX = Math.min(newScaleX, MAX_SCALE);</b>
+<b class="nc">&nbsp;            newScaleY = Math.min(newScaleY, MAX_SCALE);</b>
+&nbsp;
+<b class="nc">&nbsp;            graph.setScaleX(newScaleX);</b>
+<b class="nc">&nbsp;            graph.setScaleY(newScaleY);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        HashMap&lt;Circle, Intersection&gt; circleMap = graphicalView.getCircleMap();</b>
+<b class="nc">&nbsp;        HashSet&lt;Pair&lt;Circle, Circle&gt;&gt; circlePairSet = graphicalView.getCirclePairSet();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Map.Entry&lt;Circle, Intersection&gt; entry : circleMap.entrySet()) {</b>
+<b class="nc">&nbsp;            Circle key = entry.getKey();</b>
+<b class="nc">&nbsp;            key.setOnMouseReleased(mouseEvent -&gt; {</b>
+<b class="nc">&nbsp;                if (isDragged) {</b>
+<b class="nc">&nbsp;                    mouseEvent.consume();</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Intersection selectedIntersection = entry.getValue();</b>
+<b class="nc">&nbsp;                    controller.addDestination(selectedIntersection);</b>
+<b class="nc">&nbsp;                    textualView.setCoordinatesPaneVisible(true);</b>
+<b class="nc">&nbsp;                    textualView.setTextLongitudeLabel(&quot; longitude : &quot; + Math.round(entry.getValue().getLongitude() * 1000.0) / 1000.0);</b>
+<b class="nc">&nbsp;                    textualView.setTextLatitudeLabel(&quot; latitude : &quot; + Math.round(entry.getValue().getLatitude() * 1000.0) / 1000.0);</b>
+<b class="nc">&nbsp;                    textualView.showAlert(&quot;Veuillez choisir les options à gauche, et cliquez sur le bouton Ajouter une livraison. Cliquez droit pour supprimer cet ajout.&quot;);</b>
+<b class="nc">&nbsp;                    for (Pair&lt;Circle, Circle&gt; circlePair : circlePairSet) {</b>
+<b class="nc">&nbsp;                        if (circlePair.getKey().equals(key) &amp;&amp; circlePair.getValue() != lastClickedCircle) {</b>
+<b class="nc">&nbsp;                            Circle associatedCircle = circlePair.getValue();</b>
+<b class="nc">&nbsp;                            associatedCircle.setFill(Color.RED);</b>
+<b class="nc">&nbsp;                            associatedCircle.setRadius(graphicalView.CIRCLE_RADIUS * 2);</b>
+&nbsp;
+<b class="nc">&nbsp;                            if (lastClickedCircle != null) {</b>
+<b class="nc">&nbsp;                                lastClickedCircle.setFill(Color.BLACK);</b>
+<b class="nc">&nbsp;                                lastClickedCircle.setRadius(graphicalView.CIRCLE_RADIUS);</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                            lastClickedCircle = associatedCircle;</b>
+<b class="nc">&nbsp;                            break;</b>
+&nbsp;                        }
+<b class="nc">&nbsp;                    }</b>
+&nbsp;                }
+&nbsp;            });
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gérer les événements de souris.
+&nbsp;     *
+&nbsp;     * @param actionEvent L&#39;événement de souris à gérer
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void handle(ActionEvent actionEvent) {
+&nbsp;
+<b class="nc">&nbsp;    }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-17 08:52</div>
+</div>
+</body>
+</html>
