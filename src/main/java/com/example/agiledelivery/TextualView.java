@@ -312,7 +312,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 }
                 break;
             }
-            case Carte.ERROR: showAlert((String) evt.getNewValue()); break;
+            case Carte.ERROR: showError((String) evt.getNewValue()); break;
             case Carte.ADD: {
                 listeTournees = (HashMap<Integer, Tournee>) evt.getNewValue();
                 displayListeTournees(listeTournees);
@@ -510,14 +510,17 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     }
 
     /**
-     * Afficher une alerte avec un message d'erreur spécifié.
+     * Afficher une alerte.
      * @param alert Le message d'erreur à afficher
      */
     protected void showAlert(String alert){
         errorLabel.setText(alert);
         errorLabel.setTextFill(Color.BLACK);
     }
-
+    /**
+     * Afficher une error avec un message d'erreur spécifié.
+     * @param error Le message d'erreur à afficher
+     */
     protected void showError(String error) {
         errorLabel.setText(error);
         errorLabel.setTextFill(Color.RED);
