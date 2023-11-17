@@ -55,11 +55,6 @@ public class XMLOpener{
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new HandlerTour(carte);
             saxParser.parse(file, handler);
-            Path path = Paths.get(file.getAbsolutePath());
-            String fileName = path.getFileName().toString();
-            carte.readEnd(fileName);
-            carte.initAdjacenceList();
-
         } catch (Exception e) {
             e.printStackTrace();
             carte.sendException(e);
