@@ -1,10 +1,9 @@
-package com.example.agiledelivery;
+package com.example.view;
 
 import com.example.controller.Controller;
 import com.example.model.Intersection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -108,7 +107,6 @@ public class MouseListener implements EventHandler<ActionEvent> {
             double newScaleX = graph.getScaleX();
             double newScaleY = graph.getScaleY();
 
-            // System.out.println("deltaY: " + deltaY);
             if (deltaY < 0) {
                 newScaleX /= scaleFactor;
                 newScaleY /= scaleFactor;
@@ -137,9 +135,10 @@ public class MouseListener implements EventHandler<ActionEvent> {
                 } else {
                     Intersection selectedIntersection = entry.getValue();
                     controller.addDestination(selectedIntersection);
-                    textualView.setHint("Intersection id: "+ entry.getValue().getId() +
-                            " longitude: " + entry.getValue().getLongitude()+
-                            " latitude: " + entry.getValue().getLatitude()+"\n");
+                    textualView.setCoordinatesPaneVisible(true);
+                    textualView.setTextLongitudeLabel(" longitude : " + Math.round(entry.getValue().getLongitude() * 1000.0) / 1000.0);
+                    textualView.setTextLatitudeLabel(" latitude : " + Math.round(entry.getValue().getLatitude() * 1000.0) / 1000.0);
+                    textualView.showAlert("Veuillez choisir les options à gauche, et cliquez sur le bouton Ajouter une livraison. Cliquez droit pour supprimer cet ajout.");
                     for (Pair<Circle, Circle> circlePair : circlePairSet) {
                         if (circlePair.getKey().equals(key) && circlePair.getValue() != lastClickedCircle) {
                             Circle associatedCircle = circlePair.getValue();
@@ -158,6 +157,12 @@ public class MouseListener implements EventHandler<ActionEvent> {
             });
         }
     }
+
+    /**
+     * Gérer les événements de souris.
+     *
+     * @param actionEvent L'événement de souris à gérer
+     */
     @Override
     public void handle(ActionEvent actionEvent) {
 

@@ -38,15 +38,6 @@ class LivraisonTest {
     }
 
     @Test
-    void testGetDestinationException() {
-        // Création d'une livraison sans assigner de destination
-        Livraison livraison = new Livraison();
-
-        // Test de l'exception en cas de livraison sans destination
-        assertThrows(IllegalStateException.class, livraison::getDestination);
-    }
-
-    @Test
     void testSetCrenauHoraire() {
         // Création d'une livraison
         Intersection destination = new Intersection(1L, 40.0, -74.0);

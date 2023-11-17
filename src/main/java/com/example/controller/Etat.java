@@ -143,7 +143,8 @@ public interface Etat {
      *
      * @param c     Le contrôleur.
      * @param carte La carte.
+     * @param stage Le stage JavaFX.
      */
-    public default void genererFeuilleRoute(Controller c, Carte carte){}
+    public default void genererFeuilleRoute(Controller c, Carte carte, Stage stage){}
 
 }

@@ -1,9 +1,5 @@
 package com.example.controller;
 
-import com.example.agiledelivery.ButtonListener;
-import com.example.agiledelivery.GraphicalView;
-import com.example.agiledelivery.MouseListener;
-import com.example.agiledelivery.TextualView;
 import com.example.model.Carte;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
@@ -174,7 +170,7 @@ public class Controller {
     /**
      * Généner la feuille de route des chemins dans l'état courant du contrôleur.
      */
-    public void genererFeuilleRoute(){ etatCourant.genererFeuilleRoute(this, carte);}
+    public void genererFeuilleRoute(){ etatCourant.genererFeuilleRoute(this, carte, stage);}
 
 
 }

@@ -22,7 +22,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 /**
- * Cette classe gère l'ouverture et la lecture des fichiers XML pour charger des données dans une carte.
+ * Cette classe gère la lecture des fichiers XML pour charger des données dans une carte.
  */
 public class XMLOpener{
 
@@ -64,8 +64,8 @@ public class XMLOpener{
         File file = XMLFilter.getInstance().open(stage, true);
 
         if (file == null) {
-            carte.sendException(new CustomXMLParsingException("File null"));
-            throw new CustomXMLParsingException("File null");
+            carte.sendException(new CustomXMLParsingException("Pas de fichier sélectionné"));
+            throw new CustomXMLParsingException("Pas de fichier sélectionné");
         }
 
         try {
@@ -73,11 +73,6 @@ public class XMLOpener{
             SAXParser saxParser = factory.newSAXParser();
             DefaultHandler handler = new HandlerTour(carte);
             saxParser.parse(file, handler);
-            Path path = Paths.get(file.getAbsolutePath());
-            String fileName = path.getFileName().toString();
-            carte.readEnd(fileName);
-            carte.initAdjacenceList();
-
         } catch (Exception e) {
             e.printStackTrace();
             carte.sendException(e);
@@ -95,8 +90,8 @@ public class XMLOpener{
         File file = XMLFilter.getInstance().open(stage, true);
         String xsdPath = "data/xsd/map.xsd";
         if (file == null) {
-            carte.sendException(new CustomXMLParsingException("File null"));
-            throw new CustomXMLParsingException("File null");
+            carte.sendException(new CustomXMLParsingException("Pas de fichier sélectionné"));
+            throw new CustomXMLParsingException("Pas de fichier sélectionné");
         }
 
         if (!new File(xsdPath).exists()) {
@@ -175,9 +170,10 @@ public class XMLOpener{
             this.carte = carte;
         }
 
+
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-            charactersBuffer.setLength(0); // Clear the characters buffer
+            charactersBuffer.setLength(0);
 
             if ("tournees".equals(qName)) {
                 String nbCoursiersValue = attributes.getValue("nbCoursiers");
@@ -210,12 +206,12 @@ public class XMLOpener{
             } else if ("address".equals(qName) && currentLivraison != null) {
                 Intersection intersection = carte.getIntersection(currentAddressId);
                 currentLivraison.setDestination(intersection);
-                currentAddressId = null; // Reset the currentAddressId
+                currentAddressId = null;
             } else if ("livraison".equals(qName) && currentLivraison != null) {
                 carte.addLivraison(numeroCoursier, currentLivraison);
                 currentLivraison = null;
             }
-            charactersBuffer.setLength(0); // Clear the buffer after handling the element's content
+            charactersBuffer.setLength(0);
         }
     }
 

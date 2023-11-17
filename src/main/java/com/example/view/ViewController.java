@@ -1,12 +1,12 @@
-package com.example.agiledelivery;
+package com.example.view;
 
 import com.example.controller.Controller;
 import com.example.model.Carte;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Stage;
 
 import java.util.Arrays;
 
@@ -32,7 +32,7 @@ public class ViewController {
     private MouseListener mouseListener;
     private GraphicalView graphicalView;
 
-    private Controller controller;
+    private final Controller controller;
     private TextualView textualView;
 
 
@@ -44,6 +44,9 @@ public class ViewController {
 
     @FXML
     private Label longitudeLabel;
+
+    @FXML
+    private SplitPane mainView;
 
     @FXML
     private Pane mapPane;
@@ -98,9 +101,20 @@ public class ViewController {
     private TextField courierNumberTextField;
     @FXML
     private Button supprimerApresTourneeButton;
-
     @FXML
     private Label textNumeroCoursier;
+
+    @FXML
+    private Label errorLabel;
+
+    @FXML
+    private TextFlow aide;
+
+    @FXML
+    private Label textCreneau;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     /**
      * Initialiser les views
@@ -121,15 +135,13 @@ public class ViewController {
         for (MenuItem menuItem : Arrays.asList(chargerTourneeButton, sauvegarderTourneeButton,loadMapButton)) {
             menuItem.setOnAction(actionEvent -> buttonListener.handle(actionEvent));
         }
-
-
+        graphicalView.prefHeightProperty().bind(mapPane.heightProperty());
+        graphicalView.getGraph().prefHeightProperty().bind(graphicalView.heightProperty().add(-10));
+        graphicalView.prefWidthProperty().bind(mapPane.widthProperty());
+        graphicalView.getGraph().prefWidthProperty().bind(graphicalView.widthProperty().add(-10));
         handleHeightChanged();
         handleWidthChanged();
-
-
-
         setupTextualView();
-        System.out.println(longitudeLabel.getText());
     }
     /**
      * Faire les setups pour les membres du textualView
@@ -140,7 +152,6 @@ public class ViewController {
         textualView.setCoordinatesPane(coordinatesPane);
         textualView.setLongitudeLabel(longitudeLabel);
         textualView.setLatitudeLabel(latitudeLabel);
-        textualView.setResetTourneeButton(resetTourneeButton);
         textualView.setButton_add(ajouterLivraisonButton);
         textualView.setButton_add_before(ajouterAvantButton);
         textualView.setButton_add_after(ajouterApresButton);
@@ -150,36 +161,40 @@ public class ViewController {
         textualView.setTextField(courierNumberTextField);
         textualView.setInfo(info);
         textualView.setTextNumeroCoursier(textNumeroCoursier);
+        textualView.setErrorLabel(errorLabel);
+        textualView.setButton_create_tournee(calculerTourneeButton);
+        textualView.setButton_Nombre_coursier(changeNumberCouriersButton);
+        textualView.setTextCreneau(textCreneau);
+        textualView.setRemoveTournee(resetTourneeButton);
+        textualView.setRedoButton(redoButton);
+        textualView.setUndoButton(undoButton);
+        textualView.setButton_Charger_carte(loadMapButton);
+        textualView.setButton_sauvegarder_tournee(sauvegarderTourneeButton);
+        textualView.setButton_charger_tournee(chargerTourneeButton);
     }
     /**
-     * Gérer les changements de la propriété de hauteur (height) de mapPane en ajustant la vue graphique en conséquence.
+     * Gérer les changements de la propriété de hauteur (height) de mainView en ajustant la vue graphique en conséquence.
      */
-    private void handleHeightChanged(){
-        mapPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double newHeight = (double) newValue;
-            double oldHeight = (double) oldValue;
-            if (oldHeight == 0.0) {
-                oldHeight = newHeight;
-            }
-            double scaleFactor = (newHeight/oldHeight);
-            graphicalView.getGraph().setScaleY(scaleFactor*graphicalView.getGraph().getScaleY());
-            graphicalView.getGraph().setTranslateY(10);
+    private void handleHeightChanged() {
+        mainView.heightProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if (oldValue.longValue() != 0.0) scrollPane.setPrefHeight(mapPane.getHeight());
+            });
         });
     }
-
     /**
-     * Gérer les changements de la propriété de largeur (width) de mapPane en ajustant la vue graphique en conséquence.
+     * Gérer les changements de la propriété de largeur (width) de mainView en ajustant la vue graphique en conséquence.
      */
     private void handleWidthChanged(){
-        mapPane.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double newWidth = (double) newValue;
-            double oldWidth = (double) oldValue;
-            if (oldWidth == 0.0) {
-                oldWidth = newWidth;
-            }
-            double scaleFactor = (newWidth/oldWidth);
-
-            graphicalView.getGraph().setScaleX(scaleFactor*graphicalView.getGraph().getScaleX());
+        mainView.widthProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if (oldValue.longValue() != 0.0) {
+                    coordinatesPane.setLayoutX(mapPane.getWidth() / 2 - coordinatesPane.getWidth() / 2);
+                    calculerTourneeButton.setLayoutX(mainView.getWidth() / 3 - calculerTourneeButton.getWidth() / 2);
+                    resetTourneeButton.setLayoutX(2 * mainView.getWidth() / 3 - resetTourneeButton.getWidth() / 2);
+                    genererFeuilleDeRouteButton.setLayoutX(mainView.getWidth() / 3 - calculerTourneeButton.getWidth() / 2);
+                }
+            });
         });
     }
 

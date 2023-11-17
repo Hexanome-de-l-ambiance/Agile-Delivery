@@ -65,29 +65,24 @@ public class XMLMaker {
                 Element tourElement = document.createElement("tournee");
                 tourneeElement.appendChild(tourElement);
                 tourElement.setAttribute("numeroCoursier", String.valueOf(tourneeEntry.getKey()));
-                // Create <livraisons> element
                 Element livraisonsElement = document.createElement("livraisons");
                 tourElement.appendChild(livraisonsElement);
 
-                // Iterate through each Livraison and add to <livraisons>
                 List<Livraison> livraisonsList = tourneeEntry.getValue().getListeLivraisons(); // Assuming getLivraisons() exists and returns List<Livraison>
                 Long entrepotId = carte.getEntrepot().getId();
                 for (Livraison livraison : livraisonsList) {
-                    // Check if the Livraison is the entrepot; if so, skip it
+                    // Si la livraison est l'entrepot, ne pas l'ajouter
                     if (livraison.getDestination().getId().equals(entrepotId)) {
-                        continue; // Skip the entrepot
+                        continue;
                     }
 
-                    // Create <livraison> element for non-entrepot addresses
                     Element livraisonElement = document.createElement("livraison");
                     livraisonsElement.appendChild(livraisonElement);
 
-                    // Create and append <address> element
                     Element addressElement = document.createElement("address");
                     addressElement.setAttribute("id", String.valueOf(livraison.getDestination().getId())); // Assuming getDestination() and getId() exist
                     livraisonElement.appendChild(addressElement);
 
-                    // Create and append <heureLivraison> element
                     Element heureLivraisonElement = document.createElement("creneauHoraire");
 
                     heureLivraisonElement.setTextContent(livraison.getCreneauHoraire().toString()); // Assuming getHeureLivraison() exists and returns a Time object
@@ -95,7 +90,7 @@ public class XMLMaker {
                 }
             }
 
-            // Write the XML content to the file
+            // Créer le fichier XML
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -104,8 +99,7 @@ public class XMLMaker {
 
             transformer.transform(domSource, streamResult);
         } catch (ParserConfigurationException | TransformerException e) {
-            // Handle exceptions properly here
-            throw new CustomXMLParsingException("Error saving tournee to XML", e);
+            throw new CustomXMLParsingException("Erreur lors de la génération du fichier XML", e);
         }
     }
 

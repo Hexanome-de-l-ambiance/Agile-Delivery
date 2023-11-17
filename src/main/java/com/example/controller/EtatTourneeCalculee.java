@@ -5,9 +5,13 @@ import com.example.model.Tournee;
 import com.example.model.Intersection;
 import com.example.model.Livraison;
 import com.example.xml.CustomXMLParsingException;
+import com.example.xml.DirectoryMaker;
 import com.example.xml.XMLMaker;
 import com.example.xml.XMLOpener;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Représente l'état lorsque la tournée est calculée.
@@ -79,7 +83,6 @@ public class EtatTourneeCalculee implements Etat {
         try {
             XMLMaker.getInstance().saveTourneeToXML(stage, carte);
         } catch (CustomXMLParsingException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -88,12 +91,16 @@ public class EtatTourneeCalculee implements Etat {
      *
      * @param c     Le contrôleur.
      * @param carte La carte concernée.
+     * @param stage Le stage JavaFX.
      */
-    public void genererFeuilleRoute(Controller c, Carte carte){
-        for (Tournee tournee : carte.getListeTournees().values())
-        {
-           tournee.genererFeuilleDeRouteHTML("feuilleDeRoute" + tournee.getCoursier() + ".html");
+    public void genererFeuilleRoute(Controller c, Carte carte, Stage stage){
+        try {
+            File file = DirectoryMaker.getInstance().open(stage);
+            carte.genererFeuilleDeRouteHTML(file);
+        } catch (CustomXMLParsingException|IOException e) {
+            carte.sendException(e);
         }
+
     }
 
 }

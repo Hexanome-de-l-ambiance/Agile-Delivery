@@ -1,4 +1,4 @@
-package com.example.agiledelivery;
+package com.example.view;
 
 import com.example.controller.Controller;
 import com.example.model.Carte;

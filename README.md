@@ -1,18 +1,15 @@
 # Agile-Delivery
 
-## To do
-- meilleur affichage de la carte, des tournées
-- traduire le code en français
-- faire des tests unitaires
+## Lancer le projet
+- Sur IntelliJ, ouvrir le projet et lancer la classe 'Window.java' qui se trouve dans le package 'view'.
 
-## A améliorer
-### Gestion des erreurs :
-- fenêtres d'erreurs : améliorer les messages
-- à voir pour les 'throw runtimeException' : normalement pas de messages d'erreurs sur la console
-- pas de message d'erreur pour file null ( on peut 'Cancel' c'est pas une erreur)
-- détecter si le format du xml n'est pas conforme (liste intersection non vide, au moins un entrepot, quoi d'autre ?) : renvoyer une alerte mais afficher quand même la carte si possible
-- traiter les intersections isolées
-- traiter plus généralement le cas où aucune solution est trouvée pour la tournée dans le calcul
+## Lancer les tests unitaires
+- Sur IntelliJ, clic droit sur le dossier test/java/com.example et cliquer sur 'Run Tests in com.example with coverage'.
 
-## Bugs
-- exeception lors du chargement du pom.xml par exemple (à cause du display dans graphicalView)
+## Rapport de couverture
+- Un rapport de couverture se trouve dans le dossier 'rapport-couverture' à la racine du projet.
+- Pour le consulter, ouvrir le fichier 'index.html' dans un navigateur.
+
+## Javadoc
+- La javadoc se trouve dans le dossier 'javadoc' à la racine du projet.
+- Pour la consulter, ouvrir le fichier 'index.html' dans un navigateur.

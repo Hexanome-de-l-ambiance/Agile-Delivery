@@ -1,11 +1,22 @@
 package com.example.model;
 
+import com.example.xml.DirectoryMaker;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.io.File;
+
+import static java.lang.Math.round;
 
 /**
  * Représente une carte avec des intersections, des segments et des tournées.
@@ -67,6 +78,7 @@ public class Carte {
      * Indique si la tournée est vide.
      */
     private boolean isTourEmpty = true;
+    private boolean isTourneeCalculee = false;
     public static final String RESET = "reset";
     public static final String RESET_TOURS = "reset tours";
     public static final String READ = "read";
@@ -107,6 +119,7 @@ public class Carte {
         for(int i = 1; i <= nbCoursiers; i++){
             listeTournees.put(i, new Tournee(i));
         }
+        this.isTourneeCalculee = false;
         firePropertyChange(SET_NB_COURIERS, null, nbCoursiers);
     }
 
@@ -191,6 +204,9 @@ public class Carte {
     public boolean isTourEmpty() {
         return isTourEmpty;
     }
+    public boolean isTourneeCalculee() {
+        return isTourneeCalculee;
+    }
     public HashMap<Integer, Tournee> getListeTournees() {
         return listeTournees;
     }
@@ -210,6 +226,7 @@ public class Carte {
      * Réinitialise toutes les tournées.
      */
     public void resetTournee(){
+        isTourneeCalculee = false;
         listeTournees.clear();
         for(int i = 1; i <= nbCoursiers; i++){
             listeTournees.put(i, new Tournee(i));
@@ -245,9 +262,11 @@ public class Carte {
      * @param livraison      La livraison à ajouter.
      */
     public void addLivraison (int numeroCouriser, Livraison livraison) {
-        listeTournees.get(numeroCouriser).addLivraison(livraison);
-        isTourEmpty = false;
-        firePropertyChange(ADD, numeroCouriser, listeTournees);
+        if(livraison.getDestination() != null && livraison.getCreneauHoraire() != null) {
+            listeTournees.get(numeroCouriser).addLivraison(livraison);
+            isTourEmpty = false;
+            firePropertyChange(ADD, numeroCouriser, listeTournees);
+        }
     }
 
     /**
@@ -257,13 +276,15 @@ public class Carte {
      * @param livraison      La livraison à ajouter.
      * @param index          L'indice où ajouter la livraison.
      */
-    public void addLivraison(int numeroCouriser, Livraison livraison, int index){
-        if(!listeTournees.get(numeroCouriser).addLivraison(this, livraison, index)){
-            firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
-        }
+    public boolean addLivraison(int numeroCouriser, Livraison livraison, int index){
+        boolean b = listeTournees.get(numeroCouriser).addLivraison(this, livraison, index);
         isTourEmpty = false;
         firePropertyChange(ADD, numeroCouriser, listeTournees);
         firePropertyChange(UPDATE, null, listeTournees);
+        if(!b){
+            firePropertyChange(ERROR, null, "livraison index" + index +" ajoutée non valide");
+        }
+        return b;
     }
 
     /**
@@ -318,12 +339,111 @@ public class Carte {
                 s += entry.getKey() + " ";
             }
         }
+        isTourneeCalculee = true;
+        firePropertyChange(UPDATE, null, listeTournees);
         if(error){
             firePropertyChange(ERROR, null, s);
         }
-        firePropertyChange(UPDATE, null, listeTournees);
     }
 
+    /**
+     * Génère des feuilles de route au format HTML pour les tournées.
+     *
+     * @param file Le répertoire du fichier.
+     */
+    public void genererFeuilleDeRouteHTML(File file) throws IOException {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime heureActuelle = LocalTime.of(8, 0, 0);
+        for(Map.Entry<Integer, Tournee> entry: listeTournees.entrySet()){
+            Tournee tournee = entry.getValue();
+            String fileName = "feuilleDeRoute" + entry.getKey() + ".html";
+            String filePath = file.getAbsolutePath() + File.separator + fileName;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write("<meta charset='UTF-8'>");
+                writer.write("<html>");
+                writer.write("<head>");
+                writer.write("<title>Feuille de route</title>");
+                writer.write("<style>");
+                writer.write("body { font-family: 'Arial', sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }");
+                writer.write("h1 { color: #007bff; }");
+                writer.write("h2 { color: #555; margin-top: 15px; }");
+                writer.write("p { color: #777; }");
+                writer.write(".segment { border: 1px solid #ddd; padding: 10px; margin: 5px; background-color: #fff; }");
+                writer.write(".arrival-time { font-weight: bold; color: #009688; }");
+                writer.write("</style>");
+                writer.write("</head>");
+                writer.write("<body>");
+                writer.write("<h1>Feuille de route pour la tournée du coursier " + entry.getKey() + "</h1>");
+
+                if(!tournee.getListeChemins().isEmpty()){
+
+                    if(tournee.getListeLivraisons().get(0).getCreneauHoraire().isAfter(heureActuelle)){
+                        writer.write("<p>Heure de début de tournée : " + tournee.getListeLivraisons().get(0).getCreneauHoraire().minusMinutes(tournee.getListeChemins().get(0).getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()).format(formatter) + "</p>");
+                    }else{
+                        writer.write("<p>Heure de début de tournée : " + heureActuelle.format(formatter) + "</p>");
+                    }
+                    writer.write("<p>Heure de fin de tournée : " + tournee.getHeureFinTournee().format(formatter) + "</p>");
+                }
+
+                int indexChemin = 1;
+                for (Chemin chemin : tournee.getListeChemins()) {
+                    if(indexChemin < tournee.getListeChemins().size() && indexChemin > 1 && tournee.getListeLivraisons().get(indexChemin - 1).getCreneauHoraire().isAfter(heureActuelle)){
+                        Duration tempsAttente = Duration.between(heureActuelle.plusMinutes(chemin.getDuree().toMinutes() + Livraison.DUREE_LIVRAISON.toMinutes()), tournee.getListeLivraisons().get(indexChemin - 1).getHeureLivraison());
+                        writer.write("<p style='color: #850606;'>Temps d'attente : " + tempsAttente.toMinutes() + " min </p>");
+                    }
+                    writer.write("<div class='segment'>");
+                    if(indexChemin < tournee.getListeChemins().size()) {
+                        writer.write("<h2>Livraison " + indexChemin + "</h2>");
+                    }else{
+                        writer.write("<h2>Retour à l'entrepot</h2>");
+                    }
+
+
+                    int indexSegment = 1;
+                    String currentRoute = null;
+                    double totalLength = 0;
+
+                    for (Segment segment : chemin.getListeSegments()) {
+                        if (currentRoute == null || !currentRoute.equals(segment.getName())) {
+                            if (currentRoute != null) {
+                                writer.write("<p><strong>" + currentRoute + ":</strong> Longueur : " + round(totalLength) + " mètres </p>");
+                            }
+
+                            currentRoute = segment.getName();
+                            totalLength = 0;
+                        }
+
+                        totalLength += segment.getLength();
+
+                        if (indexSegment == chemin.getListeSegments().size()) {
+                            writer.write("<p><strong>" + currentRoute + ":</strong> Longueur : " + round(totalLength) + " mètres </p>");
+                        }
+
+                        indexSegment++;
+                    }
+
+                    if (indexChemin < tournee.getListeChemins().size()) {
+                        writer.write("<p class='arrival-time'><strong>Heure d'arrivée à la destination :</strong> " + tournee.getListeLivraisons().get(indexChemin - 1).getHeureLivraison().format(formatter) + "</p>");
+                        heureActuelle = tournee.getListeLivraisons().get(indexChemin - 1).getHeureLivraison();
+                    } else {
+                        writer.write("<p class='arrival-time'><strong>Heure de retour à l'entrepôt :</strong> " + tournee.getHeureFinTournee().format(formatter) + "</p>");
+                    }
+                    writer.write("</div>");
+                    indexChemin++;
+                }
+
+                writer.write("</body>");
+                writer.write("</html>");
+                writer.write("</meta>");
+            }catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+
+    }
     /**
      * Envoie une exception à tous les écouteurs en cas d'erreur.
      *

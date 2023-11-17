@@ -22,9 +22,7 @@ public class EtatInitial implements Etat {
         try{
             XMLOpener.getInstance().readFile(stage, carte);
             c.setEtatCourant(c.etatCarteChargee);
-            System.out.printf("map loaded");
         } catch (CustomXMLParsingException e) {
-            throw new RuntimeException(e);
         }
     }
 }

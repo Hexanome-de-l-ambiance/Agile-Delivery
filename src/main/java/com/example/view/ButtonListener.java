@@ -1,4 +1,4 @@
-package com.example.agiledelivery;
+package com.example.view;
 
 import com.example.controller.*;
 import com.example.model.Livraison;
@@ -48,14 +48,12 @@ public class ButtonListener implements EventHandler<ActionEvent> {
             actionCommand = ((Button) event.getSource()).getId();
         }
 
-        // Forward the corresponding message to the controller based on the button's text
         switch (actionCommand) {
             case Window.LOAD_PLAN: controller.load(); break;
             case Window.ADD_DESTINATION:{
                 if (controller.getEtatCourant() instanceof EtatInitial){
                     textualView.showAlert("Aucune carte n'est chargée. Veuillez charger une carte avant d'ajouter des destinations.");
                 } else if (!(controller.getEtatCourant() instanceof EtatAjoutDestination || controller.getEtatCourant() instanceof EtatAjoutDestination2)) {
-                    System.out.println(controller.getEtatCourant());
                     textualView.showAlert("Veuillez sélectionner un point de livraison à ajouter.");
                 } else {
                     try {
@@ -111,12 +109,13 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison non choisie");
-                }
-                try {
-                    controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);
-                } catch (NumberFormatException e){
-                    textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    textualView.showAlert("Veuillez choisir une livraison et une destination");
+                } else {
+                    try {
+                        controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index);
+                    } catch (NumberFormatException e) {
+                        textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    }
                 }
                 break;
             }
@@ -125,12 +124,13 @@ public class ButtonListener implements EventHandler<ActionEvent> {
                 Livraison livraison = textualView.getLivraison();
                 int index = textualView.getSelectedIndex();
                 if(numeroCoursier == -1 || livraison == null){
-                    textualView.showAlert("Livraison non choisie");
-                }
-                try {
-                    controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index+1);
-                } catch (NumberFormatException e){
-                    textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    textualView.showAlert("Veuillez choisir une livraison et une destination");
+                } else {
+                    try {
+                        controller.addDelivery(numeroCoursier, Integer.parseInt(textualView.getComboBoxIntervals().getValue()), index + 1);
+                    } catch (NumberFormatException e) {
+                        textualView.showAlert("Veuillez choisir un fenêtre temporelle");
+                    }
                 }
                 break;
             }
