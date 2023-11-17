@@ -1,10 +1,9 @@
-package com.example.agiledelivery;
+package com.example.view;
 
 import com.example.controller.Controller;
 import com.example.model.Intersection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

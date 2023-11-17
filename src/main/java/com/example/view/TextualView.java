@@ -1,4 +1,4 @@
-package com.example.agiledelivery;
+package com.example.view;
 
 import com.example.model.*;
 
@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -76,6 +77,8 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
     private MenuItem chargerTourneeButton;
 
     private MenuItem buttonChargerCarte;
+
+    private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.BLUE, Color.GREEN, Color.PURPLE, Color.ORANGE, Color.RED, Color.FUCHSIA, Color.SIENNA));
 
     /**
      * Initialiser le view
@@ -517,10 +520,15 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
         int i = 1;
         for(Livraison livraison : list){
             Label newLabel = new Label();
+            Label numberLabel = new Label();
+            numberLabel.setStyle("-fx-font-size: 15px");
+            numberLabel.setText(" " + i++ + " : ");
+            Color color = colors.get((numeroCoursier-1) % colors.size());
+            numberLabel.setTextFill(color);
             if(!isCalculated()){
-                newLabel.setText(" " + i++  + " : Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Créneau :" + livraison.getCreneauHoraire() + "\n\n");
+                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Créneau :" + livraison.getCreneauHoraire() + "\n\n");
             } else {
-                newLabel.setText(" " + i++  + " Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Heure :" + livraison.getHeureLivraison() + "\n\n");
+                newLabel.setText(" Longitude : " + Math.round(livraison.getDestination().getLongitude() * 1000.0) / 1000.0 + " Latitude: " + Math.round(livraison.getDestination().getLatitude() * 1000.0) / 1000.0 + "\n" + " Heure :" + livraison.getHeureLivraison() + "\n\n");
             }
             switch (livraison.getEtat()){
                 case EN_RETARD:
@@ -539,6 +547,7 @@ public class TextualView extends Pane implements PropertyChangeListener, Visitor
                 selectedLabel = newLabel;
                 selectedLabel.setTextFill(Color.YELLOW);
             });
+            info.getChildren().add(numberLabel);
             info.getChildren().add(newLabel);
         }
         if(isCalculated()) {
